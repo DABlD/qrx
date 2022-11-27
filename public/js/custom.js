@@ -94,7 +94,14 @@ if($('.nav-link.active').parent().parent().has('.nav-treeview')){
 }
 
 // REMOVE CLASS OF DATATABLE SEARCH BARS
-setTimeout(() => {
-	$('[name="table_length"]').removeClass();
-	$('#table_filter [type="search"]').removeClass();
-}, 500);
+// function fixDatatable(table = "table"){
+// 	setTimeout(() => {
+// 		$(`[name="${table}_length"]`).removeClass();
+// 		$(`.dataTables_filter [type="search"]`).removeClass();
+
+// 		$(`#${table}_length`).css('text-align', 'left');
+// 		$(`#${table}_info`).css('text-align', 'left');
+// 		$(`#${table}_filter`).css('text-align', 'right');
+// 	}, 200);
+// }
+// fixDatatable();

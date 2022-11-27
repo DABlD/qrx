@@ -48,7 +48,7 @@ Route::group([
                 Route::get("/", ucfirst($cname) . "Controller@index")
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fas fa-users")
-                    ->defaults("name", "Users")
+                    ->defaults("name", ucfirst($cname) . "s")
                     ->defaults("roles", array("Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)
@@ -63,7 +63,43 @@ Route::group([
             }
         );
 
-        // LOCATION ROUTES
+        // ROUTE ROUTES
+        $cname = "route";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+
+                Route::get("/", ucfirst($cname) . "Controller@index")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fad fa-route")
+                    ->defaults("name", ucfirst($cname) . "s")
+                    ->defaults("roles", array("Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
+                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+            }
+        );
+
+        // STATION ROUTES
+        $cname = "station";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
+                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+            }
+        );
+
+        // THEME ROUTES
         $cname = "theme";
         Route::group([
                 'as' => "$cname.",
@@ -82,6 +118,8 @@ Route::group([
             ], function () use($cname){
 
                 Route::get("user", ucfirst($cname) . "Controller@user")->name('user');
+                Route::get("route", ucfirst($cname) . "Controller@route")->name('route');
+                Route::get("station", ucfirst($cname) . "Controller@station")->name('station');
             }
         );
     }

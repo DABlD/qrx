@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\{Route};
 use DB;
-use Auth;
 
-class UserController extends Controller
+class RouteController extends Controller
 {
+    public function __construct(){
+        $this->table = "routes";
+    }
+
     public function get(Request $req){
-        $array = DB::table('users')->select($req->select);
+        $array = DB::table($this->table)->select($req->select);
         $array = $array->where('deleted_at', null);
 
         // IF HAS SORT PARAMETER $ORDER
@@ -31,7 +34,7 @@ class UserController extends Controller
         // IF HAS JOIN
         if($req->join){
             $alias = substr($req->join, 1);
-            $array = $array->join("$req->join as $alias", "$alias.fid", '=', 'users.id');
+            $array = $array->join("$req->join as $alias", "$alias.fid", '=', '$this->table.id');
         }
 
         $array = $array->get();
@@ -52,43 +55,32 @@ class UserController extends Controller
     }
 
     public function store(Request $req){
-        $data = new User();
-        $data->username = $req->username;
-        $data->fname = $req->fname;
-        $data->mname = $req->mname;
-        $data->lname = $req->lname;
-        $data->role = $req->role;
-        $data->email = $req->email;
-        $data->birthday = $req->birthday;
-        $data->gender = $req->gender;
-        $data->address = $req->address;
-        $data->contact = $req->contact;
-        $data->password = $req->password;
+        $data = new Route();
+        $data->from = $req->from;
+        $data->to = $req->to;
+        $data->direction = $req->direction;
+        $data->stations = json_encode([]);
+        $data->base_fare = $req->base_fare;
+        $data->per_km_fare = $req->per_km_fare;
 
         echo $data->save();
     }
 
     public function update(Request $req){
-        echo DB::table('users')->where('id', $req->id)->update($req->except(['id', '_token']));
-    }
-
-    public function updatePassword(Request $req){
-        $user = User::find(auth()->user()->id);
-        $user->password = $req->password;
-        $user->save();
+        echo DB::table($this->table)->where('id', $req->id)->update($req->except(['id', '_token']));
     }
 
     public function delete(Request $req){
-        User::find($req->id)->delete();
+        Route::find($req->id)->delete();
     }
 
     public function index(){
         return $this->_view('index', [
-            'title' => 'Users'
+            'title' => ucfirst($this->table)
         ]);
     }
 
     private function _view($view, $data = array()){
-        return view('users.' . $view, $data);
+        return view("$this->table." . $view, $data);
     }
 }
