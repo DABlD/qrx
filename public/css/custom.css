@@ -73,6 +73,10 @@
 	border-radius: 7px;
 }
 
+.paginate_button{
+	padding: 0px 0px 0px 0px !important;
+}
+
 /*#table_length{
 	float: left;
 }
