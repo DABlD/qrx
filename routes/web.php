@@ -47,7 +47,7 @@ Route::group([
 
                 Route::get("/", ucfirst($cname) . "Controller@index")
                     ->defaults("sidebar", 1)
-                    ->defaults("icon", "fas fa-users")
+                    ->defaults("icon", "fa-light fa-users")
                     ->defaults("name", ucfirst($cname) . "s")
                     ->defaults("roles", array("Admin"))
                     // ->defaults("group", "Settings")
@@ -121,6 +121,28 @@ Route::group([
             }
         );
 
+        // VEHICLE ROUTES
+        $cname = "vehicle";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("/", ucfirst($cname) . "Controller@index")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fa-light fa-truck")
+                    ->defaults("name", ucfirst($cname) . "s")
+                    ->defaults("roles", array("Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
+                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+            }
+        );
+
         // THEME ROUTES
         $cname = "theme";
         Route::group([
@@ -143,6 +165,7 @@ Route::group([
                 Route::get("route", ucfirst($cname) . "Controller@route")->name('route');
                 Route::get("station", ucfirst($cname) . "Controller@station")->name('station');
                 Route::get("device", ucfirst($cname) . "Controller@device")->name('device');
+                Route::get("vehicle", ucfirst($cname) . "Controller@vehicle")->name('vehicle');
             }
         );
     }

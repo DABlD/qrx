@@ -13,7 +13,7 @@
                             List
                         </h3>
 
-                        @include('users.includes.toolbar')
+                        @include('devices.includes.toolbar')
                     </div>
 
                     <div class="card-body table-responsive">
