@@ -331,12 +331,14 @@
             				$.ajax({
             					url: "{{ route('station.get') }}",
             					data: {
-            						select: "id",
-            						where: ["name", $("[name='name']").val()]
+            						select: ["id", "route_id"],
+            						where: ["name", $("[name='name']").val()],
+            						where2: ["route_id", rid]
             					},
             					success: result => {
             						result = JSON.parse(result);
-            						if(result.length && result.route_id == rid){
+
+            						if(result.length){
             			    			Swal.showValidationMessage('Station name already exists');
 	            						setTimeout(() => {resolve()}, 500);
             						}

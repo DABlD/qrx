@@ -15,7 +15,15 @@ class CreateDevicesTable extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('station_id')->nullable();
+            $table->unsignedInteger('route_id')->nullable();
+
+            $table->string('device_id')->nullable();
+            $table->string('status')->default('Active');
+            $table->string('description')->nullable();
+
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
