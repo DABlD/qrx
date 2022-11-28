@@ -56,6 +56,7 @@ class StationController extends Controller
 
     public function store(Request $req){
         $data = new Station();
+        $data->route_id = $req->route_id;
         $data->name = $req->name;
         $data->label = $req->label;
         $data->kilometer = $req->kilometer;

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\StationAttribute;
-use App\Models\{Station};
+use App\Models\{Station, Route};
 
 class Station extends Model
 {
@@ -19,4 +19,8 @@ class Station extends Model
     protected $dates = [
         'created_at', 'updated_at', 'deleted_at'
     ];
+
+    public function route(){
+        return $this->belongsTo(Route::class);
+    }
 }

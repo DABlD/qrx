@@ -15,6 +15,7 @@ class CreateStationsTable extends Migration
     {
         Schema::create('stations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('route_id');
 
             $table->string('name');
             $table->string('label');

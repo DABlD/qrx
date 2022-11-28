@@ -249,7 +249,7 @@
 		}
 
 		// STATION FUNCTIONS
-		function stations(){
+		function stations(rid){
 			Swal.fire({
 				title: 'Stations',
 				width: "50%",
@@ -257,7 +257,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="float-right">
-								<a class="btn btn-success btn-sm" data-toggle="tooltip" title="Add Station" onclick="create2()">
+								<a class="btn btn-success btn-sm" data-toggle="tooltip" title="Add Station" onclick="create2(${rid})">
 								    <i class="fas fa-plus fa-2xl"></i>
 								</a>
 							</div>
@@ -288,6 +288,7 @@
 		                	dataSrc: "",
 							data: {
 								select: "*",
+								where: ["route_id", rid]
 							}
 						},
 						columns: [
@@ -298,12 +299,13 @@
 							{data: 'actions'},
 						],
 		        		pageLength: 25,
+		        		order:[[3, 'asc']]
 					});
 				}
 			})
 		}
 
-		function create2(){
+		function create2(rid){
 			Swal.fire({
 				title: 'Enter Station Details',
 				html: `
@@ -334,7 +336,7 @@
             					},
             					success: result => {
             						result = JSON.parse(result);
-            						if(result.length){
+            						if(result.length && result.route_id == rid){
             			    			Swal.showValidationMessage('Station name already exists');
 	            						setTimeout(() => {resolve()}, 500);
             						}
@@ -352,6 +354,7 @@
 						url: "{{ route('station.store') }}",
 						type: "POST",
 						data: {
+							route_id: rid,
 							name: $("[name='name']").val(),
 							label: $("[name='label']").val(),
 							kilometer: $("[name='kilometer']").val(),
@@ -360,13 +363,13 @@
 						success: () => {
 							ss("Success");
 							setTimeout(() => {
-								stations();
+								stations(rid);
 							}, 1000);
 						}
 					})
 				}
 				else{
-					stations();
+					stations(rid);
 				}
 			});
 		}
@@ -443,17 +446,17 @@
 						message: "Success"
 					},	() => {
 						setTimeout(() => {
-							stations();
+							stations(station.route_id);
 						}, 1000);
 					});
 				}
 				else{
-					stations();
+					stations(station.route_id);
 				}
 			});
 		}
 
-		function del2(id){
+		function del2(id, rid){
 			sc("Confirmation", "Are you sure you want to delete?", result => {
 				if(result.value){
 					swal.showLoading();
@@ -463,12 +466,12 @@
 						message: "Success"
 					}, () => {
 						setTimeout(() => {
-							stations();
+							stations(rid);
 						}, 1000);
 					})
 				}
 				else{
-					stations();
+					stations(rid);
 				}
 			});
 		}
