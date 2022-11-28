@@ -88,15 +88,12 @@
 					{data: 'actions'},
 				],
         		pageLength: 25,
-				// drawCallback: function(){
-				// 	init();
-				// }
 			});
 		});
 
 		function view(id){
 			$.ajax({
-				url: "{{ route('user.get') }}",
+				url: "{{ route('device.get') }}",
 				data: {
 					select: '*',
 					where: ['id', id],
@@ -267,12 +264,65 @@
 					    </div>
 					    <div class="col-md-9 iInput">
 					        <select name="station_id" id="station_id" class="form-control">
-					        	<option value="">Select Station</option>
+					        	<option value="">Select Route First</option>
 					        </select>
 					    </div>
 					</div>
 	                <br>
 				`,
+				didOpen: () => {
+					$.ajax({
+						url: '{{ route('route.get') }}',
+						data: {
+							select: "*",
+						},
+						success: routes => {
+							routes = JSON.parse(routes);
+
+							let routeString = "";
+							routes.forEach(route => {
+								routeString += `
+									<option value="${route.id}">${route.from} - ${route.to} (${route.direction})</option>
+								`;
+							});
+
+							$('#route_id').append(routeString);
+							$('#route_id').select2();
+							$('#station_id').select2();
+
+							$('#route_id').on('change', e => {
+								$.ajax({
+									url: '{{ route('station.get') }}',
+									data: {
+										select: "*",
+										where: ["route_id", $('#route_id').val()]
+									},
+									success: stations => {
+										stations = JSON.parse(stations);
+
+										let stationString = "";
+										stations.forEach(station => {
+											stationString += `
+												<option value="${station.id}">${station.name} (${station.label})</option>
+											`;
+										});
+
+										if(stationString != ""){
+											$('#station_id').select2('destroy');
+											$('#station_id').html(`<option value="">Select Station</option>`);
+										}
+
+										$('#station_id').append(stationString);
+										$('#station_id').select2();
+										$('#station_id').val(device.station_id).change();
+									}
+								})
+							});
+
+							$('#route_id').val(device.route_id).change();
+						}
+					})
+				},
 				width: '800px',
 				confirmButtonText: 'Update',
 				showCancelButton: true,
