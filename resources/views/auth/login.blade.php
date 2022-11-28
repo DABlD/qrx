@@ -1,98 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-	<title>{{ "System Name | " . "Login" }}</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="{{ asset('fonts/fontawesome.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/auth/animate.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/auth/hamburgers.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/auth/util.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/auth/main.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
+<!-- Mirrored from qr-transit.onehealthnetwork.com.ph/login by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 19 Nov 2022 02:36:49 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="gPJ2CFeKyObXQsBV62dPiXZDJMHM0LDiGkTHr04n">
+
+    <title>QR Transit</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset("qrtransit/js/app.js") }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="http://fonts.gstatic.com/">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="{{ asset("qrtransit/css/app.css") }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
+    <style>
+        @media (min-width: 992px) {
+            #app > div {
+                width: 50%;
+            }
+        }
+
+        .auth-background {
+            background-image: url({{ asset("qrtransit/img/auth-bg.jpg") }});
+            background-size: contain;
+            background-attachment: fixed;
+        }
+    </style>
 </head>
 <body>
-	
-	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-				<div class="login100-pic js-tilt" data-tilt>
-					<img src="{{ asset("images/default_avatar.png"); }}" alt="IMG">
-				</div>
+    <div id="app" class="d-flex min-vh-100">
+        <div class="auth-background flex-fill d-lg-block d-none"></div>
 
-				<form class="login100-form validate-form" method="POST" action="{{ route('login'); }}">
-					@csrf
-					<span class="login100-form-title">
-						Welcome
-					</span>
+        <div class="align-self-center flex-fill py-3">
+            <div class="container-fluid">
+                <a href="{{ route('login') }}">
+                    <img src="{{ asset("qrtransit/img/qr-transit-logo.png") }}" class="mx-auto mb-4 d-block" width="314" height="78" alt="logo">
+                </a>
 
-					<div class="wrap-input100">
-						<input class="input100" type="text" name="username" placeholder="Username">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="far fa-id-card"></i>
-						</span>
-					</div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-6 col-10">
+                            <h1 class="mb-3 h3">Login</h1>
 
-					<div class="wrap-input100">
-						<input class="input100" type="password" name="password" placeholder="Password">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-lock" aria-hidden="true"></i>
-						</span>
-					</div>
-					
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							Login
-						</button>
-					</div>
-					
-					{{-- <div class="container-register100-form-btn">
-					</div> --}}
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
+        <div class="form-group">
+            <label for="username" class="text-uppercase font-weight-bold mb-0 small">Username</label>
 
-					<div class="text-center p-t-12">
-						<span class="txt1">
-							Forgot
-						</span>
-						<a class="txt2" href="#">
-							Password?
-						</a>
-					</div>
+            <input id="username" type="username" class="form-control " name="username" value="" required autocomplete="username" autofocus>
 
-					<div class="text-center p-t-136">
-						<a class="txt2" href="{{ route('register') }}">
-							Create your account
-							<i class="fas fa-arrow-right"></i>
-						</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                    </div>
 
-	<script src="{{ asset('js/jquery.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-bundle.min.js') }}"></script>
-	<script src="{{ asset('js/auth/tilt.js') }}"></script>
-	<script src="{{ asset('js/auth/main.js') }}"></script>
-	<script src="{{ asset('js/sweetalert2.min.js') }}"></script>
-	<script >
-		$('.js-tilt').tilt({
-			scale: 1.1
-		})
+        <div class="form-group">
+            <label for="password" class="text-uppercase font-weight-bold mb-0 small">Password</label>
 
-		@if($errors->all())
-			Swal.fire({
-				icon: 'error',
-                html: `
-                    @foreach ($errors->all() as $error)
-                        {{ $error }}<br/>
-                    @endforeach
-                `,
-			});
-		@endif
-	</script>
+            <input id="password" type="password" class="form-control " name="password" required autocomplete="current-password">
 
+                    </div>
+
+        {{-- <div class="form-group">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="remember" id="remember" >
+
+                <label class="form-check-label" for="remember">
+                    Remember Me
+                </label>
+            </div>
+        </div> --}}
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">
+                Login
+            </button>
+
+                {{-- <a class="btn btn-link" href="password/reset.html">
+                    Forgot Your Password?
+                </a> --}}
+                    </div>    
+    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+
+        <script>
+            @if($errors->all())
+                Swal.fire({
+                    icon: 'error',
+                    html: `
+                        @foreach ($errors->all() as $error)
+                            {{ $error }}<br/>
+                        @endforeach
+                    `,
+                });
+            @endif
+        </script>
 </body>
+
 </html>
