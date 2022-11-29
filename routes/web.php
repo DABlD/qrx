@@ -32,6 +32,8 @@ Route::group([
         Route::get('get/devices', 'ApiController@devices');
         Route::get('get/vehicles', 'ApiController@vehicles');
         Route::get('get/stations', 'ApiController@stations');
+        Route::get('get/sales', 'ApiController@sales');
+        Route::post('create/sale', 'ApiController@createSale');
     }
 );
 

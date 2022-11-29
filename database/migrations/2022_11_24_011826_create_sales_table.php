@@ -15,6 +15,17 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedInteger('origin_id');
+            $table->unsignedInteger('destination_id');
+            $table->unsignedInteger('vehicle_id');
+            $table->unsignedInteger('user_id');
+
+            $table->string('ticket');
+            $table->float('amount', 8, 2);
+            $table->string('status');
+            $table->date('embarked_date');
+
             $table->timestamps();
         });
     }
