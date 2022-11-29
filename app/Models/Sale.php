@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\SaleAttribute;
 use App\Models\{Sale, Station, User};
 
-class Route extends Model
+class Sale extends Model
 {
     use SoftDeletes, SaleAttribute;
     
