@@ -23,6 +23,17 @@ Route::get('/', function(){
    return redirect()->route('login');
 });
 
+// API
+Route::group([
+        'prefix' => "api/"
+    ], function (){
+        Route::get('get/users', 'ApiController@users');
+        Route::get('get/routes', 'ApiController@routes');
+        Route::get('get/devices', 'ApiController@devices');
+        Route::get('get/vehicles', 'ApiController@vehicles');
+        Route::get('get/stations', 'ApiController@stations');
+    }
+);
 
 Route::group([
         'middleware' => 'auth',
