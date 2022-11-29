@@ -9,7 +9,7 @@ use DB;
 class ApiController extends Controller
 {
     public function users(Request $req){
-        $array = DB::table('users')->select($req->select);
+        $array = DB::table('users')->select($req->select ?? "*");
         $array = $array->where('deleted_at', null);
 
         // IF HAS SORT PARAMETER $ORDER
@@ -46,10 +46,12 @@ class ApiController extends Controller
         if($req->group){
             $array = $array->groupBy($req->group);
         }
+
+        echo json_encode($array);
     }
 
     public function routes(Request $req){
-        $array = DB::table('routes')->select($req->select);
+        $array = DB::table('routes')->select($req->select ?? "*");
         $array = $array->where('deleted_at', null);
 
         // IF HAS SORT PARAMETER $ORDER
@@ -86,10 +88,12 @@ class ApiController extends Controller
         if($req->group){
             $array = $array->groupBy($req->group);
         }
+
+        echo json_encode($array);
     }
 
     public function vehicles(Request $req){
-        $array = DB::table('vehicles')->select($req->select);
+        $array = DB::table('vehicles')->select($req->select ?? "*");
         $array = $array->where('deleted_at', null);
 
         // IF HAS SORT PARAMETER $ORDER
@@ -126,10 +130,12 @@ class ApiController extends Controller
         if($req->group){
             $array = $array->groupBy($req->group);
         }
+
+        echo json_encode($array);
     }
 
     public function devices(Request $req){
-        $array = DB::table('devices')->select($req->select);
+        $array = DB::table('devices')->select($req->select ?? "*");
         $array = $array->where('deleted_at', null);
 
         // IF HAS SORT PARAMETER $ORDER
@@ -166,10 +172,12 @@ class ApiController extends Controller
         if($req->group){
             $array = $array->groupBy($req->group);
         }
+
+        echo json_encode($array);
     }
 
     public function stations(Request $req){
-        $array = DB::table('stations')->select($req->select);
+        $array = DB::table('stations')->select($req->select ?? "*");
         $array = $array->where('deleted_at', null);
 
         // IF HAS SORT PARAMETER $ORDER
@@ -206,5 +214,7 @@ class ApiController extends Controller
         if($req->group){
             $array = $array->groupBy($req->group);
         }
+
+        echo json_encode($array);
     }
 }
