@@ -77,6 +77,10 @@
 	padding: 0px 0px 0px 0px !important;
 }
 
+.brand-image{
+	float: none !important;
+}
+
 /*#table_length{
 	float: left;
 }
