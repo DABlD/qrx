@@ -246,6 +246,12 @@ class DatatableController extends Controller
     public function sale(Request $req){
         $array = Sale::select($req->select);
 
+        $from = now()->parse($req->from)->startOfDay()->toDateTimeString();
+        $to = now()->parse($req->to)->endOfDay()->toDateTimeString();
+
+        $array = $array->whereBetween('created_at', [$from, $to]);
+        $array = $array->where('status', 'like', $req->status);
+
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
             $array = $array->orderBy($req->order[0], $req->order[1]);
