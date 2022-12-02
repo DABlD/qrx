@@ -51,6 +51,8 @@
 @push('styles')
 	<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/datatables.bundle.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/flatpickr.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
 	{{-- <link rel="stylesheet" href="{{ asset('css/datatables.bootstrap4.min.css') }}"> --}}
 	{{-- <link rel="stylesheet" href="{{ asset('css/datatables-jquery.min.css') }}"> --}}
 @endpush
@@ -58,18 +60,27 @@
 @push('scripts')
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
 	<script src="{{ asset('js/datatables.bundle.min.js') }}"></script>
+	<script src="{{ asset('js/flatpickr.min.js') }}"></script>
+	<script src="{{ asset('js/select2.min.js') }}"></script>
 	{{-- <script src="{{ asset('js/datatables.bootstrap4.min.js') }}"></script> --}}
 	{{-- <script src="{{ asset('js/datatables-jquery.min.js') }}"></script> --}}
 	<script>
+		let from = moment().subtract(6, 'days').format(dateFormat);
+		let to = moment().format(dateFormat);
+		let status = "%%";
+
 		$(document).ready(()=> {
 			var table = $('#table').DataTable({
 				ajax: {
 					url: "{{ route('datatable.sale') }}",
                 	dataType: "json",
                 	dataSrc: "",
-					data: {
-						select: "*",
-						load: ['origin', 'destination', 'vehicle']
+					data: f => {
+						f.select = ["*"];
+						f.load = ['origin', 'destination', 'vehicle'];
+						f.from = from;
+						f.to = to;
+						f.status = status;
 					}
 				},
 				columns: [
@@ -108,7 +119,6 @@
 					{
 						data: 'updated_at',
 						render: (date, a, sale) => {
-							console.log(sale);
 							return date ? moment(date).format(dateTimeFormat2) : "---";
 						}
 					},
@@ -117,6 +127,37 @@
 				// drawCallback: function(){
 				// 	init();
 				// }
+			});
+
+			$('#from').flatpickr({
+                altInput: true,
+                altFormat: 'F j, Y',
+                dateFormat: 'Y-m-d',
+                defaultDate: from
+			});
+
+			$('#to').flatpickr({
+                altInput: true,
+                altFormat: 'F j, Y',
+                dateFormat: 'Y-m-d',
+                defaultDate: to
+			});
+
+			$('#status').select2();
+
+			$('#from').on('change', e => {
+				from = e.target.value;
+				reload();
+			});
+
+			$('#to').on('change', e => {
+				to = e.target.value;
+				reload();
+			});
+
+			$('#status').on('change', e => {
+				status = e.target.value;
+				reload();
 			});
 		});
 
