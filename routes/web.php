@@ -157,6 +157,25 @@ Route::group([
             }
         );
 
+        // SALE ROUTES
+        $cname = "sale";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("/", ucfirst($cname) . "Controller@index")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fa-solid fa-dollar-sign")
+                    ->defaults("name", ucfirst($cname) . "s")
+                    ->defaults("roles", array("Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+            }
+        );
+
         // THEME ROUTES
         $cname = "theme";
         Route::group([
@@ -180,6 +199,7 @@ Route::group([
                 Route::get("station", ucfirst($cname) . "Controller@station")->name('station');
                 Route::get("device", ucfirst($cname) . "Controller@device")->name('device');
                 Route::get("vehicle", ucfirst($cname) . "Controller@vehicle")->name('vehicle');
+                Route::get("sale", ucfirst($cname) . "Controller@sale")->name('sale');
             }
         );
     }
