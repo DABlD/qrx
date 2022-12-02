@@ -61,6 +61,7 @@ class SaleController extends Controller
         $data->vehicle_id = $req->vehicle_id;
         $data->user_id = $req->user_id;
         $data->ticket = $req->ticket;
+        $data->ticket_no = $req->ticket_no;
         $data->amount = $req->amount;
         $data->status = $req->status;
         $data->embarked_date = $req->embarked_date;

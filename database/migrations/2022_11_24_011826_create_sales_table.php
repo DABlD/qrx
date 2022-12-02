@@ -16,15 +16,16 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
 
+            $table->json('user');
             $table->unsignedInteger('origin_id');
             $table->unsignedInteger('destination_id');
             $table->unsignedInteger('vehicle_id');
-            $table->unsignedInteger('user_id');
 
             $table->string('ticket');
+            $table->unsignedInteger('ticket_no');
             $table->float('amount', 8, 2);
-            $table->string('status');
-            $table->date('embarked_date');
+            $table->string('status')->default('Ticket Generated');
+            $table->date('embarked_date')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

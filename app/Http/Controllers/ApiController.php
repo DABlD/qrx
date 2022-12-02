@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
+
 use Illuminate\Http\Request;
 use App\Models\{Device, Route, Station, User, Vehicle, Sale};
 use DB;
@@ -261,16 +263,27 @@ class ApiController extends Controller
     }
 
     public function createSale(Request $req){
+        $user = Http::get('https://qr-transit.onehealthnetwork.com.ph/api/v1/users/' . $req->user_id);
+        $user = json_decode($user)->data;
+
+        $ticket = substr($req->device_id, -8);
+        $ticket_no = Sale::where('ticket', $ticket)->where('created_at', 'like', now()->format('Y-m-d') . "%")->count() + 1;
+
         $data = new Sale();
         $data->origin_id = $req->origin_id;
         $data->destination_id = $req->destination_id;
         $data->vehicle_id = $req->vehicle_id;
-        $data->user_id = $req->user_id;
-        $data->ticket = $req->ticket;
+        $data->user = json_encode($user);
+        $data->ticket = $ticket;
+        $data->ticket_no = $ticket_no;
         $data->amount = $req->amount;
-        $data->status = $req->status;
-        $data->embarked_date = $req->embarked_date;
 
-        echo $data->save();
+        if($data->save()){
+            $data->user = json_decode($data->user);
+            return $data;
+        }
+        else{
+            return "Error";
+        }
     }
 }

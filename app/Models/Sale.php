@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\SaleAttribute;
-use App\Models\{Sale, Station, User};
+use App\Models\{Sale, Station};
 
 class Sale extends Model
 {
     use SoftDeletes, SaleAttribute;
     
     protected $fillable = [
-        'origin_id','destination_id','vehicle_id','user_id','ticket','amount','status','embarked_date',
+        'origin_id','destination_id','vehicle_id','user','ticket','amount','status','embarked_date', 'ticket_no'
     ];
 
     protected $dates = [
@@ -26,10 +26,6 @@ class Sale extends Model
 
     public function destination(){
         return $this->hasOne(Station::class, 'id', 'destination_id');
-    }
-
-    public function user(){
-        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 
     public function vehicle(){
