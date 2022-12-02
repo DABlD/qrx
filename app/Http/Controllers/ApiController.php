@@ -47,7 +47,7 @@ class ApiController extends Controller
             $array = $array->groupBy($req->group);
         }
 
-        echo json_encode($array);
+        return $array;
     }
 
     public function routes(Request $req){
@@ -89,7 +89,7 @@ class ApiController extends Controller
             $array = $array->groupBy($req->group);
         }
 
-        echo json_encode($array);
+        return $array;
     }
 
     public function vehicles(Request $req){
@@ -131,7 +131,7 @@ class ApiController extends Controller
             $array = $array->groupBy($req->group);
         }
 
-        echo json_encode($array);
+        return $array;
     }
 
     public function devices(Request $req){
@@ -173,7 +173,7 @@ class ApiController extends Controller
             $array = $array->groupBy($req->group);
         }
 
-        echo json_encode($array);
+        return $array;
     }
 
     public function stations(Request $req){
@@ -215,7 +215,7 @@ class ApiController extends Controller
             $array = $array->groupBy($req->group);
         }
 
-        echo json_encode($array);
+        return $array;
     }
 
     public function sales(Request $req){
@@ -257,7 +257,7 @@ class ApiController extends Controller
             $array = $array->groupBy($req->group);
         }
 
-        echo json_encode($array);
+        return $array;
     }
 
     public function createSale(Request $req){

@@ -27,6 +27,7 @@ class CreateSalesTable extends Migration
             $table->date('embarked_date');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
