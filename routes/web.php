@@ -196,6 +196,17 @@ Route::group([
             }
         );
 
+        // EXPORT ROUTES
+        $cname = "export";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("sales/", ucfirst($cname) . "Controller@sales")->name('sales');
+                Route::get("manifest/", ucfirst($cname) . "Controller@manifest")->name('manifest');
+            }
+        );
+
         // DATATABLES
         $cname = "datatable";
         Route::group([

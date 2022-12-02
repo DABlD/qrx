@@ -85,7 +85,7 @@ class SaleController extends Controller
 
     public function manifest(){
         return $this->_view('manifest', [
-            'title' => ucfirst($this->table)
+            'title' => "Manifest"
         ]);
     }
 

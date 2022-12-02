@@ -90,5 +90,16 @@
 				// }
 			});
 		});
+
+		function exportToExcel(){
+			let data = {
+			    // from: from,
+			    // to: to,
+			    // fby: fby,
+			    // type: type
+			};
+
+			window.open("{{ route('export.sales') }}?" + $.param(data), "_blank");
+		}
 	</script>
 @endpush
