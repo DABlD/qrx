@@ -13,6 +13,12 @@ class ExportController extends Controller
     public function sales(Request $req){
         $array = Sale::select("*");
 
+        $from = now()->parse($req->from)->startOfDay()->toDateTimeString();
+        $to = now()->parse($req->to)->endOfDay()->toDateTimeString();
+
+        $array = $array->whereBetween('created_at', [$from, $to]);
+        $array = $array->where('status', 'like', $req->status);
+
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
             $array = $array->orderBy($req->order[0], $req->order[1]);
@@ -51,6 +57,12 @@ class ExportController extends Controller
 
     public function manifest(Request $req){
         $array = Sale::select("*");
+
+        $from = now()->parse($req->from)->startOfDay()->toDateTimeString();
+        $to = now()->parse($req->to)->endOfDay()->toDateTimeString();
+
+        $array = $array->whereBetween('created_at', [$from, $to]);
+        $array = $array->where('status', 'like', $req->status);
 
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){

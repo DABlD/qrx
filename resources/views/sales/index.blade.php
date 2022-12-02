@@ -135,10 +135,9 @@
 
 		function exportToExcel(){
 			let data = {
-			    // from: from,
-			    // to: to,
-			    // fby: fby,
-			    // type: type
+			    from: from,
+			    to: to,
+			    status: status,
 			};
 
 			window.open("{{ route('export.sales') }}?" + $.param(data), "_blank");
