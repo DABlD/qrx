@@ -32,4 +32,8 @@ trait UserAttribute{
 
 		return $action;
 	}
+
+	public function getFullNameAttribute(){
+		return auth()->user()->fname . ' ' . auth()->user()->lname;
+	}
 }

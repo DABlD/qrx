@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\{Sales, Manifest};
-use App\Models\{Sale};
+use App\Models\{Sale, AuditTrail};
 
 class ExportController extends Controller
 {
@@ -52,6 +52,7 @@ class ExportController extends Controller
             $array = $array->groupBy($req->group);
         }
 
+        $this->log(auth()->user()->fullname, "Export", "Sales");
         return Excel::download(new Sales($array), 'Sales - ' . now()->toDateTimeString() . '.xlsx');
     }
 
@@ -97,6 +98,16 @@ class ExportController extends Controller
             $array = $array->groupBy($req->group);
         }
 
+        $this->log(auth()->user()->fullname, "Export", "Manifest");
+
         return Excel::download(new Manifest($array), 'Manifest - ' . now()->toDateTimeString() . '.xlsx');
+    }
+
+    public function log($user, $action, $description){
+        $data = new AuditTrail();
+        $data->uid = $user;
+        $data->action = $action;
+        $data->description = $description;
+        $data->save();
     }
 }

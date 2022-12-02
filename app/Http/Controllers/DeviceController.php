@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Device};
+use App\Models\{Device, AuditTrail};
 use DB;
 
 class DeviceController extends Controller
@@ -61,15 +61,18 @@ class DeviceController extends Controller
         $data->device_id = $req->device_id;
         $data->description = $req->description;
 
-        echo $data->save();
+        $data->save();
+        $this->log(auth()->user()->fullname, 'Create Device', "Device ID: " . $data->id);
     }
 
     public function update(Request $req){
-        echo DB::table($this->table)->where('id', $req->id)->update($req->except(['id', '_token']));
+        $update = DB::table($this->table)->where('id', $req->id)->update($req->except(['id', '_token']));
+        $this->log(auth()->user()->fullname, 'Updated Device', "ID: $req->id");
     }
 
     public function delete(Request $req){
         Device::find($req->id)->delete();
+        $this->log(auth()->user()->fullname, 'Delete Device', "ID: $req->id");
     }
 
     public function index(){
@@ -80,5 +83,13 @@ class DeviceController extends Controller
 
     private function _view($view, $data = array()){
         return view("$this->table." . $view, $data);
+    }
+
+    public function log($user, $action, $description){
+        $data = new AuditTrail();
+        $data->uid = $user;
+        $data->action = $action;
+        $data->description = $description;
+        $data->save();
     }
 }

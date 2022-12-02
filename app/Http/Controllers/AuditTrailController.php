@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Route, AuditTrail};
+use App\Models\{AuditTrail};
 use DB;
 
-class RouteController extends Controller
+class AuditTrailController extends Controller
 {
     public function __construct(){
-        $this->table = "routes";
+        $this->table = "audit_trails";
     }
 
     public function get(Request $req){
@@ -55,26 +55,20 @@ class RouteController extends Controller
     }
 
     public function store(Request $req){
-        $data = new Route();
-        $data->from = $req->from;
-        $data->to = $req->to;
-        $data->direction = $req->direction;
-        $data->stations = json_encode([]);
-        $data->base_fare = $req->base_fare;
-        $data->per_km_fare = $req->per_km_fare;
+        $data = new AuditTrail();
+        $data->uid = $req->uid;
+        $data->action = $req->action;
+        $data->description = $req->description;
 
-        $data->save();
-        $this->log(auth()->user()->fullname, 'Create Route', "Route ID: " . $data->id);
+        echo $data->save();
     }
 
     public function update(Request $req){
-        $update = DB::table($this->table)->where('id', $req->id)->update($req->except(['id', '_token']));
-        $this->log(auth()->user()->fullname, 'Updated Route', "ID: $req->id");
+        echo DB::table($this->table)->where('id', $req->id)->update($req->except(['id', '_token']));
     }
 
     public function delete(Request $req){
-        Route::find($req->id)->delete();
-        $this->log(auth()->user()->fullname, 'Delete Route', "ID: $req->id");
+        AuditTrail::find($req->id)->delete();
     }
 
     public function index(){
@@ -85,13 +79,5 @@ class RouteController extends Controller
 
     private function _view($view, $data = array()){
         return view("$this->table." . $view, $data);
-    }
-
-    public function log($user, $action, $description){
-        $data = new AuditTrail();
-        $data->uid = $user;
-        $data->action = $action;
-        $data->description = $description;
-        $data->save();
     }
 }

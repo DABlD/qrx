@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\{User, AuditTrail};
 use DB;
 use Auth;
 
@@ -65,21 +65,25 @@ class UserController extends Controller
         $data->contact = $req->contact;
         $data->password = $req->password;
 
-        echo $data->save();
+        $data->save();
+        $this->log(auth()->user()->fullname, 'Create User', "Device ID: " . $data->id);
     }
 
     public function update(Request $req){
-        echo DB::table('users')->where('id', $req->id)->update($req->except(['id', '_token']));
+        $update = DB::table('users')->where('id', $req->id)->update($req->except(['id', '_token']));
+        $this->log(auth()->user()->fullname, 'Updated User', "ID: $req->id");
     }
 
     public function updatePassword(Request $req){
         $user = User::find(auth()->user()->id);
         $user->password = $req->password;
+        $this->log(auth()->user()->fullname, 'Updated Password', "---");
         $user->save();
     }
 
     public function delete(Request $req){
         User::find($req->id)->delete();
+        $this->log(auth()->user()->fullname, 'Delete User', "ID: $req->id");
     }
 
     public function index(){
@@ -90,5 +94,13 @@ class UserController extends Controller
 
     private function _view($view, $data = array()){
         return view('users.' . $view, $data);
+    }
+
+    public function log($user, $action, $description){
+        $data = new AuditTrail();
+        $data->uid = $user;
+        $data->action = $action;
+        $data->description = $description;
+        $data->save();
     }
 }

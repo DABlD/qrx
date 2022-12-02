@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 
 use Illuminate\Http\Request;
-use App\Models\{Device, Route, Station, User, Vehicle, Sale};
+use App\Models\{Device, Route, Station, User, Vehicle, Sale, AuditTrail};
 use DB;
 
 class ApiController extends Controller
@@ -290,6 +290,8 @@ class ApiController extends Controller
             // CHECK IF SAVE SALE SUCCESFFUL
             if($data->save()){
                 $data->user = json_decode($data->user);
+                $this->log($user->name, "Transact", "Sales ID: " . $data->id);
+
                 return $data;
             }
             else{
@@ -310,6 +312,8 @@ class ApiController extends Controller
         }
 
         if($sale->save()){
+            $sale->user = json_decode($sale->user);
+            $this->log($sale->user->name, "Updated Transaction", "ID #" . $sale->id . " status updated to " . $req->status);
             return $sale;
         }
         else{
@@ -352,5 +356,13 @@ class ApiController extends Controller
                     `
                 ]
             ]);
+    }
+
+    public function log($user, $action, $description){
+        $data = new AuditTrail();
+        $data->uid = $user;
+        $data->action = $action;
+        $data->description = $description;
+        $data->save();
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Station;
+use App\Models\{Station, AuditTrail};
 use DB;
 
 class StationController extends Controller
@@ -61,15 +61,18 @@ class StationController extends Controller
         $data->label = $req->label;
         $data->kilometer = $req->kilometer;
 
-        echo $data->save();
+        $data->save();
+        $this->log(auth()->user()->fullname, 'Create Station', "Station ID: " . $data->id);
     }
 
     public function update(Request $req){
-        echo DB::table($this->table)->where('id', $req->id)->update($req->except(['id', '_token']));
+        $update = DB::table($this->table)->where('id', $req->id)->update($req->except(['id', '_token']));
+        $this->log(auth()->user()->fullname, 'Updated Station', "ID: $req->id");
     }
 
     public function delete(Request $req){
         Station::find($req->id)->delete();
+        $this->log(auth()->user()->fullname, 'Delete Station', "ID: $req->id");
     }
 
     public function index(){
@@ -80,5 +83,13 @@ class StationController extends Controller
 
     private function _view($view, $data = array()){
         return view("$this->table." . $view, $data);
+    }
+
+    public function log($user, $action, $description){
+        $data = new AuditTrail();
+        $data->uid = $user;
+        $data->action = $action;
+        $data->description = $description;
+        $data->save();
     }
 }

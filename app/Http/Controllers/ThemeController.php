@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Theme;
+use App\Models\{Theme, AuditTrail};
 use DB;
 use Image;
 
@@ -98,6 +98,9 @@ class ThemeController extends Controller
             $theme->save();
         }
 
+
+
+        $this->log(auth()->user()->fullname, 'Updated Theme', "---");
         // $query = DB::table($this->table);
 
         // if($req->where){
@@ -106,5 +109,13 @@ class ThemeController extends Controller
         // else{
         //     $query = $query->where('id', $req->id)->update($req->except(['id', '_token']));
         // }
+    }
+
+    public function log($user, $action, $description){
+        $data = new AuditTrail();
+        $data->uid = $user;
+        $data->action = $action;
+        $data->description = $description;
+        $data->save();
     }
 }
