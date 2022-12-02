@@ -178,7 +178,7 @@ Route::group([
                     ->defaults("name", "Manifest")
                     ->defaults("roles", array("Admin", "Coast Guard"))
                     // ->defaults("group", "Settings")
-                    ->name($cname)
+                    ->name("manifest")
                     ->defaults("href", "sale/manifest");
 
                 Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
