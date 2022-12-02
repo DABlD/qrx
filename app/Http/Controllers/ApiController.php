@@ -278,12 +278,26 @@ class ApiController extends Controller
         $data->ticket_no = $ticket_no;
         $data->amount = $req->amount;
 
-        if($data->save()){
-            $data->user = json_decode($data->user);
-            return $data;
+        // DEDUCT FIRST
+        $deduction = $this->deductUser($user, $req->amount);
+
+        // CHECK IF SUCCESSFULLY DETECTED
+        if($deduction->successful()){
+
+            // SEND SMS NOTIF
+            $sms = $this->sendSms($data, $user);
+
+            // CHECK IF SAVE SALE SUCCESFFUL
+            if($data->save()){
+                $data->user = json_decode($data->user);
+                return $data;
+            }
+            else{
+                return "Failed To Create Transaction";
+            }
         }
         else{
-            return "Error";
+            return "Failed to Deduct from User";
         }
     }
 
@@ -299,7 +313,44 @@ class ApiController extends Controller
             return $sale;
         }
         else{
-            return "Error";
+            return "Failed To Update Status";
         }
+    }
+
+    public function deductUser($user, $amount){
+        $response = Http::withHeaders([
+            "X-API-KEY" => env("LEDGER_APIKEY")
+        ])->post('https://qr-transit.onehealthnetwork.com.ph/api/v1/ledger-entry', [
+            "remark" => "Loading",
+            "type" => "Debit",
+            "amount" => $amount,
+            "mobile_number" => $user->mobile_number
+        ]);
+
+        return $response;
+    }
+
+    public function sendSms($sale, $user){
+        $from = Station::find($sale->origin_id)->name;
+        $to = Station::find($sale->destination_id)->name;
+        $now = now()->format('Y-m-d h:i A');
+
+        $response = Http::withBasicAuth(env("SMS_USERNAME"),env("SMS_PASSWORD"))
+            ->post('http://13.228.103.95:8063/core/sender', [
+                "accesskey" => env('SMS_ACCESSKEY'),
+                "service" => "mt",
+                "data" => [
+                    // "to" => $user->mobile_number,
+                    "to" => "639154590172",
+                    "message" => `
+                        You have successfully paid the trip. Here is your boarding pass information: \n
+                        Ticket No: $sale->ticket_no\n
+                        Amount: $sale->amount\n
+                        From: $from\n
+                        To: $to\n
+                        Date: $now
+                    `
+                ]
+            ]);
     }
 }
