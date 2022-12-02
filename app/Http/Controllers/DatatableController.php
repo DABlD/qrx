@@ -269,6 +269,10 @@ class DatatableController extends Controller
 
         $array = $array->get();
 
+        foreach($array as $sale){
+            $sale->user = json_decode($sale->user);
+        }
+
         // FOR ACTIONS
         foreach($array as $item){
             $item->actions = $item->actions;

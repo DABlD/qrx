@@ -83,6 +83,12 @@ class SaleController extends Controller
         ]);
     }
 
+    public function manifest(){
+        return $this->_view('manifest', [
+            'title' => ucfirst($this->table)
+        ]);
+    }
+
     private function _view($view, $data = array()){
         return view("$this->table." . $view, $data);
     }

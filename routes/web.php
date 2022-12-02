@@ -172,6 +172,15 @@ Route::group([
                     ->name($cname)
                     ->defaults("href", "/$cname");
 
+                Route::get("/manifest", ucfirst($cname) . "Controller@manifest")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fa-light fa-folder-open")
+                    ->defaults("name", "Manifest")
+                    ->defaults("roles", array("Admin", "Coast Guard"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "sale/manifest");
+
                 Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
             }
         );
