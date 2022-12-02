@@ -286,4 +286,20 @@ class ApiController extends Controller
             return "Error";
         }
     }
+
+    public function updateSale(Request $req){
+        $sale = Sale::where('id', $req->id)->first();
+        $sale->status = $req->status;
+
+        if($req->status == "Embarked"){
+            $sale->embarked_date = now()->toDateTimeString();
+        }
+
+        if($sale->save()){
+            return $sale;
+        }
+        else{
+            return "Error";
+        }
+    }
 }

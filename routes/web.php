@@ -34,6 +34,7 @@ Route::group([
         Route::get('get/stations', 'ApiController@stations');
         Route::get('get/sales', 'ApiController@sales');
         Route::put('create/sale', 'ApiController@createSale');
+        Route::patch('update/sale', 'ApiController@updateSale');
     }
 );
 
