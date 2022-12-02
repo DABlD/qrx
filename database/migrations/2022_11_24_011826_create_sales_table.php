@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -25,7 +26,7 @@ class CreateSalesTable extends Migration
             $table->unsignedInteger('ticket_no');
             $table->float('amount', 8, 2);
             $table->string('status')->default('Ticket Generated');
-            $table->date('embarked_date')->nullable();
+            $table->datetime('embarked_date')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
