@@ -49,6 +49,53 @@
 	<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
 	{{-- <link rel="stylesheet" href="{{ asset('css/datatables.bootstrap4.min.css') }}"> --}}
 	{{-- <link rel="stylesheet" href="{{ asset('css/datatables-jquery.min.css') }}"> --}}
+
+	<style>
+		.ss{
+			background-color: gray;
+		}
+
+		.m-row{
+			transform: rotate(-50deg);
+			word-break: initial;
+			padding-left: 10px;
+			/*text-align: left;*/
+		}
+
+		.matrix td{
+    		white-space: nowrap;
+    		height: 30px;
+    		/*padding: 5px 5px 5px 5px;*/
+		}
+
+		.matrix td:not(:nth-child(1)){
+			width: 50px;
+			max-width: 50px;
+		}
+
+		.matrix td:nth-child(1){
+			/*max-width: none;*/
+			margin-right: 10px;
+			text-align: left;
+		}
+
+		.matrix tr:nth-child(2){
+			height: 50px;
+		}
+
+		.wb{
+			text-align: left;
+			height: 150px !important;
+		}
+
+		.matrix{
+			text-align: center;
+		}
+
+		.mc{
+			border: 1px solid black;
+		}
+	</style>
 @endpush
 
 @push('scripts')
@@ -476,6 +523,87 @@
 					stations(rid);
 				}
 			});
+		}
+
+		function matrix(id){
+			$.ajax({
+				url: "{{ route('route.get') }}",
+				data: {
+					select: "*",
+					where: ['id', id],
+					load: ['stations']
+				},
+				success: route => {
+					route = JSON.parse(route)[0];
+					let stations = route.stations;
+
+					let matrix = "";
+
+					// 1ST ROW
+					matrix += `
+						<tr>
+							${addCell("")}
+							${addCell("Destination", stations.length ? stations.length : 1, "wb bold")}
+						</tr>
+					`;
+
+					// 2ND ROW
+					matrix += `
+						<tr>
+							${addCell("Origin", 1, "bold")}
+					`;
+
+					stations.forEach(station => {
+						matrix += addCell(station.name, 1, "m-row");
+					});
+
+					matrix += "</tr>";
+
+					// MAIN BODY
+					stations.forEach(station => {
+						matrix += `
+							<tr>
+							${addCell(station.name + "‎ ‎ ‎ ‎ ")}
+						`;
+
+						stations.forEach(station2 => {
+							if(station.id == station2.id){
+								matrix += `${addCell("", 1, "ss")}`; //SAME STATION
+							}
+							else{
+								let distance = station2.kilometer - station.kilometer;
+								    distance = Math.abs(distance) - 1;
+
+								let cost = route.base_fare + (Math.ceil(distance * route.per_km_fare));
+
+								matrix += `${addCell(cost, 1, "mc")}`;
+							}
+						});
+					});
+
+					showMatrix(matrix, stations);
+				}
+			})
+		}
+
+		function addCell(text, cols = 1, _class = ""){
+			return `<td colspan="${cols}" class="${_class}">${text}</td>`;
+		}
+
+		function showMatrix(matrix, stations){
+			Swal.fire({
+				title: "Fare Matrix",
+				width: `${(stations.length * 80) + 200}px`,
+				html: `
+					<center>
+						<table class="matrix">
+							<tbody>
+								${matrix}
+							</tbody>
+						</table>
+					</center>
+				`,
+			})
 		}
 	</script>
 @endpush
