@@ -292,14 +292,23 @@ class ApiController extends Controller
                 $data->user = json_decode($data->user);
                 $this->log($user->name, "Transact", "Sales ID: " . $data->id);
 
-                return $data;
+                return [
+                    "status" => "Success",
+                    "data" => $data
+                ];
             }
             else{
-                return "Failed To Create Transaction";
+                return [
+                    "status" => "Error",
+                    "error" => "Failed To Create Transaction"
+                ];
             }
         }
         else{
-            return "Failed to Deduct from User";
+            return [
+                "status" => "Error",
+                "error" => "Failed to Deduct from User"
+            ];
         }
     }
 
@@ -317,7 +326,10 @@ class ApiController extends Controller
             return $sale;
         }
         else{
-            return "Failed To Update Status";
+            return [
+                "status" => "Error",
+                "error" => "Failed To Update Status"
+            ];
         }
     }
 
