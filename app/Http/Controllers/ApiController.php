@@ -259,6 +259,11 @@ class ApiController extends Controller
             $array = $array->groupBy($req->group);
         }
 
+        // decode user
+        foreach($array as $sale){
+            $sale->user = json_decode($sale->user);
+        }
+
         return $array;
     }
 
