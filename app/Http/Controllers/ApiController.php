@@ -272,7 +272,6 @@ class ApiController extends Controller
         $data = new Sale();
         $data->origin_id = $req->origin_id;
         $data->destination_id = $req->destination_id;
-        $data->vehicle_id = $req->vehicle_id;
         $data->user = json_encode($user);
         $data->ticket = $ticket;
         $data->ticket_no = $ticket_no;
@@ -314,6 +313,7 @@ class ApiController extends Controller
 
     public function updateSale(Request $req){
         $sale = Sale::where('id', $req->id)->first();
+        $sale->vehicle_id = $req->vehicle_id;
         $sale->status = $req->status;
 
         if($req->status == "Embarked"){
