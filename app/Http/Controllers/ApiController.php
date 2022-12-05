@@ -294,7 +294,7 @@ class ApiController extends Controller
                 // IF HAS LOAD
                 if(isset($req->load)){
                     foreach($req->load as $table){
-                        $array->load($table);
+                        $data->load($table);
                     }
                 }
 
@@ -337,10 +337,10 @@ class ApiController extends Controller
             // IF HAS LOAD
             if(isset($req->load)){
                 foreach($req->load as $table){
-                    $array->load($table);
+                    $sale->load($table);
                 }
             }
-            
+
             $this->log($sale->user->name, "Updated Transaction", "ID #" . $sale->id . " status updated to " . $req->status);
             return $sale;
         }
