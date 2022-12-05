@@ -271,7 +271,7 @@ class ApiController extends Controller
         $user = Http::get('https://qr-transit.onehealthnetwork.com.ph/api/v1/users/' . $req->user_id);
         $user = json_decode($user)->data;
 
-        $ticket = substr($req->device_id, -8);
+        $ticket = substr($req->device_id, -5);
         $ticket_no = Sale::where('ticket', $ticket)->where('created_at', 'like', now()->format('Y-m-d') . "%")->count() + 1;
 
         $data = new Sale();
