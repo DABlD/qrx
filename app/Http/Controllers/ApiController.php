@@ -278,7 +278,7 @@ class ApiController extends Controller
         $data->origin_id = $req->origin_id;
         $data->destination_id = $req->destination_id;
         $data->user = json_encode($user);
-        $data->ticket = $ticket;
+        $data->ticket = $ticket . now()->format('ymd');
         $data->ticket_no = $ticket_no;
         $data->amount = $req->amount;
 
