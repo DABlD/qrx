@@ -291,6 +291,13 @@ class ApiController extends Controller
                 $data->user = json_decode($data->user);
                 $this->log($user->name, "Transact", "Sales ID: " . $data->id);
 
+                // IF HAS LOAD
+                if(isset($req->load)){
+                    foreach($req->load as $table){
+                        $array->load($table);
+                    }
+                }
+
                 return [
                     "status" => "Success",
                     "data" => $data
@@ -317,7 +324,7 @@ class ApiController extends Controller
         if(isset($req->vehicle_id)){
             $sale->vehicle_id = $req->vehicle_id;
         }
-        
+
         $sale->status = $req->status;
 
         if($req->status == "Embarked"){
@@ -326,6 +333,14 @@ class ApiController extends Controller
 
         if($sale->save()){
             $sale->user = json_decode($sale->user);
+
+            // IF HAS LOAD
+            if(isset($req->load)){
+                foreach($req->load as $table){
+                    $array->load($table);
+                }
+            }
+            
             $this->log($sale->user->name, "Updated Transaction", "ID #" . $sale->id . " status updated to " . $req->status);
             return $sale;
         }
