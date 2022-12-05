@@ -313,7 +313,11 @@ class ApiController extends Controller
 
     public function updateSale(Request $req){
         $sale = Sale::where('id', $req->id)->first();
-        $sale->vehicle_id = $req->vehicle_id;
+
+        if(isset($req->vehicle_id)){
+            $sale->vehicle_id = $req->vehicle_id;
+        }
+        
         $sale->status = $req->status;
 
         if($req->status == "Embarked"){
