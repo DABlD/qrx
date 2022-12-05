@@ -27,12 +27,12 @@ Route::get('/', function(){
 Route::group([
         'prefix' => "api/"
     ], function (){
-        Route::get('get/users', 'ApiController@users');
-        Route::get('get/routes', 'ApiController@routes');
-        Route::get('get/devices', 'ApiController@devices');
-        Route::get('get/vehicles', 'ApiController@vehicles');
-        Route::get('get/stations', 'ApiController@stations');
-        Route::get('get/sales', 'ApiController@sales');
+        Route::post('get/users', 'ApiController@users');
+        Route::post('get/routes', 'ApiController@routes');
+        Route::post('get/devices', 'ApiController@devices');
+        Route::post('get/vehicles', 'ApiController@vehicles');
+        Route::post('get/stations', 'ApiController@stations');
+        Route::post('get/sales', 'ApiController@sales');
         Route::put('create/sale', 'ApiController@createSale');
         Route::patch('update/sale', 'ApiController@updateSale');
     }
