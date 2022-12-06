@@ -15,7 +15,7 @@ class StationsAddLatLng extends Migration
     {
         Schema::table('stations', function (Blueprint $table) {
             $table->decimal('lat', 8, 6);
-            $table->float('lng', 9, 6);
+            $table->decimal('lng', 9, 6);
         });
     }
 
