@@ -108,6 +108,7 @@
 					    <div class="col-md-9 iInput">
 					        <select name="role" class="form-control">
 					        	<option value="Admin">Admin</option>
+					        	<option value="Company">Company</option>
 					        	<option value="Coast Guard">Coast Guard</option>
 					        </select>
 					    </div>
@@ -210,7 +211,8 @@
 					    <div class="col-md-9 iInput">
 					        <select name="role" class="form-control">
 					        	<option value="Admin" ${user.role == "Admin" ? "Selected" : ""}>Admin</option>
-					        	<option value="Coast Guard" ${user.role == "Admin" ? "" : "Selected"}>Coast Guard</option>
+					        	<option value="Company" ${user.role == "Company" ? "Selected" : ""}>Company</option>
+					        	<option value="Coast Guard" ${user.role == "Coast Guard" ? "Selected" : ""}>Coast Guard</option>
 					        </select>
 					    </div>
 					</div>
