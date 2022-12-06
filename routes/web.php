@@ -185,6 +185,28 @@ Route::group([
             }
         );
 
+        // ADS ROUTES
+        $cname = "ad";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("/", ucfirst($cname) . "Controller@index")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fa-light fa-rectangle-ad")
+                    ->defaults("name", ucfirst($cname) . "s")
+                    ->defaults("roles", array("Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
+                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+            }
+        );
+
         // AUDIT TRAIL ROUTES
         $cname = "audit_trail";
         Route::group([
@@ -242,6 +264,7 @@ Route::group([
                 Route::get("device", ucfirst($cname) . "Controller@device")->name('device');
                 Route::get("vehicle", ucfirst($cname) . "Controller@vehicle")->name('vehicle');
                 Route::get("sale", ucfirst($cname) . "Controller@sale")->name('sale');
+                Route::get("ad", ucfirst($cname) . "Controller@ad")->name('ad');
                 
                 Route::get("audit_trails", ucfirst($cname) . "Controller@audit_trails")->name('audit_trails');
             }
