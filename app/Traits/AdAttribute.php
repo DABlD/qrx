@@ -9,6 +9,9 @@ trait AdAttribute{
 
 		$action = "";
 
+			$action .= 	"<a class='btn btn-info' data-toggle='tooltip' title='Assign' onClick='assign($id)'>" .
+					        "<i class='fas fa-laptop-mobile'> Assign</i>" .
+					    "</a>&nbsp;";
 			$action .= 	"<a class='btn btn-success' data-toggle='tooltip' title='View' onClick='view($id)'>" .
 					        "<i class='fas fa-search'></i>" .
 					    "</a>&nbsp;";

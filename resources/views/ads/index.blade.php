@@ -237,5 +237,166 @@
 				}
 			});
 		}
+
+		function assign(id){
+			Swal.fire({
+				html: `
+					<center>
+						<b><h3>Devices</h3></b>
+						<div class="float-right">
+						    <a class="btn btn-success btn-sm" data-toggle="tooltip" title="Assign A Device" onclick="assignADevice(${id})">
+						        <i class="fas fa-plus fa-2xl"></i>
+						    </a>
+						</div>
+					</center>
+
+
+					<br>
+					<br>
+
+					<table id="ad_devices" class="table">
+						<tbody>
+						</tbody>
+					</table>
+				`,
+				didOpen: () => {
+					$.ajax({
+						url: '{{ route('device.get') }}',
+						data: {
+							where: ['ad_id', id],
+							select: "*",
+						},
+						success: devices => {
+							devices = JSON.parse(devices);
+
+							let string = "";
+
+							console.log(devices);
+
+							if(devices.length){
+								devices.forEach(device => {
+									string += `
+										<tr>
+											<td>${device.device_id}</td>
+											<td>${device.description}</td>
+											<td>
+												<a class="btn btn-danger btn-sm" data-toggle="tooltip" title="Remove Device" onclick="removeDevice(${id}, ${device.id})">
+												    <i class="fas fa-trash"></i>
+												</a>
+											</td>
+										</tr>
+									`;
+								});
+							}
+							else{
+								string = `
+									<tr>
+										<td>
+											No Assigned Devices
+										</td>
+									</tr>
+								`;
+							}
+
+							$('#ad_devices tbody').append(string);
+						}
+					})
+				}
+			})
+		}
+
+		function assignADevice(id){
+			Swal.fire({
+				html: `
+					<div class="row iRow">
+					    <div class="col-md-3 iLabel">
+					        Device
+					    </div>
+					    <div class="col-md-9 iInput">
+					        <select name="device" id="device" class="form-control">
+					        	<option value="">Select Device</option>
+					        </select>
+					    </div>
+					</div>
+	                <br>
+				`,
+				didOpen: () => {
+					$.ajax({
+						url: '{{ route('device.get') }}',
+						data: {
+							select: "*",
+						},
+						success: devices => {
+							devices = JSON.parse(devices);
+
+							let deviceString = "";
+							devices.forEach(device => {
+								deviceString += `
+									<option value="${device.id}">${device.device_id} - ${device.description}</option>
+								`;
+							});
+
+							$('#device').append(deviceString);
+							$('#device').select2();
+						}
+					})
+				},
+				width: '800px',
+				confirmButtonText: 'Add',
+				showCancelButton: true,
+				cancelButtonColor: errorColor,
+				cancelButtonText: 'Cancel',
+				preConfirm: () => {
+				    swal.showLoading();
+				    return new Promise(resolve => {
+				    	let bool = true;
+
+			            if($('.swal2-container input:placeholder-shown').length){
+			                Swal.showValidationMessage('Fill all fields');
+			            }
+
+			            bool ? setTimeout(() => {resolve()}, 500) : "";
+				    });
+				},
+			}).then(result => {
+				if(result.value){
+					swal.showLoading();
+					$.ajax({
+						url: "{{ route('device.update') }}",
+						type: "POST",
+						data: {
+							id: $("[name='device']").val(),
+							ad_id: id,
+							_token: $('meta[name="csrf-token"]').attr('content')
+						},
+						success: () => {
+							ss("Success");
+							setTimeout(() => {
+								assign(id);
+							}, 800);
+						}
+					})
+				}
+			});
+		}
+
+		function removeDevice(id, did){
+			swal.showLoading();
+			$.ajax({
+				url: "{{ route('device.update') }}",
+				type: "POST",
+				data: {
+					id: did,
+					ad_id: null,
+					_token: $('meta[name="csrf-token"]').attr('content')
+				},
+				success: () => {
+					ss("Successfully Removed");
+					setTimeout(() => {
+						assign(id);
+					}, 800);
+				}
+			})
+		}
 	</script>
 @endpush
