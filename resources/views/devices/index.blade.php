@@ -270,6 +270,21 @@
 					        </select>
 					    </div>
 					</div>
+
+					<br>
+					<br>
+
+					<div class="row iRow">
+					    <div class="col-md-3 iLabel">
+					        Status
+					    </div>
+					    <div class="col-md-9 iInput">
+					        <select name="status" id="status" class="form-control">
+					        	<option value="Active" ${device.status == "Active" ? "selected" : ""}>Active</option>
+					        	<option value="Inactive" ${device.status == "Inactive" ? "selected" : ""}>Inactive</option>
+					        </select>
+					    </div>
+					</div>
 	                <br>
 				`,
 				didOpen: () => {
@@ -370,6 +385,7 @@
 							description: $("[name='description']").val(),
 							route_id: $("[name='route_id']").val(),
 							station_id: $("[name='station_id']").val(),
+							status: $("[name='status']").val(),
 						},
 						message: "Success"
 					},	() => {
