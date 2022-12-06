@@ -60,6 +60,8 @@ class StationController extends Controller
         $data->name = $req->name;
         $data->label = $req->label;
         $data->kilometer = $req->kilometer;
+        $data->lat = $req->lat;
+        $data->lng = $req->lng;
 
         $data->save();
         $this->log(auth()->user()->fullname, 'Create Station', "Station ID: " . $data->id);

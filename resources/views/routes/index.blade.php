@@ -319,6 +319,8 @@
 								<th>Name</th>
 								<th>Label</th>
 								<th>Kilometer</th>
+								<th>lat</th>
+								<th>lng</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
@@ -343,6 +345,8 @@
 							{data: 'name'},
 							{data: 'label'},
 							{data: 'kilometer'},
+							{data: 'lat'},
+							{data: 'lng'},
 							{data: 'actions'},
 						],
 		        		pageLength: 25,
@@ -359,6 +363,9 @@
 	                ${input("name", "Name", null, 3, 9)}
 	                ${input("label", "Label", null, 3, 9)}
 	                ${input("kilometer", "Kilometer", null, 3, 9, 'number')}
+	                <br>
+	                ${input("lat", "Latitude", null, 3, 9, 'number')}
+	                ${input("lng", "Longitude", null, 3, 9, 'number')}
 				`,
 				width: '800px',
 				confirmButtonText: 'Add',
@@ -407,6 +414,8 @@
 							name: $("[name='name']").val(),
 							label: $("[name='label']").val(),
 							kilometer: $("[name='kilometer']").val(),
+							lat: $("[name='lat']").val(),
+							lng: $("[name='lng']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
 						success: () => {
@@ -445,6 +454,10 @@
 	                ${input("name", "Name", station.name, 3, 9)}
 	                ${input("label", "Label", station.label, 3, 9)}
 	                ${input("kilometer", "Kilometer", station.kilometer, 3, 9, 'number')}
+
+	                <br>
+	                ${input("lat", "Latitude", station.lat, 3, 9, 'number')}
+	                ${input("lng", "Longitude", station.lng, 3, 9, 'number')}
 				`,
 				width: '800px',
 				confirmButtonText: 'Update',
@@ -491,6 +504,8 @@
 							name: $("[name='name']").val(),
 							label: $("[name='label']").val(),
 							kilometer: $("[name='kilometer']").val(),
+							lat: $("[name='lat']").val(),
+							lng: $("[name='lng']").val(),
 						},
 						message: "Success"
 					},	() => {

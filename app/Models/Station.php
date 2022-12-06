@@ -13,7 +13,7 @@ class Station extends Model
     use SoftDeletes, StationAttribute;
     
     protected $fillable = [
-        'name','label','kilometer',
+        'name','label','kilometer', 'lat', 'lng'
     ];
 
     protected $dates = [
