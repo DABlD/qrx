@@ -21,6 +21,6 @@ class Station extends Model
     ];
 
     public function route(){
-        return $this->belongsTo(Route::class);
+        return $this->belongsTo(Route::class, 'route_id', 'id');
     }
 }

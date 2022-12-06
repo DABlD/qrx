@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\DeviceAttribute;
-use App\Models\{Device, Route, Station};
+use App\Models\{Device, Route, Station, Ad};
 
 class Device extends Model
 {
@@ -21,10 +21,14 @@ class Device extends Model
     ];
 
     public function route(){
-        return $this->belongsTo(Route::class);
+        return $this->belongsTo(Route::class, 'route_id', 'id');
     }
 
     public function station(){
-        return $this->belongsTo(Station::class);
+        return $this->belongsTo(Station::class, 'station_id', 'id');
+    }
+
+    public function ad(){
+        return $this->belongsTo(Ad::class, 'ad_id', 'id');
     }
 }
