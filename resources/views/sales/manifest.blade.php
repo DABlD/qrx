@@ -102,7 +102,12 @@
 					{data: 'user.mobile_number'},
 					{data: 'origin.name'},
 					{data: 'destination.name'},
-					{data: 'vehicle.vehicle_id'},
+					{
+						data: 'status',
+						render: (status, x, sale) => {
+							return sale.vehicle ? sale.vehicle.vehicle_id : "-";
+						}
+					},
 					{data: 'status'},
 					{
 						data: 'created_at',
