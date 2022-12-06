@@ -24,6 +24,8 @@
                     				<th>Vehicle ID</th>
                     				<th>Type</th>
                     				<th>Passenger Limit</th>
+                    				<th>Driver</th>
+                    				<th>Conductor</th>
                     				<th>Actions</th>
                     			</tr>
                     		</thead>
@@ -70,6 +72,18 @@
 					{data: 'vehicle_id'},
 					{data: 'type'},
 					{data: 'passenger_limit'},
+					{
+						data: 'driver',
+						render: driver => {
+							return driver != null ? driver : "-";
+						}
+					},
+					{
+						data: 'conductor',
+						render: conductor => {
+							return conductor != null ? conductor : "-";
+						}
+					},
 					{data: 'actions'},
 				],
         		pageLength: 25,
@@ -96,6 +110,8 @@
 	                ${input("vehicle_id", "Vehicle ID", null, 3, 9)}
 					${input("type", "Type", null, 3, 9)}
 					${input("passenger_limit", "Passenger Limit", null, 3, 9, 'number', 'min=0')}
+					${input("driver", "Driver", null, 3, 9)}
+					${input("conductor", "Conductor", null, 3, 9)}
 				`,
 				width: '800px',
 				confirmButtonText: 'Add',
@@ -141,6 +157,8 @@
 							vehicle_id: $("[name='vehicle_id']").val(),
 							type: $("[name='type']").val(),
 							passenger_limit: $("[name='passenger_limit']").val(),
+							driver: $("[name='driver']").val(),
+							conductor: $("[name='conductor']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
 						success: () => {
@@ -159,6 +177,8 @@
 	                ${input("vehicle_id", "Vehicle", vehicle.vehicle_id, 3, 9)}
 					${input("type", "Type", vehicle.type, 3, 9)}
 					${input("passenger_limit", "Passenger Limit", vehicle.passenger_limit, 3, 9, 'number', 'min=0')}
+					${input("driver", "Driver", vehicle.driver, 3, 9)}
+					${input("conductor", "Conductor", vehicle.conductor, 3, 9)}
 	                <br>
 				`,
 				width: '800px',
@@ -205,6 +225,8 @@
 							vehicle_id: $("[name='vehicle_id']").val(),
 							type: $("[name='type']").val(),
 							passenger_limit: $("[name='passenger_limit']").val(),
+							driver: $("[name='driver']").val(),
+							conductor: $("[name='conductor']").val(),
 						},
 						message: "Success"
 					},	() => {
