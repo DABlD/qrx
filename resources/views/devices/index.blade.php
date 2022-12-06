@@ -25,6 +25,7 @@
                     				<th>Description</th>
                     				<th>Route</th>
                     				<th>Station</th>
+                    				<th>Status</th>
                     				<th>Actions</th>
                     			</tr>
                     		</thead>
@@ -85,6 +86,7 @@
 							return sid != null ? `${device.station.name}` : "N/A";
 						}
 					},
+					{data: 'status'},
 					{data: 'actions'},
 				],
         		pageLength: 25,
