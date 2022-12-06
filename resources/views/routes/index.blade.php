@@ -345,8 +345,18 @@
 							{data: 'name'},
 							{data: 'label'},
 							{data: 'kilometer'},
-							{data: 'lat'},
-							{data: 'lng'},
+							{
+								data: 'lat',
+								render: lat => {
+									return lat != null ? lat : "-";
+								}
+							},
+							{
+								data: 'lng',
+								render: lng => {
+									return lng != null ? lng : "-";
+								}
+							},
 							{data: 'actions'},
 						],
 		        		pageLength: 25,
