@@ -240,6 +240,16 @@ Route::group([
             }
         );
 
+        // REPORT ROUTES
+        $cname = "report";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("sales/", ucfirst($cname) . "Controller@sales")->name('sales');
+            }
+        );
+
         // EXPORT ROUTES
         $cname = "export";
         Route::group([

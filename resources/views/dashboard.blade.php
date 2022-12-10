@@ -60,31 +60,13 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-chart-pie mr-1"></i>
-                            Sales
+                            <i class="fas fa-ticket mr-1"></i>
+                            Ticket Generated on the Past 30 Days
                         </h3>
-
-                        <div class="card-tools">
-                            <ul class="nav nav-pills ml-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#tab1" data-toggle="tab">Tab 1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#tab2" data-toggle="tab">Tab 2</a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
 
                     <div class="card-body">
-                        <div class="tab-content p-0">
-                            <div class="chart tab-pane active" id="tab1" style="position: relative; height: 300px;">
-                                TAB 1
-                            </div>
-                            <div class="chart tab-pane" id="tab2" style="position: relative; height: 300px;">
-                                TAB 2
-                            </div>
-                        </div>
+                        <canvas id="sales" width="100%"></canvas>
                     </div>
                 </div>
             </section>
@@ -93,3 +75,50 @@
 </section>
 
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/chart.min.js') }}"></script>
+
+    <script>
+        $(document).ready(() => {
+            var myChart, ctx;
+
+            Swal.fire('Loading Data');
+            swal.showLoading();
+
+            $.ajax({
+                url: '{{ route("report.sales") }}',
+                success: result =>{
+                    result = JSON.parse(result);
+                    console.log(result,
+
+                            [{
+                              data: {
+                                January: 10,
+                                February: 20
+                              }
+                            }]);
+
+                    ctx = document.getElementById('sales').getContext('2d');
+                    myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: result.labels,
+                            datasets: result.dataset
+
+                            // datasets: [{
+                            //   data: {
+                            //     January: 10,
+                            //     February: 20
+                            //   }
+                            // }]
+                        }
+                    });
+                    swal.close();
+
+                    console.log('test');
+                }
+            })
+        });
+    </script>
+@endpush
