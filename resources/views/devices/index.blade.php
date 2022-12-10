@@ -409,5 +409,213 @@
 				}
 			});
 		}
+
+		// ADS
+		function ads(id, ids){
+			Swal.fire({
+				html: `
+					<center>
+						<b><h3>Ads</h3></b>
+						<div class="float-right">
+						    <a class="btn btn-success btn-sm" data-toggle="tooltip" title="Assign AD" onclick="assignAd(${id})">
+						        <i class="fas fa-plus fa-2xl"></i>
+						    </a>
+						</div>
+					</center>
+
+
+					<br>
+					<br>
+
+					<table id="ads" class="table">
+						<thead>
+							<tr>
+								<td>ID</td>
+								<td>Title</td>
+								<td>Description</td>
+								<td>URL</td>
+								<td>Type</td>
+								<td>Actions</td>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				`,
+				didOpen: () => {
+					$.ajax({
+						url: '{{ route('ad.get') }}',
+						data: {
+							wherein: ['id', ids ? ids : []],
+							select: "*",
+						},
+						success: ads => {
+							ads = JSON.parse(ads);
+
+							let string = "";
+
+							if(ads.length){
+								ads.forEach(ad => {
+									string += `
+										<tr>
+											<td>${ad.id}</td>
+											<td>${ad.title}</td>
+											<td>${ad.description}</td>
+											<td>
+												<a href="${ad.url}" target="_blank">View</a>
+											</td>
+											<td>${ad.type}</td>
+											<td>
+												<a class="btn btn-danger btn-sm" data-toggle="tooltip" title="Remove Ad" onclick="removeAd(${id}, ${ad.id})">
+												    <i class="fas fa-trash"></i>
+												</a>
+											</td>
+										</tr>
+									`;
+								});
+							}
+							else{
+								string = `
+									<tr>
+										<td colspan="6" style="text-align: center;">
+											No Assigned Ads
+										</td>
+									</tr>
+								`;
+							}
+
+							$('#ads tbody').append(string);
+						}
+					})
+				}
+			})
+		}
+
+		function assignAd(id){
+			$.ajax({
+				url: "{{ route("device.get") }}",
+				data: {
+					select: "ad_id",
+					where: ['id', id]
+				},
+				success: device => {
+					device = JSON.parse(device)[0];
+					let ids = device.ad_id ? JSON.parse(device.ad_id) : [];
+					console.log(ids);
+
+					Swal.fire({
+						html: `
+							<div class="row iRow">
+							    <div class="col-md-3 iLabel">
+							        Ad
+							    </div>
+							    <div class="col-md-9 iInput">
+							        <select name="ad" id="ad" class="form-control">
+							        	<option value="">Select Ad</option>
+							        </select>
+							    </div>
+							</div>
+						`,
+						didOpen: () => {
+							$.ajax({
+								url: '{{ route('ad.get') }}',
+								data: {
+									select: "*",
+								},
+								success: ads => {
+									ads = JSON.parse(ads);
+									let adString = "";
+									ads.forEach(ad => {
+										if(!ids.includes(ad.id.toString())){
+											adString += `
+												<option value="${ad.id}">
+													${ad.title} - ${ad.description} (${ad.type})
+												</option>
+											`;
+										}
+									});
+
+									$('#ad').append(adString);
+									$('#ad').select2();
+								}
+							})
+						},
+						confirmButtonText: 'Add',
+						showCancelButton: true,
+						cancelButtonColor: errorColor,
+						cancelButtonText: 'Cancel',
+						preConfirm: () => {
+						    swal.showLoading();
+						    return new Promise(resolve => {
+						    	let bool = true;
+
+					            if($('#ad').val() == ""){
+					                Swal.showValidationMessage('No Ad selected');
+					            }
+
+					            bool ? setTimeout(() => {resolve()}, 500) : "";
+						    });
+						},
+					}).then(result => {
+						if(result.value){
+							ids.push(parseInt($('#ad').val()));
+
+							swal.showLoading();
+							$.ajax({
+								url: "{{ route('device.update') }}",
+								type: "POST",
+								data: {
+									id: id,
+									ad_id: ids,
+									_token: $('meta[name="csrf-token"]').attr('content')
+								},
+								success: () => {
+									ss("Success");
+									setTimeout(() => {
+										ads(id, ids);
+									}, 800);
+								}
+							})
+						}
+					});
+				}
+			})
+		}
+
+		function removeAd(id, aid){
+			swal.showLoading();
+
+			$.ajax({
+				url: "{{ route("device.get") }}",
+				data: {
+					select: "ad_id",
+					where: ['id', id]
+				},
+				success: device => {
+					device = JSON.parse(device)[0];
+					let ids = JSON.parse(device.ad_id);
+					
+					ids = ids.filter(value => {
+						return value != aid;
+					});
+
+					$.ajax({
+						url: "{{ route('device.update') }}",
+						type: "POST",
+						data: {
+							id: id,
+							ad_id: ids,
+							_token: $('meta[name="csrf-token"]').attr('content')
+						},
+						success: () => {
+							ss("Successfully Removed");
+							setTimeout(() => {
+								ads(id, ids);
+							}, 800);
+						}
+					})
+				}
+			});
+		}
 	</script>
 @endpush

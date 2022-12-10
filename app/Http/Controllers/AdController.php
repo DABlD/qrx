@@ -31,6 +31,11 @@ class AdController extends Controller
             $array = $array->where($req->where2[0], isset($req->where2[2]) ? $req->where2[1] : "=", $req->where2[2] ?? $req->where2[1]);
         }
 
+        // IF HAS WHEREIN
+        if($req->wherein){
+            $array = $array->whereIn($req->wherein[0], $req->wherein[1] ?? []);
+        }
+
         // IF HAS JOIN
         if($req->join){
             $alias = substr($req->join, 1);
