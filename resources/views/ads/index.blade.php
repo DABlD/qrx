@@ -255,6 +255,13 @@
 					<br>
 
 					<table id="ad_devices" class="table">
+						<thead>
+							<tr>
+								<td>Device ID</td>
+								<td>Description</td>
+								<td>Actions</td>
+							</tr>
+						</thead>
 						<tbody>
 						</tbody>
 					</table>
@@ -291,7 +298,7 @@
 							else{
 								string = `
 									<tr>
-										<td>
+										<td colspan="3" style="text-align: center;">
 											No Assigned Devices
 										</td>
 									</tr>
