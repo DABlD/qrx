@@ -7,12 +7,12 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>150</h3>
-                        <p>New Orders</p>
+                        <h3>{{ $users }}</h3>
+                        <p>Users</p>
                     </div>
 
                     <div class="icon">
-                        <i class="ion ion-bag"></i>
+                        <i class="fa fa-users"></i>
                     </div>
                 </div>
             </div>
@@ -20,11 +20,11 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
-                        <p>Bounce Rate</p>
+                        <h3>{{ $routes }}</h3>
+                        <p>Routes</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-stats-bars"></i>
+                        <i class="fa fa-route"></i>
                     </div>
                 </div>
             </div>
@@ -32,12 +32,12 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>150</h3>
-                        <p>New Orders</p>
+                        <h3>{{ $devices }}</h3>
+                        <p>Devices</p>
                     </div>
 
                     <div class="icon">
-                        <i class="ion ion-bag"></i>
+                        <i class="fa fa-mobile"></i>
                     </div>
                 </div>
             </div>
@@ -45,11 +45,11 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
-                        <p>Bounce Rate</p>
+                        <h3>{{ $vehicles  }}</h3>
+                        <p>Vehicles</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-stats-bars"></i>
+                        <i class="fa fa-truck"></i>
                     </div>
                 </div>
             </div>
