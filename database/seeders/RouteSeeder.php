@@ -15,18 +15,21 @@ class RouteSeeder extends Seeder
      */
     public function run()
     {
-        $this->createRoute("EDSA", "QUIRINO", "NORTHBOUND");
-        $this->createRoute("QUIRINO", "EDSA", "SOUTHBOUND");
+        for($i = 3; $i <= 5; $i++){
+            $this->createRoute("EDSA", "QUIRINO", "NORTHBOUND", $i, $i - 2);
+            $this->createRoute("QUIRINO", "EDSA", "SOUTHBOUND", $i, $i - 2);
+        }
     }
 
-    public function createRoute($from, $to, $direction){
+    public function createRoute($from, $to, $direction, $cid, $multiplier){
         $data = new Route();
+        $data->company_id = $cid;
         $data->from = $from;
         $data->to = $to;
         $data->direction = $direction;
         $data->stations = "[]";
-        $data->base_fare = 10;
-        $data->per_km_fare = 2;
+        $data->base_fare = 10 * $multiplier;
+        $data->per_km_fare = 2 * $multiplier;
         $data->save();
     }
 }

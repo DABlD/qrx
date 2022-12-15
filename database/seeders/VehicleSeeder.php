@@ -17,16 +17,22 @@ class VehicleSeeder extends Seeder
     {
         $types = ["Bus", "Ferry"];
 
+
         foreach($types as $type){
-            for($i = 1; $i <= 3; $i++){
-                $this->createVehicle($type, $i);
+
+            $ctr = 1;
+            for($i = 3; $i <= 5; $i++){
+                for($J = 1; $J <= 3; $J++){
+                    $this->createVehicle($i, $type, $ctr);
+                }
             }
         }
     }
 
-    public function createVehicle($type, $i){
+    public function createVehicle($cid, $type, $ctr){
         $data = new Vehicle();
-        $data->vehicle_id = $type . " " . $i;
+        $data->company_id = $cid;
+        $data->vehicle_id = $type . " " . $ctr;
         $data->type = $type;
         $data->passenger_limit = rand(30, 50);
         $data->save();

@@ -14,15 +14,23 @@ class DeviceSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 1; $i <= 2; $i++){
-            for($j = 1; $j <= 5; $j++){
-                $this->createDevice($i, ($j + (($i - 1) * 5)));
+        $ctr = 1;
+        $ctr2 = 1;
+
+        for($i = 3; $i <= 5; $i++){
+            for($j = 1; $j <= 2; $j++){
+                for($k = 1; $k <= 3; $k++){
+                    $this->createDevice($i, $ctr, $ctr2);
+                    $ctr2++;
+                }
+                $ctr++;
             }
         }
     }
 
-    public function createDevice($rid, $sid){
+    public function createDevice($cid, $rid, $sid){
         $data = new Device();
+        $data->company_id = $cid;
         $data->route_id = $rid;
         $data->station_id = $sid;
         $data->device_id = substr(md5(uniqid()), 0, 16);

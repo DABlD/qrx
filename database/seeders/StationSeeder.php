@@ -15,7 +15,12 @@ class StationSeeder extends Seeder
      */
     public function run()
     {
-        $array = ["EDSA", 'LIBERTAD', 'GIL PUYAT', 'VITO CRUZ', 'QUIRINO'];
+        $array = [
+            "EDSA", 'LIBERTAD', 'GIL PUYAT', 'VITO CRUZ', 'QUIRINO',
+            'PEDRO GIL', 'UNITED NATIONS', 'CENTRAL', 'CARRIEDO', 'DOROTEO JOSE',
+            'BAMBANG', 'TAYUMAN', 'BLUMENTRITT', 'ABAD SANTOS', 'R PAPA',
+            '5TH AVE', 'BALINTAWAK', 'ROOSEVELT'
+        ];
         $array2 = array_reverse($array);
 
         foreach($array as $km => $station){
