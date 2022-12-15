@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\SaleAttribute;
-use App\Models\{Sale, Station};
+use App\Models\{Sale, Station, User};
 
 class Sale extends Model
 {
@@ -30,5 +30,9 @@ class Sale extends Model
 
     public function vehicle(){
         return $this->hasOne(Vehicle::class, 'id', 'vehicle_id');
+    }
+
+    public function company(){
+        return $this->belongsTo(User::class, 'company_id', 'id');
     }
 }

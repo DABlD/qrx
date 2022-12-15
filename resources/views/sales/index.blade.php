@@ -20,6 +20,7 @@
                     	<table id="table" class="table table-hover" style="width: 100%;">
                     		<thead>
                     			<tr>
+                    				<th>cid</th>
                     				<th>ID</th>
                     				<th>Ticket</th>
                     				<th>No</th>
@@ -74,13 +75,17 @@
                 	dataSrc: "",
 					data: f => {
 						f.select = ["*"];
-						f.load = ['origin', 'destination'];
+						f.load = ['origin', 'destination', 'company'];
 						f.from = from;
 						f.to = to;
 						f.status = status;
+						@if(auth()->user()->role == "Company")
+							f.where = ['company_id', {{ auth()->user()->id }}];
+						@endif
 					}
 				},
 				columns: [
+					{data: 'company.fname', visible: false},
 					{data: 'id'},
 					{data: 'ticket'},
 					{data: 'ticket_no'},
@@ -96,9 +101,36 @@
 					},
 				],
         		pageLength: 25,
-				// drawCallback: function(){
-				// 	init();
-				// }
+		        drawCallback: function (settings) {
+		            let api = this.api();
+		            let rows = api.rows({ page: 'current' }).nodes();
+		            let last = null;
+		 
+		            api.column(0, { page: 'current' })
+		                .data()
+		                .each(function (company, i, row) {
+		                    if (last !== company) {
+		                        $(rows)
+		                            .eq(i)
+		                            .before(`
+		                            	<tr class="group">
+		                            		<td colspan="8">
+		                            			${company}
+		                            		</td>
+		                            	</tr>
+		                            `);
+		 
+		                        last = company;
+		                    }
+		                });
+
+		        	let grps = $('[class="group"]');
+		        	grps.each((index, group) => {
+		        		if(!$(group).next().is(':visible')){
+		        			$(group).remove();
+		        		}
+		        	});
+		        },
 			});
 
 			$('#from').flatpickr({
