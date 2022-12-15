@@ -13,7 +13,7 @@ class Vehicle extends Model
     use SoftDeletes, VehicleAttribute;
     
     protected $fillable = [
-        'vehicle_id','type','passenger_limit','route_id','current_station','passenger_count', 'driver', 'conductor'
+        'company_id', 'vehicle_id','type','passenger_limit','route_id','current_station','passenger_count', 'driver', 'conductor'
     ];
 
     protected $dates = [

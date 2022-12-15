@@ -13,7 +13,7 @@
                             List
                         </h3>
 
-                        @include('users.includes.toolbar')
+                        @include('company.includes.toolbar')
                     </div>
 
                     <div class="card-body table-responsive">
@@ -21,10 +21,10 @@
                     		<thead>
                     			<tr>
                     				<th>ID</th>
-                    				<th>Name</th>
                     				<th>Username</th>
+                    				<th>Name</th>
+                    				<th>Contact</th>
                     				<th>Email</th>
-                    				<th>Role</th>
                     				<th>Actions</th>
                     			</tr>
                     		</thead>
@@ -44,35 +44,30 @@
 
 @push('styles')
 	<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/datatables.bundle.min.css') }}">
-	{{-- <link rel="stylesheet" href="{{ asset('css/datatables.bootstrap4.min.css') }}"> --}}
-	{{-- <link rel="stylesheet" href="{{ asset('css/datatables-jquery.min.css') }}"> --}}
+	<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
 @endpush
 
 @push('scripts')
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
-	<script src="{{ asset('js/datatables.bundle.min.js') }}"></script>
-	{{-- <script src="{{ asset('js/datatables.bootstrap4.min.js') }}"></script> --}}
-	{{-- <script src="{{ asset('js/datatables-jquery.min.js') }}"></script> --}}
+	<script src="{{ asset('js/select2.min.js') }}"></script>
 
 	<script>
 		$(document).ready(()=> {
 			var table = $('#table').DataTable({
 				ajax: {
-					url: "{{ route('datatable.user') }}",
+					url: "{{ route('datatable.company') }}",
                 	dataType: "json",
                 	dataSrc: "",
 					data: {
 						select: "*",
-						where: ["role", "!=", "Super Admin"],
 					}
 				},
 				columns: [
 					{data: 'id'},
-					{data: 'fname'},
 					{data: 'username'},
+					{data: 'fname'},
+					{data: 'contact'},
 					{data: 'email'},
-					{data: 'role'},
 					{data: 'actions'},
 				],
         		pageLength: 25,
@@ -84,14 +79,14 @@
 
 		function view(id){
 			$.ajax({
-				url: "{{ route('user.get') }}",
+				url: "{{ route('company.get') }}",
 				data: {
 					select: '*',
 					where: ['id', id],
 				},
-				success: admin => {
-					admin = JSON.parse(admin)[0];
-					showDetails(admin);
+				success: route => {
+					route = JSON.parse(route)[0];
+					showDetails(route);
 				}
 			})
 		}
@@ -100,19 +95,8 @@
 			Swal.fire({
 				html: `
 	                ${input("fname", "Name", null, 3, 9)}
-					${input("email", "Email", null, 3, 9, 'email')}
-					<div class="row iRow">
-					    <div class="col-md-3 iLabel">
-					        Role
-					    </div>
-					    <div class="col-md-9 iInput">
-					        <select name="role" class="form-control">
-					        	<option value="Admin">Admin</option>
-					        	<option value="Company">Company</option>
-					        	<option value="Coast Guard">Coast Guard</option>
-					        </select>
-					    </div>
-					</div>
+	                ${input("contact", "Contact", null, 3, 9)}
+	                ${input("email", "Email", null, 3, 9)}
 
 	                <br>
 	                ${input("username", "Username", null, 3, 9)}
@@ -179,13 +163,13 @@
 				if(result.value){
 					swal.showLoading();
 					$.ajax({
-						url: "{{ route('user.store') }}",
+						url: "{{ route('company.store') }}",
 						type: "POST",
 						data: {
-							fname: $("[name='fname']").val(),
-							email: $("[name='email']").val(),
-							role: $("[name='role']").val(),
 							username: $("[name='username']").val(),
+							fname: $("[name='fname']").val(),
+							contact: $("[name='contact']").val(),
+							email: $("[name='email']").val(),
 							password: $("[name='password']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
@@ -198,26 +182,17 @@
 			});
 		}
 
-		function showDetails(user){
+		function showDetails(company){
 			Swal.fire({
 				html: `
-	                ${input("id", "", user.id, 3, 9, 'hidden')}
-	                ${input("fname", "Name", user.fname, 3, 9)}
-					${input("email", "Email", user.email, 3, 9, 'email')}
-					<div class="row iRow">
-					    <div class="col-md-3 iLabel">
-					        Role
-					    </div>
-					    <div class="col-md-9 iInput">
-					        <select name="role" class="form-control">
-					        	<option value="Admin" ${user.role == "Admin" ? "Selected" : ""}>Admin</option>
-					        	<option value="Coast Guard" ${user.role == "Coast Guard" ? "Selected" : ""}>Coast Guard</option>
-					        </select>
-					    </div>
-					</div>
+	                ${input("id", "", company.id, 3, 9, 'hidden')}
+
+	                ${input("fname", "Name", company.fname, 3, 9)}
+	                ${input("contact", "Contact", company.contact, 3, 9)}
+	                ${input("email", "Email", company.email, 3, 9)}
 
 	                <br>
-	                ${input("username", "Username", user.username, 3, 9)}
+	                ${input("username", "Username", company.username, 3, 9)}
 				`,
 				width: '800px',
 				confirmButtonText: 'Update',
@@ -273,18 +248,19 @@
 				if(result.value){
 					swal.showLoading();
 					update({
-						url: "{{ route('user.update') }}",
+						url: "{{ route('company.update') }}",
 						data: {
 							id: $("[name='id']").val(),
-							role: $("[name='role']").val(),
-							fname: $("[name='fname']").val(),
-							email: $("[name='email']").val(),
 							username: $("[name='username']").val(),
+							fname: $("[name='fname']").val(),
+							contact: $("[name='contact']").val(),
+							email: $("[name='email']").val(),
+							_token: $('meta[name="csrf-token"]').attr('content')
 						},
 						message: "Success"
-					},	() => {
+					}, () => {
 						reload();
-					});
+					})
 				}
 			});
 		}
@@ -294,7 +270,7 @@
 				if(result.value){
 					swal.showLoading();
 					update({
-						url: "{{ route('user.delete') }}",
+						url: "{{ route('company.delete') }}",
 						data: {id: id},
 						message: "Success"
 					}, () => {
@@ -302,123 +278,6 @@
 					})
 				}
 			});
-		}
-
-		function res(id){
-			sc("Confirmation", "Are you sure you want to restore?", result => {
-				if(result.value){
-					swal.showLoading();
-					update({
-						url: "{{ route('user.restore') }}",
-						data: {id: id},
-						message: "Success"
-					}, () => {
-						reload();
-					})
-				}
-			});
-		}
-
-		function themes(id){
-			$.ajax({
-				url: '{{ route('theme.get') }}',
-				data: {
-					select: '*',
-					where: ['admin_id', id]
-				},
-				success: themes => {
-					themes = JSON.parse(themes);
-					themeString = "";
-
-					themes.forEach(theme => {
-						let temp = "";
-						if(theme.name.includes('img')){
-							temp = `
-								<img src="${theme.value}" id="${theme.name}" alt="${theme.name}" width="100px;" height="100px">
-								<br>
-								<br>
-								${input(theme.name, '', theme.value, 0, 10, 'file')}
-							`;
-						}
-						else if(theme.name.includes('color')){
-							temp = input(theme.name, '', theme.value, 0, 12, 'color');
-						}
-						else{
-							temp = input(theme.name, '', theme.value, 0, 12);
-						}
-
-						themeString += `
-							<div class="row">
-							    <div class="col-md-5">
-							    	${theme.name.replace('_', '').replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())}
-							    </div>
-							    <div class="col-md-7">
-							    	${temp}
-						        </div>
-						    </div>
-						    <br>
-						`;
-					});
-
-				    Swal.fire({
-				        width: '600px',
-				        html: themeString,
-				        didOpen: () => {
-				            $('.swal2-container .col-md-5').css({
-				                'text-align': 'left',
-				                'margin': 'auto'
-				            });
-				            $('.swal2-container .col-md-7 div').css({
-				                'text-align': 'center',
-				                'margin': 'auto'
-				            });
-
-				            $('[type="file"]').on('change', e => {
-				                var reader = new FileReader();
-				                reader.onload = function (e2) {
-				                    let name = $(e.target).prop('name');
-				                    $(`#${name}`).attr('src', e2.target.result);
-				                }
-
-				                reader.readAsDataURL(e.target.files[0]); 
-				            });
-				        }
-				    }).then(result => {
-				        if(result.value){
-				            swal.showLoading();
-
-				            let formData = new FormData();
-				            formData.append('admin_id', id);
-				            formData.append('app_name', $('[name="app_name"]').val());
-				            formData.append('logo_img', $('[name="logo_img"]').prop('files')[0]);
-				            formData.append('login_banner_img', $('[name="login_banner_img"]').prop('files')[0]);
-				            formData.append('login_bg_img', $('[name="login_bg_img"]').prop('files')[0]);
-				            formData.append('sidebar_bg_color', $('[name="sidebar_bg_color"]').val());
-				            formData.append('table_header_color', $('[name="table_header_color"]').val());
-				            formData.append('table_header_font_color', $('[name="table_header_font_color"]').val());
-				            formData.append('sidebar_font_color', $('[name="sidebar_font_color"]').val());
-				            formData.append('table_group_color', $('[name="table_group_color"]').val());
-				            formData.append('table_group_font_color', $('[name="table_group_font_color"]').val());
-				            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
-
-				            updateTheme(formData);
-				        }
-				    })
-				}
-			})
-		}
-
-		async function updateTheme(formData){
-		    await fetch('{{ route('theme.update') }}', {
-		        method: "POST", 
-		        body: formData,
-		    }).then(result => {
-		        console.log(result);
-		        ss("Successfully Updated Theme", "Refreshing");
-		        setTimeout(() => {
-		            // window.location.reload();
-		        }, 1200);
-		    });
 		}
 	</script>
 @endpush

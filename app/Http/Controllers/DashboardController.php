@@ -8,7 +8,7 @@ use App\Models\{User, Route, Device, Vehicle};
 class DashboardController extends Controller
 {
     function index(){
-        if(auth()->user()->role != "Admin"){
+        if(auth()->user()->role == "Coast Guard"){
             return redirect()->route('sale.manifest');
         }
 

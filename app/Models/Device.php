@@ -13,7 +13,7 @@ class Device extends Model
     use SoftDeletes, DeviceAttribute;
     
     protected $fillable = [
-        'station_id','route_id','device_id','status','description'
+        'company_id', 'station_id','route_id','device_id','status','description'
     ];
 
     protected $dates = [

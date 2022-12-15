@@ -13,7 +13,7 @@ class Sale extends Model
     use SoftDeletes, SaleAttribute;
     
     protected $fillable = [
-        'origin_id','destination_id','vehicle_id','user','ticket','amount','status','embarked_date', 'ticket_no'
+        'company_id', 'origin_id','destination_id','vehicle_id','user','ticket','amount','status','embarked_date', 'ticket_no'
     ];
 
     protected $dates = [

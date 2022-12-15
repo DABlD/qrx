@@ -13,7 +13,7 @@ class Route extends Model
     use SoftDeletes, RouteAttribute;
     
     protected $fillable = [
-        'from','to','direction','stations','base_fare','per_km_fare'
+        'company_id', 'from','to','direction','stations','base_fare','per_km_fare'
     ];
 
     protected $dates = [

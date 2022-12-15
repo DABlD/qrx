@@ -48,7 +48,7 @@ Route::group([
             ->defaults('sidebar', 1)
             ->defaults('icon', 'fas fa-list')
             ->defaults('name', 'Dashboard')
-            ->defaults('roles', array('Admin'))
+            ->defaults('roles', array('Admin', 'Company'))
             ->name('dashboard')
             ->defaults('href', '/');
 
@@ -77,6 +77,29 @@ Route::group([
             }
         );
 
+        // COMPANY ROUTES
+        $cname = "company";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+
+                Route::get("/", "CompanyController@index")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fa-sharp fa-solid fa-buildings")
+                    ->defaults("name", "Companies")
+                    ->defaults("roles", array("Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
+                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+            }
+        );
+
         // ROUTE ROUTES
         $cname = "route";
         Route::group([
@@ -88,7 +111,7 @@ Route::group([
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fad fa-route")
                     ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin"))
+                    ->defaults("roles", array("Admin", 'Company'))
                     // ->defaults("group", "Settings")
                     ->name($cname)
                     ->defaults("href", "/$cname");
@@ -123,7 +146,7 @@ Route::group([
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fa-light fa-mobile")
                     ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin"))
+                    ->defaults("roles", array("Admin", 'Company'))
                     // ->defaults("group", "Settings")
                     ->name($cname)
                     ->defaults("href", "/$cname");
@@ -145,7 +168,7 @@ Route::group([
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fa-light fa-truck")
                     ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin"))
+                    ->defaults("roles", array("Admin", 'Company'))
                     // ->defaults("group", "Settings")
                     ->name($cname)
                     ->defaults("href", "/$cname");
@@ -167,7 +190,7 @@ Route::group([
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fa-solid fa-dollar-sign")
                     ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin"))
+                    ->defaults("roles", array("Admin", 'Company'))
                     // ->defaults("group", "Settings")
                     ->name($cname)
                     ->defaults("href", "/$cname");
@@ -222,10 +245,10 @@ Route::group([
                     ->name($cname)
                     ->defaults("href", "/$cname");
 
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
-                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
-                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+                Route::get("get/", "AuditTrailController@get")->name('get');
+                Route::post("store/", "AuditTrailController@store")->name('store');
+                Route::post("delete/", "AuditTrailController@delete")->name('delete');
+                Route::post("update/", "AuditTrailController@update")->name('update');
             }
         );
 
@@ -275,6 +298,7 @@ Route::group([
                 Route::get("vehicle", ucfirst($cname) . "Controller@vehicle")->name('vehicle');
                 Route::get("sale", ucfirst($cname) . "Controller@sale")->name('sale');
                 Route::get("ad", ucfirst($cname) . "Controller@ad")->name('ad');
+                Route::get("company", ucfirst($cname) . "Controller@company")->name('company');
                 
                 Route::get("audit_trails", ucfirst($cname) . "Controller@audit_trails")->name('audit_trails');
             }
