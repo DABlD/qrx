@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\DeviceAttribute;
-use App\Models\{Device, Route, Station, Ad};
+use App\Models\{Device, Route, Station, Ad, User};
 
 class Device extends Model
 {
@@ -30,5 +30,9 @@ class Device extends Model
 
     public function ad(){
         return $this->belongsTo(Ad::class, 'ad_id', 'id');
+    }
+
+    public function company(){
+        return $this->belongsTo(User::class, 'company_id', 'id');
     }
 }
