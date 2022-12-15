@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\RouteAttribute;
-use App\Models\{Route, Station};
+use App\Models\{Route, Station, User};
 
 class Route extends Model
 {
@@ -22,5 +22,9 @@ class Route extends Model
 
     public function stations(){
         return $this->hasMany(Station::class, 'route_id', 'id');
+    }
+
+    public function company(){
+        return $this->belongsTo(User::class, 'company_id', 'id');
     }
 }

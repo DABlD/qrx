@@ -20,6 +20,7 @@
                     	<table id="table" class="table table-hover" style="width: 100%;">
                     		<thead>
                     			<tr>
+                    				<th>cid</th>
                     				<th>ID</th>
                     				<th>From</th>
                     				<th>To</th>
@@ -114,9 +115,14 @@
                 	dataSrc: "",
 					data: {
 						select: "*",
+						load: ['company'],
+						@if(auth()->user()->role == "Company")
+							where: ['company_id', {{ auth()->user()->id }}]
+						@endif
 					}
 				},
 				columns: [
+					{data: 'company.fname', visible: false},
 					{data: 'id'},
 					{data: 'from'},
 					{data: 'to'},
@@ -126,9 +132,36 @@
 					{data: 'actions'},
 				],
         		pageLength: 25,
-				// drawCallback: function(){
-				// 	init();
-				// }
+		        drawCallback: function (settings) {
+		            let api = this.api();
+		            let rows = api.rows({ page: 'current' }).nodes();
+		            let last = null;
+		 
+		            api.column(0, { page: 'current' })
+		                .data()
+		                .each(function (company, i, row) {
+		                    if (last !== company) {
+		                        $(rows)
+		                            .eq(i)
+		                            .before(`
+		                            	<tr class="group">
+		                            		<td colspan="8">
+		                            			${company}
+		                            		</td>
+		                            	</tr>
+		                            `);
+		 
+		                        last = company;
+		                    }
+		                });
+
+		        	let grps = $('[class="group"]');
+		        	grps.each((index, group) => {
+		        		if(!$(group).next().is(':visible')){
+		        			$(group).remove();
+		        		}
+		        	});
+		        },
 			});
 		});
 
