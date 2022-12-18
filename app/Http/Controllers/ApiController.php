@@ -175,6 +175,10 @@ class ApiController extends Controller
             $array = $array->groupBy($req->group);
         }
 
+        foreach($array as $device){
+            $device->ads = $device->ads;
+        }
+
         return $array;
     }
 

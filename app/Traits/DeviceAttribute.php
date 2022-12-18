@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Models\Ad;
+
 trait DeviceAttribute{
 	public function getActionsAttribute(){
 		$id = $this->id;
@@ -21,5 +23,13 @@ trait DeviceAttribute{
 					    "</a>&nbsp;";
 
 		return $action;
+	}
+
+	public function getAdsAttribute(){
+		$ids = json_decode($this->ad_id);
+
+		$ads = $ids ? Ad::whereIn('id', $ids)->get() : null;
+
+		return $ads;
 	}
 }
