@@ -97,14 +97,27 @@
 
         <script>
             @if($errors->all())
-                Swal.fire({
-                    icon: 'error',
-                    html: `
-                        @foreach ($errors->all() as $error)
-                            {{ $error }}<br/>
-                        @endforeach
-                    `,
-                });
+                @if($errors->has('validate'))
+                    @php
+                        $key = base64_encode($errors->get('key')[0]);
+                    @endphp
+                    Swal.fire({
+                        icon: 'warning',
+                        title: "{{ $errors->get('validate')[0] }}",
+                        html: `
+                            Click <a href="{{ route('sendVerification', ['key' => $key]) }}" target="_blank">here</a> to verify
+                        `
+                    })
+                @else
+                    Swal.fire({
+                        icon: 'error',
+                        html: `
+                            @foreach ($errors->all() as $key => $error)
+                                {{ $error }}<br/>
+                            @endforeach
+                        `,
+                    });
+                @endif
             @endif
         </script>
 </body>

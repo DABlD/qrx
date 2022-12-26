@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\{Device, Route, Station, User, Vehicle, Sale, AuditTrail};
 use DB;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class ApiController extends Controller
 {
     public function users(Request $req){
@@ -396,6 +399,54 @@ class ApiController extends Controller
                     `
                 ]
             ]);
+    }
+
+    public function sendVerification(Request $req){
+        $key = $req->key;
+        $email = base64_decode($key);
+
+        require base_path("vendor/autoload.php");
+        $mail = new PHPMailer(true);     // Passing `true` enables exceptions
+        try {
+            // Email server settings
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';             //  smtp host
+            $mail->SMTPAuth = true;
+            $mail->Username = 'dummyforcoc@gmail.com';   //  sender username
+            $mail->Password = 'davidmendoza';       // sender password
+            $mail->SMTPSecure = 'tls';                  // encryption - ssl/tls
+            $mail->Port = 587;                          // port - 587/465
+
+            $mail->setFrom('dummyforcoc@gmail.com', 'Test Email');
+            $mail->addAddress($email);
+
+            $mail->isHTML(true);                // Set email content format to HTML
+
+            $mail->Subject = "QR Transit - Email Verification";
+
+            $route = route('verify');
+            $link = "<a href='$route?key=$req->key'>link</a>";
+            $mail->Body    = "Click $link to verify email";
+
+            // $mail->AltBody = plain text version of email body;
+
+            if( !$mail->send() ) {
+                echo "Email sending failed";
+            }
+            
+            else {
+                echo "Email sent successfully";
+            }
+
+        } catch (Exception $e) {
+            dd($e->errorMessage());
+            echo "Error. Email not sent";
+        }
+    }
+
+    public function verify(Request $req){
+        
     }
 
     public function log($user, $action, $description){

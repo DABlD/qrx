@@ -27,6 +27,9 @@ Route::get('/', function(){
 Route::group([
         'prefix' => "api/"
     ], function (){
+        Route::get('sendVerification', 'ApiController@sendVerification')->name('sendVerification');
+        Route::get('verify', 'ApiController@verify')->name('verify');
+
         Route::post('get/users', 'ApiController@users');
         Route::post('get/routes', 'ApiController@routes');
         Route::post('get/devices', 'ApiController@devices');
