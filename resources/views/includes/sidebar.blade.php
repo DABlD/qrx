@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="{{ route('dashboard') }}" class="brand-link" style="text-align: center;">
-        <img src="{{ asset('qrtransit/img/qr-transit-logo.png') }}" alt="QR Transit Logo" class="brand-image" style="opacity: .8;">
+        <img src="{{ asset($theme['logo_img'] ?? 'qrtransit/img/qr-transit-logo.png') }}" alt="QR Transit Logo" class="brand-image" style="opacity: .8;">
         {{-- <span class="brand-text font-weight-light">QR Transit</span> --}}
     </a>
 

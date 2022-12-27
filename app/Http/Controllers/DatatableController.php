@@ -10,20 +10,11 @@ class DatatableController extends Controller
 {
     public function user(Request $req){
         $array = User::select($req->select);
+        $array = $array->whereIn('role', ['Admin', 'Coast Guard']);
 
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
             $array = $array->orderBy($req->order[0], $req->order[1]);
-        }
-
-        // IF HAS WHERE
-        if($req->where){
-            $array = $array->where($req->where[0], isset($req->where[2]) ? $req->where[1] : "=", $req->where[2] ?? $req->where[1]);
-        }
-
-        // IF HAS WHERE2
-        if($req->where2){
-            $array = $array->where($req->where2[0], isset($req->where2[2]) ? $req->where2[1] : "=", $req->where2[2] ?? $req->where2[1]);
         }
 
         // IF HAS JOIN

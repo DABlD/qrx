@@ -8,7 +8,7 @@ class Theme extends Model
 {
     protected $fillable = [
         "name", "value"
-        // ,'admin_id'
+        ,'company_id'
     ];
 
     protected $dates = [

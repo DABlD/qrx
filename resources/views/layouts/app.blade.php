@@ -17,6 +17,27 @@
         <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/flatpickr.min.css') }}">
 
+        <style>
+            [class*=sidebar-dark-]{
+                background-color: {{ $theme['sidebar_bg_color'] ?? "#343a40" }} !important;
+            }
+            thead tr{
+                background-color: {{ $theme['table_header_color'] ?? "#c2c7d0" }} !important;
+            }
+            thead td{
+                color: {{ $theme['table_header_font_color'] ?? "#b96666" }} !important;
+            }
+            tr.group td{
+                background-color: {{ $theme['table_group_color'] ?? "#ffffff" }} !important;
+            }
+            tr.group td{
+                color: {{ $theme['table_group_font_color'] ?? "#66b966" }} !important;
+            }
+            .sidebar a{
+                color: {{ $theme['sidebar_font_color'] ?? "#ffffff" }} !important;
+            }
+
+        </style>
         @stack('styles')
 
     </head>
