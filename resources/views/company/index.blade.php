@@ -193,6 +193,9 @@
 
 	                <br>
 	                ${input("username", "Username", company.username, 3, 9)}
+	                <br>
+	                <br>
+	                ${input("temp", "Login Link", `{{ route('login') }}?u=${company.id}`, 3, 9, null, 'disabled')}
 				`,
 				width: '800px',
 				confirmButtonText: 'Update',
