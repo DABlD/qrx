@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function get(Request $req){
         $array = DB::table('users')->select($req->select);
-        $array = $array->where('deleted_at', null);
+        // $array = $array->where('deleted_at', null);
 
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
