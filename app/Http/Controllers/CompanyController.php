@@ -103,7 +103,7 @@ class CompanyController extends Controller
 
     public function index(){
         return $this->_view('index', [
-            'title' => ucfirst($this->table)
+            'title' => "Company"
         ]);
     }
 
