@@ -47,6 +47,7 @@
 @push('styles')
 	<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/datatables.bundle.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
 	{{-- <link rel="stylesheet" href="{{ asset('css/datatables.bootstrap4.min.css') }}"> --}}
 	{{-- <link rel="stylesheet" href="{{ asset('css/datatables-jquery.min.css') }}"> --}}
 @endpush
@@ -54,6 +55,7 @@
 @push('scripts')
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
 	<script src="{{ asset('js/datatables.bundle.min.js') }}"></script>
+	<script src="{{ asset('js/select2.min.js') }}"></script>
 	{{-- <script src="{{ asset('js/datatables.bootstrap4.min.js') }}"></script> --}}
 	{{-- <script src="{{ asset('js/datatables-jquery.min.js') }}"></script> --}}
 
@@ -143,6 +145,19 @@
 		function create(){
 			Swal.fire({
 				html: `
+					@if(auth()->user()->role == 'Admin')
+						<div class="row iRow">
+						    <div class="col-md-3 iLabel">
+						        Company
+						    </div>
+						    <div class="col-md-9 iInput">
+						        <select name="company_id" id="company_id" class="form-control">
+						        	<option value="">Select Company</option>
+						        </select>
+						    </div>
+						</div>
+					@endif
+					
 	                ${input("vehicle_id", "Vehicle ID", null, 3, 9)}
 					${input("type", "Type", null, 3, 9)}
 					${input("passenger_limit", "Passenger Limit", null, 3, 9, 'number', 'min=0')}
@@ -154,12 +169,39 @@
 				showCancelButton: true,
 				cancelButtonColor: errorColor,
 				cancelButtonText: 'Cancel',
+				didOpen: () => {
+					@if(auth()->user()->role == "Admin")
+						$.ajax({
+							url: '{{ route('company.get') }}',
+							data: {
+								select: "*",
+								where: ["role", "Company"]
+							},
+							success: companys => {
+								companys = JSON.parse(companys);
+
+								let companyString = "";
+								companys.forEach(company => {
+									companyString += `
+										<option value="${company.id}">${company.fname}</option>
+									`;
+								});
+
+								$('#company_id').append(companyString);
+								$('#company_id').select2();
+							}
+						});
+					@endif
+				},
 				preConfirm: () => {
 				    swal.showLoading();
 				    return new Promise(resolve => {
 				    	let bool = true;
 
 			            if($('.swal2-container input:placeholder-shown').length){
+			                Swal.showValidationMessage('Fill all fields');
+			            }
+			            else if($('#company_id').val() == ""){
 			                Swal.showValidationMessage('Fill all fields');
 			            }
 			            else{
@@ -190,6 +232,7 @@
 						url: "{{ route('vehicle.store') }}",
 						type: "POST",
 						data: {
+							company_id: $("[name='company_id']").val() ?? {{ auth()->user()->id }},
 							vehicle_id: $("[name='vehicle_id']").val(),
 							type: $("[name='type']").val(),
 							passenger_limit: $("[name='passenger_limit']").val(),

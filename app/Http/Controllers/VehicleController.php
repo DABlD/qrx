@@ -56,7 +56,7 @@ class VehicleController extends Controller
 
     public function store(Request $req){
         $data = new Vehicle();
-        $data->company_id = auth()->user()->id;
+        $data->company_id = $req->company_id;
         $data->vehicle_id = $req->vehicle_id;
         $data->type = $req->type;
         $data->passenger_limit = $req->passenger_limit;
