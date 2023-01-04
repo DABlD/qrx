@@ -56,7 +56,8 @@ class RouteController extends Controller
 
     public function store(Request $req){
         $data = new Route();
-        $data->company_id = auth()->user()->id;
+        
+        $data->company_id = $req->company_id;
 
         $data->from = $req->from;
         $data->to = $req->to;

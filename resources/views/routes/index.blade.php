@@ -182,6 +182,19 @@
 		function create(){
 			Swal.fire({
 				html: `
+					@if(auth()->user()->role == 'Admin')
+						<div class="row iRow">
+						    <div class="col-md-3 iLabel">
+						        Company
+						    </div>
+						    <div class="col-md-9 iInput">
+						        <select name="company_id" id="company_id" class="form-control">
+						        	<option value="">Select Company</option>
+						        </select>
+						    </div>
+						</div>
+					@endif
+
 					<div class="row iRow">
 					    <div class="col-md-3 iLabel">
 					        Direction
@@ -206,12 +219,39 @@
 				showCancelButton: true,
 				cancelButtonColor: errorColor,
 				cancelButtonText: 'Cancel',
+				didOpen: () => {
+					@if(auth()->user()->role == "Admin")
+						$.ajax({
+							url: '{{ route('company.get') }}',
+							data: {
+								select: "*",
+								where: ["role", "Company"]
+							},
+							success: companys => {
+								companys = JSON.parse(companys);
+
+								let companyString = "";
+								companys.forEach(company => {
+									companyString += `
+										<option value="${company.id}">${company.fname}</option>
+									`;
+								});
+
+								$('#company_id').append(companyString);
+								$('#company_id').select2();
+							}
+						});
+					@endif
+				},
 				preConfirm: () => {
 				    swal.showLoading();
 				    return new Promise(resolve => {
 				    	let bool = true;
 
 			            if($('.swal2-container input:placeholder-shown').length){
+			                Swal.showValidationMessage('Fill all fields');
+			            }
+			            else if($('#company_id').val() == ""){
 			                Swal.showValidationMessage('Fill all fields');
 			            }
 			            else if($('#direction').val() == ""){
@@ -228,6 +268,7 @@
 						url: "{{ route('route.store') }}",
 						type: "POST",
 						data: {
+							company_id: $("[name='company_id']").val() ?? {{ auth()->user()->id }},
 							from: $("[name='from']").val(),
 							to: $("[name='to']").val(),
 							direction: $("[name='direction']").val(),

@@ -227,6 +227,9 @@
 			            if($('.swal2-container input:placeholder-shown').length){
 			                Swal.showValidationMessage('Fill all fields');
 			            }
+			            else if($('#company_id').val() == ""){
+			                Swal.showValidationMessage('Fill all fields');
+			            }
 			            else{
 			            	let bool = false;
             				$.ajax({
