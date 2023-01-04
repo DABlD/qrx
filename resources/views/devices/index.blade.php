@@ -148,6 +148,19 @@
 	                ${input("device_id", "Device", null, 3, 9)}
 					${input("description", "Description", null, 3, 9, 'email')}
 
+					@if(auth()->user()->role == "Admin")
+						<div class="row iRow">
+						    <div class="col-md-3 iLabel">
+						        Company
+						    </div>
+						    <div class="col-md-9 iInput">
+						        <select name="company_id" id="company_id" class="form-control">
+						        	<option value="">Select Company</option>
+						        </select>
+						    </div>
+						</div>
+		            @endif
+
 					<div class="row iRow">
 					    <div class="col-md-3 iLabel">
 					        Route
@@ -172,54 +185,34 @@
 	                <br>
 				`,
 				didOpen: () => {
-					$.ajax({
-						url: '{{ route('route.get') }}',
-						data: {
-							select: "*",
-						},
-						success: routes => {
-							routes = JSON.parse(routes);
+					@if(auth()->user()->role == "Admin")
+						$.ajax({
+							url: '{{ route('company.get') }}',
+							data: {
+								select: "*",
+								where: ["role", "Company"]
+							},
+							success: companys => {
+								companys = JSON.parse(companys);
 
-							let routeString = "";
-							routes.forEach(route => {
-								routeString += `
-									<option value="${route.id}">${route.from} - ${route.to} (${route.direction})</option>
-								`;
-							});
+								let companyString = "";
+								companys.forEach(company => {
+									companyString += `
+										<option value="${company.id}">${company.fname}</option>
+									`;
+								});
 
-							$('#route_id').append(routeString);
-							$('#route_id').select2();
-							$('#station_id').select2();
+								$('#company_id').append(companyString);
+								$('#company_id').select2();
 
-							$('#route_id').on('change', e => {
-								$.ajax({
-									url: '{{ route('station.get') }}',
-									data: {
-										select: "*",
-										where: ["route_id", $('#route_id').val()]
-									},
-									success: stations => {
-										stations = JSON.parse(stations);
-
-										let stationString = "";
-										stations.forEach(station => {
-											stationString += `
-												<option value="${station.id}">${station.name} (${station.label})</option>
-											`;
-										});
-
-										if(stationString != ""){
-											$('#station_id').select2('destroy');
-											$('#station_id').html(`<option value="">Select Station</option>`);
-										}
-
-										$('#station_id').append(stationString);
-										$('#station_id').select2();
-									}
-								})
-							});
-						}
-					})
+								$('#company_id').on('change', e => {
+									selectRouteAndStation(e.target.value);
+								});
+							}
+						});
+					@else
+						selectRouteAndStation({{ auth()->user()->id }});
+					@endif
 				},
 				width: '800px',
 				confirmButtonText: 'Add',
@@ -262,6 +255,7 @@
 						url: "{{ route('device.store') }}",
 						type: "POST",
 						data: {
+							company_id: $("[name='company_id']").val() ?? {{ auth()->user()->id }},
 							device_id: $("[name='device_id']").val(),
 							description: $("[name='description']").val(),
 							route_id: $("[name='route_id']").val(),
@@ -275,6 +269,65 @@
 					})
 				}
 			});
+		}
+
+		function selectRouteAndStation(id){
+			$.ajax({
+				url: '{{ route('route.get') }}',
+				data: {
+					select: "*",
+					where: ['company_id', id]
+				},
+				success: routes => {
+					routes = JSON.parse(routes);
+
+					let routeString = "";
+					routes.forEach(route => {
+						routeString += `
+							<option value="${route.id}">${route.from} - ${route.to} (${route.direction})</option>
+						`;
+					});
+
+					if(routeString != ""){
+						$('#route_id').html(`<option value="">Select Route</option>`);
+					}
+					else{
+						$('#route_id').html(`<option value="">No Route</option>`);
+					}
+
+					$('#route_id').append(routeString);
+					$('#route_id').select2();
+					$('#station_id').select2();
+
+					$('#route_id').on('change', e => {
+						$.ajax({
+							url: '{{ route('station.get') }}',
+							data: {
+								select: "*",
+								where: ["route_id", $('#route_id').val()]
+							},
+							success: stations => {
+								stations = JSON.parse(stations);
+
+								let stationString = "";
+								stations.forEach(station => {
+									stationString += `
+										<option value="${station.id}">${station.name} (${station.label})</option>
+									`;
+								});
+
+								if(stationString != ""){
+									$('#station_id').select2('destroy');
+									$('#station_id').html(`<option value="">Select Station</option>`);
+								}
+
+								$('#station_id').append(stationString);
+								$('#station_id').select2();
+							}
+						})
+					});
+				}
+			})
 		}
 
 		function showDetails(device){

@@ -56,7 +56,7 @@ class DeviceController extends Controller
 
     public function store(Request $req){
         $data = new Device();
-        $data->company_id = auth()->user()->id;
+        $data->company_id = $req->company_id;
         $data->station_id = $req->station_id;
         $data->route_id = $req->route_id;
         $data->device_id = $req->device_id;
