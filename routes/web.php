@@ -201,7 +201,7 @@ Route::group([
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fa-light fa-folder-open")
                     ->defaults("name", "Manifest")
-                    ->defaults("roles", array("Admin", "Coast Guard"))
+                    ->defaults("roles", array("Admin", "Coast Guard", "Company"))
                     // ->defaults("group", "Settings")
                     ->name("manifest")
                     ->defaults("href", "sale/manifest");
