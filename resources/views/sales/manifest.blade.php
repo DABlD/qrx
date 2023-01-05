@@ -81,6 +81,9 @@
 						f.from = from;
 						f.to = to;
 						f.status = status;
+						@if(auth()->user()->role == "Company")
+							f.where = ['company_id', {{ auth()->user()->id }}]
+						@endif
 					}
 				},
 				columns: [
