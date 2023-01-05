@@ -68,7 +68,7 @@ class CompanyController extends Controller
 
         $array = [
             ["logo_img", 'qrtransit/img/qr-transit-logo.png'],
-            ["login_banner_img", "img/auth-bg.jpg"],
+            ["login_banner_img", "qrtransit/img/auth-bg.jpg"],
             ["login_bg_img", 'qrtransit/img/qr-transit-logo.png'],
             ["sidebar_bg_color", "#343a40"],
             ["sidebar_font_color", "#c2c7d0"],
