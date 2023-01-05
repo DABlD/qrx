@@ -11,7 +11,14 @@ class ReportController extends Controller
         $from = now()->subMonth()->startOfDay()->toDateTimeString();
         $to = now()->endOfDay()->toDateTimeString();
 
-        $temp = Sale::whereBetween('created_at', [$from, $to])->get();
+        $temp = Sale::whereBetween('created_at', [$from, $to]);
+
+
+        if(auth()->user()->role != "Admin"){
+            $temp = $temp->where('company_id', auth()->user()->id);
+        }
+        $temp = $temp->get();
+
         $array = [];
 
         while($from <= $to){

@@ -64,6 +64,10 @@ class ExportController extends Controller
     public function manifest(Request $req){
         $array = Sale::select("*");
 
+        if(auth()->user()->role != "Admin"){
+            $array = $array->where('company_id', auth()->user()->id);
+        }
+
         $from = now()->parse($req->from)->startOfDay()->toDateTimeString();
         $to = now()->parse($req->to)->endOfDay()->toDateTimeString();
 
