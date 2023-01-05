@@ -23,7 +23,7 @@
 			<td>{{ $data->user->mobile_number }}</td>
 			<td>{{ $data->origin->name }}</td>
 			<td>{{ $data->destination->name }}</td>
-			<td>{{ $data->vehicle->vehicle_id }}</td>
+			<td>{{ $data->vehicle ? $data->vehicle->vehicle_id : "---" }}</td>
 			<td>{{ $data->status }}</td>
 			<td>{{ now()->parse($data->created_at)->format("Y-m-d h:i A") }}</td>
 			<td>{{ $data->embarked_date ? now()->parse($data->embarked_date)->format("Y-m-d h:i A") : "---" }}</td>

@@ -57,6 +57,7 @@ class ExportController extends Controller
         }
 
         $this->log(auth()->user()->fullname, "Export", "Sales");
+
         return Excel::download(new Sales($array), 'Sales - ' . now()->toDateTimeString() . '.xlsx');
     }
 
