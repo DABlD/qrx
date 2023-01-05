@@ -412,7 +412,12 @@ class ApiController extends Controller
             }
             
             else {
-                echo "Email sent successfully";
+                echo "
+                    <script>
+                        window.alert('Email sent successfully. Please check your email');
+                        window.close();
+                    </script>
+                ";
             }
 
         } catch (Exception $e) {
@@ -422,7 +427,10 @@ class ApiController extends Controller
     }
 
     public function verify(Request $req){
-        
+        $email = base64_decode($req->key);
+        User::where('email', $email)->update(['email_verified_at' => now()]);
+
+        return redirect()->route('login')->with('success', 'Your email has been verified. Please try to login again.');
     }
 
     public function log($user, $action, $description){

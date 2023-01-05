@@ -94,7 +94,6 @@
     </div>
 
     <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
-
         <script>
             @if($errors->all())
                 @if($errors->has('validate'))
@@ -118,6 +117,11 @@
                         `,
                     });
                 @endif
+            @elseif(Session::has('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: "{{ Session::get('success') }}",
+                })
             @endif
         </script>
 </body>
