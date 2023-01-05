@@ -377,30 +377,6 @@ class ApiController extends Controller
         return $response;
     }
 
-    public function sendSms($sale, $user){
-        $from = Station::find($sale->origin_id)->name;
-        $to = Station::find($sale->destination_id)->name;
-        $now = now()->format('Y-m-d h:i A');
-
-        $response = Http::withBasicAuth(env("SMS_USERNAME"),env("SMS_PASSWORD"))
-            ->post('http://13.228.103.95:8063/core/sender', [
-                "accesskey" => env('SMS_ACCESSKEY'),
-                "service" => "mt",
-                "data" => [
-                    // "to" => $user->mobile_number,
-                    "to" => "639154590172",
-                    "message" => `
-                        You have successfully paid the trip. Here is your boarding pass information: \n
-                        Ticket No: $sale->ticket_no\n
-                        Amount: $sale->amount\n
-                        From: $from\n
-                        To: $to\n
-                        Date: $now
-                    `
-                ]
-            ]);
-    }
-
     public function sendVerification(Request $req){
         $key = $req->key;
         $email = base64_decode($key);
@@ -413,12 +389,12 @@ class ApiController extends Controller
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';             //  smtp host
             $mail->SMTPAuth = true;
-            $mail->Username = 'dummyforcoc@gmail.com';   //  sender username
-            $mail->Password = 'davidmendoza';       // sender password
+            $mail->Username = 'transit.qr@gmail.com';   //  sender username
+            $mail->Password = env("MAIL_PASSWORD");       // sender password
             $mail->SMTPSecure = 'tls';                  // encryption - ssl/tls
             $mail->Port = 587;                          // port - 587/465
 
-            $mail->setFrom('dummyforcoc@gmail.com', 'Test Email');
+            $mail->setFrom('transit.qr@gmail.com', 'QR ADMIN');
             $mail->addAddress($email);
 
             $mail->isHTML(true);                // Set email content format to HTML
