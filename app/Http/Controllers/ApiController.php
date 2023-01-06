@@ -297,6 +297,10 @@ class ApiController extends Controller
         $data->ticket_no = $ticket_no;
         $data->amount = $req->amount;
 
+        $did = $req->header('deviceid');
+        $cid = Device::where('device_id', $did)->first()->company_id;
+        $array = $array->where('company_id', $cid);
+
         // DEDUCT FIRST
         $deduction = $this->deductUser($user, $req->amount);
 
