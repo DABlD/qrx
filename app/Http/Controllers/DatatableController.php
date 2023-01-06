@@ -131,6 +131,14 @@ class DatatableController extends Controller
             }
         }
 
+        foreach($array as $key => $data){
+            if($data->company == null){
+                $array->forget($key);
+            }
+        }
+
+        $array = collect($array->values());
+
         // IF HAS GROUP
         if($req->group){
             $array = $array->groupBy($req->group);
@@ -225,6 +233,14 @@ class DatatableController extends Controller
             }
         }
 
+        foreach($array as $key => $data){
+            if($data->company == null){
+                $array->forget($key);
+            }
+        }
+
+        $array = collect($array->values());
+
         // IF HAS GROUP
         if($req->group){
             $array = $array->groupBy($req->group);
@@ -271,6 +287,14 @@ class DatatableController extends Controller
                 $array->load($table);
             }
         }
+
+        foreach($array as $key => $data){
+            if($data->company == null){
+                $array->forget($key);
+            }
+        }
+
+        $array = collect($array->values());
 
         // IF HAS GROUP
         if($req->group){
@@ -328,6 +352,14 @@ class DatatableController extends Controller
                 $array->load($table);
             }
         }
+
+        foreach($array as $key => $data){
+            if($data->company == null){
+                $array->forget($key);
+            }
+        }
+
+        $array = collect($array->values());
 
         // IF HAS GROUP
         if($req->group){
