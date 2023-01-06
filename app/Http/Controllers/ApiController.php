@@ -64,6 +64,10 @@ class ApiController extends Controller
             $array = $array->orderBy($req->order[0], $req->order[1]);
         }
 
+        $did = $req->header('deviceid');
+        $cid = Device::where('device_id', $did)->first()->company_id;
+        $array = $array->where('company_id', $cid);
+
         // IF HAS WHERE
         if($req->where){
             $array = $array->where($req->where[0], isset($req->where[2]) ? $req->where[1] : "=", $req->where[2] ?? $req->where[1]);
@@ -105,6 +109,10 @@ class ApiController extends Controller
         if($req->order){
             $array = $array->orderBy($req->order[0], $req->order[1]);
         }
+
+        $did = $req->header('deviceid');
+        $cid = Device::where('device_id', $did)->first()->company_id;
+        $array = $array->where('company_id', $cid);
 
         // IF HAS WHERE
         if($req->where){
