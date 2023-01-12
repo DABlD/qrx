@@ -115,7 +115,8 @@
 					{
 						data: 'created_at',
 						render: date => {
-							return moment(date).format(dateTimeFormat3)
+							console.log(dateTimeFormat3);
+							return moment(date).format(dateTimeFormat3);
 						}
 					},
 					{
