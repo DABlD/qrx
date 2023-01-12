@@ -115,19 +115,19 @@
 					{
 						data: 'created_at',
 						render: date => {
-							return moment(date).format(dateTimeFormat2)
+							return moment(date).format(dateTimeFormat3)
 						}
 					},
 					{
 						data: 'embarked_date',
 						render: date => {
-							return date ? moment(date).format(dateTimeFormat2) : "---";
+							return date ? moment(date).format(dateTimeFormat3) : "---";
 						}
 					},
 					{
 						data: 'updated_at',
 						render: (date, a, sale) => {
-							return date ? moment(date).format(dateTimeFormat2) : "---";
+							return date ? moment(date).format(dateTimeFormat3) : "---";
 						}
 					},
 				],
