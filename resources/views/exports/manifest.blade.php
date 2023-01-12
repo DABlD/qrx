@@ -26,8 +26,8 @@
 			<td>{{ $data->vehicle ? $data->vehicle->vehicle_id : "---" }}</td>
 			<td>{{ $data->status }}</td>
 			<td>{{ now()->parse($data->created_at)->format("Y-m-d h:i A") }}</td>
-			<td>{{ $data->embarked_date ? now()->parse($data->embarked_date)->format("Y-m-d h:i A") : "---" }}</td>
-			<td>{{ $data->status == "Disembarked" ? now()->parse($data->updated_at)->format("Y-m-d h:i A") : "---" }}</td>
+			<td>{{ $data->embarked_date ? now()->parse($data->embarked_date)->format("Y-m-d h:i:s A") : "---" }}</td>
+			<td>{{ $data->status == "Disembarked" ? now()->parse($data->updated_at)->format("Y-m-d h:i:s A") : "---" }}</td>
 		</tr>
 	@endforeach
 </table>
