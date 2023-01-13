@@ -127,7 +127,7 @@
 					{
 						data: 'updated_at',
 						render: (date, a, sale) => {
-							return sale.embarked_date ? moment(date).format(dateTimeFormat3) : "---";
+							return sale.status == "Disembarked" ? moment(date).format(dateTimeFormat3) : "---";
 						}
 					},
 				],
