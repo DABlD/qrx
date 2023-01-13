@@ -127,7 +127,7 @@
 					{
 						data: 'updated_at',
 						render: (date, a, sale) => {
-							return date ? moment(date).format(dateTimeFormat3) : "---";
+							return sale.embarked_date ? moment(date).format(dateTimeFormat3) : "---";
 						}
 					},
 				],
