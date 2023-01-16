@@ -3,8 +3,8 @@ let successColor = "#28a745";
 let dateFormat = "YYYY-MM-DD";
 let dateFormat2 = "MMM DD, YYYY";
 let dateTimeFormat = "YYYY-MM-DD H:m:s";
-let dateTimeFormat2 = "MMM DD, YYYY hh:MM A";
-let dateTimeFormat3 = "MMM DD, YYYY hh:MM:ss A";
+let dateTimeFormat2 = "MMM DD, YYYY hh:mm A";
+let dateTimeFormat3 = "MMM DD, YYYY hh:mm:ss A";
 
 
 function ss(title = "", text = ""){
