@@ -72,7 +72,7 @@ class UserSeeder extends Seeder
         ]);
 
         $array = [
-            ["logo_img", 'qrtransit/img/qr-transit-logo.png'],
+            ["logo_img", 'qrtransit/img/new_logo.png'],
             ["login_banner_img", "qrtransit/img/auth-bg.jpg"],
             ["login_bg_img", 'qrtransit/img/qr-transit-logo.png'],
             ["sidebar_bg_color", "#343a40"],
