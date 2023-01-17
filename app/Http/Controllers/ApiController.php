@@ -283,7 +283,7 @@ class ApiController extends Controller
     }
 
     public function createSale(Request $req){
-        $user = Http::get('https://qr-transit.com.ph/api/v1/users/' . $req->user_id);
+        $user = Http::get('https://qr-transit.onehealthnetwork.com.ph/api/v1/users/' . $req->user_id);
         $user = json_decode($user)->data;
 
         $ticket = substr($req->device_id, -5);
@@ -379,7 +379,7 @@ class ApiController extends Controller
     public function deductUser($user, $amount){
         $response = Http::withHeaders([
             "X-API-KEY" => env("LEDGER_APIKEY")
-        ])->post('https://qr-transit.com.ph/api/v1/ledger-entry', [
+        ])->post('https://qr-transit.onehealthnetwork.com.ph/api/v1/ledger-entry', [
             "remark" => "Loading",
             "type" => "Debit",
             "amount" => $amount,
