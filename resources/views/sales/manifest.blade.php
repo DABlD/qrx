@@ -68,8 +68,29 @@
 		let from = moment().subtract(6, 'days').format(dateFormat);
 		let to = moment().format(dateFormat);
 		let status = "%%";
+		let device = "%%";
 
 		$(document).ready(()=> {
+			$.ajax({
+				url: '{{ route('device.get') }}',
+				data: {
+					select: "*",
+					where: ['status', 'Active']
+				},
+				success: result => {
+					result = JSON.parse(result);
+					
+					devices = "";
+					result.forEach(temp => {
+						devices += `
+							<option value="${temp.device_id}">${temp.description} - ${temp.device_id}</option>
+						`;
+					});
+
+					$('#device').append(devices);
+				}
+			});
+			
 			var table = $('#table').DataTable({
 				ajax: {
 					url: "{{ route('datatable.sale') }}",
@@ -81,6 +102,7 @@
 						f.from = from;
 						f.to = to;
 						f.status = status;
+						f.device = device + "%";
 						@if(auth()->user()->role == "Company")
 							f.where = ['company_id', {{ auth()->user()->id }}]
 						@endif
@@ -152,6 +174,7 @@
 			});
 
 			$('#status').select2();
+			$('#device').select2();
 
 			$('#from').on('change', e => {
 				from = e.target.value;
@@ -165,6 +188,11 @@
 
 			$('#status').on('change', e => {
 				status = e.target.value;
+				reload();
+			});
+
+			$('#device').on('change', e => {
+				device = e.target.value;
 				reload();
 			});
 		});

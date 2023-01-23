@@ -313,6 +313,9 @@ class DatatableController extends Controller
 
         $array = $array->whereBetween('created_at', [$from, $to]);
         $array = $array->where('status', 'like', $req->status);
+        $array = $array->where('ticket', 'like', substr($req->device, -6));
+
+        // dd(substr($req->device, -5));
 
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
