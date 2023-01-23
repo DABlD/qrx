@@ -202,6 +202,7 @@
 			    from: from,
 			    to: to,
 			    status: status,
+			    device: device + "%"
 			};
 
 			window.open("{{ route('export.manifest') }}?" + $.param(data), "_blank");

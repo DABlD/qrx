@@ -198,6 +198,7 @@
 			    from: from,
 			    to: to,
 			    status: status,
+			    device: device + "%"
 			};
 
 			window.open("{{ route('export.sales') }}?" + $.param(data), "_blank");
