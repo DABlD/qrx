@@ -210,6 +210,18 @@ Route::group([
             }
         );
 
+        // LEDGER ROUTES
+        $cname = "ledger";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
+            }
+        );
+
         // ADS ROUTES
         $cname = "ad";
         Route::group([

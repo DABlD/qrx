@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\SaleAttribute;
-use App\Models\{Sale, Station, User};
+use App\Models\{Sale, Station, User, Vehicle};
 
 class Sale extends Model
 {
