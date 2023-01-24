@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 
 use Illuminate\Http\Request;
-use App\Models\{Device, Route, Station, User, Vehicle, Sale, AuditTrail};
+use App\Models\{Device, Route, Station, User, Vehicle, Sale, AuditTrail, Ledger};
 use DB;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -299,8 +299,16 @@ class ApiController extends Controller
         $data->amount = $req->amount;
 
         $did = $req->header('deviceid');
-        $cid = Device::where('device_id', $did)->first()->company_id;
-        $data->company_id = $cid;
+        $device = Device::where('device_id', $did)->first();
+        $data->company_id = $device->company_id;
+
+        if($req->trx_type == "DR"){
+            $device->balance -= $req->amount;
+        }
+        elseif($req->trx_type == "CR"){
+            $device->balance += $req->amount;
+        }
+        $device->save();
 
         // DEDUCT FIRST
         $deduction = $this->deductUser($user, $req->amount);
@@ -315,6 +323,16 @@ class ApiController extends Controller
             if($data->save()){
                 $data->user = json_decode($data->user);
                 $this->log($user->name, "Transact", "Sales ID: " . $data->id);
+
+                $temp = new Ledger();
+                $temp->device_id = $did;
+                $temp->sale_id = $data->id;
+                $temp->amount = $data->amount;
+                $temp->datetime = $data->created_at;
+
+                $temp->trx_type = $req->trx_type;
+                $temp->description = $req->description;
+                $temp->save();
 
                 // IF HAS LOAD
                 if(isset($req->load)){
@@ -339,6 +357,40 @@ class ApiController extends Controller
             return [
                 "status" => "Error",
                 "error" => "Failed to Deduct from User"
+            ];
+        }
+    }
+
+    public function createLedgerEntry(Request $req){
+        $did = $req->header('deviceid');   
+        $device = Device::where('device_id', $did)->first();
+
+        if($req->trx_type == "DR"){
+            $device->balance -= $req->amount;
+        }
+        elseif($req->trx_type == "CR"){
+            $device->balance += $req->amount;
+        }
+        $device->save();     
+
+        $data = new Ledger();
+        $data->device_id = $did;
+        $data->amount = $req->amount;
+        $data->datetime = $req->datetime ?? now()->toDateTimeString();
+
+        $data->trx_type = $req->trx_type;
+        $data->description = $req->description;
+
+        if($data->save()){
+            return [
+                "status" => "Success",
+                "data" => $data
+            ];
+        }
+        else{
+            return [
+                "status" => "Error",
+                "error" => "Failed To Create Ledger Entry"
             ];
         }
     }

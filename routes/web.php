@@ -36,7 +36,10 @@ Route::group([
         Route::post('get/vehicles', 'ApiController@vehicles');
         Route::post('get/stations', 'ApiController@stations');
         Route::post('get/sales', 'ApiController@sales');
+
         Route::put('create/sale', 'ApiController@createSale');
+        Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');
+
         Route::post('update/sale', 'ApiController@updateSale');
     }
 );

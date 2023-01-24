@@ -16,7 +16,7 @@ class CreateLedgersTable extends Migration
         Schema::create('ledgers', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedInteger('device_id')->nullable();
+            $table->string('device_id')->nullable();
             $table->unsignedInteger('sale_id')->nullable();
 
             $table->float('amount', 8, 2);
