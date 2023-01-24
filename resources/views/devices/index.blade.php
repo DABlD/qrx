@@ -27,6 +27,7 @@
                     				<th>Route</th>
                     				<th>Station</th>
                     				<th>Status</th>
+                    				<th>Balance</th>
                     				<th>Actions</th>
                     			</tr>
                     		</thead>
@@ -92,6 +93,12 @@
 						}
 					},
 					{data: 'status'},
+					{
+						data: 'balance',
+						render: balance => {
+							return "₱" + balance;
+						}
+					},
 					{data: 'actions'},
 				],
         		pageLength: 25,
@@ -108,7 +115,7 @@
 		                            .eq(i)
 		                            .before(`
 		                            	<tr class="group">
-		                            		<td colspan="7">
+		                            		<td colspan="8">
 		                            			${company}
 		                            		</td>
 		                            	</tr>
