@@ -38,6 +38,7 @@ Route::group([
         Route::post('get/sales', 'ApiController@sales');
 
         Route::put('create/sale', 'ApiController@createSale');
+        Route::put('create/vehicle', 'ApiController@createVehicle');
         Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');
 
         Route::post('update/sale', 'ApiController@updateSale');

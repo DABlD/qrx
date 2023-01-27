@@ -60,9 +60,9 @@ class VehicleController extends Controller
         $data->vehicle_id = $req->vehicle_id;
         $data->type = $req->type;
         $data->passenger_limit = $req->passenger_limit;
-        $data->route_id = $req->route_id;
-        $data->current_station = $req->current_station;
-        $data->passenger_count = $req->passenger_count;
+        $data->driver = $req->driver;
+        $data->conductor = $req->conductor;
+        // $data->route_id = $req->route_id;
 
         $data->save();
         $this->log(auth()->user()->fullname, 'Create Vehicle', "Device ID: " . $data->id);

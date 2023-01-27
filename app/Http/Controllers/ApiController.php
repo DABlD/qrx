@@ -361,6 +361,34 @@ class ApiController extends Controller
         }
     }
 
+    public function createVehicle(Request $req){
+        $did = $req->header('deviceid');   
+        $device = Device::where('device_id', $did)->first();
+
+        $data = new Vehicle();
+        $data->company_id = $device->company_id;
+        $data->vehicle_id = $req->vehicle_id;
+        $data->route_id = $req->route_id;
+        $data->type = $req->type;
+        $data->passenger_limit = $req->passenger_limit;
+        $data->driver = $req->driver;
+        $data->conductor = $req->conductor;
+
+        if($data->save()){
+            return [
+                "status" => "Success",
+                "data" => $data
+            ];
+            $this->log($did, 'Create Vehicle', "Vehicle ID: " . $data->id);
+        }
+        else{
+            return [
+                "status" => "Error",
+                "error" => "Failed To Create Ledger Entry"
+            ];
+        }
+    }
+
     public function createLedgerEntry(Request $req){
         $did = $req->header('deviceid');   
         $device = Device::where('device_id', $did)->first();
