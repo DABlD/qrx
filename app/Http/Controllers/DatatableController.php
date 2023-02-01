@@ -344,7 +344,20 @@ class DatatableController extends Controller
             $sale->user = json_decode($sale->user);
             $sale->actions = $sale->actions;
 
-            $sale->di = substr($sale->ticket, 0, 5);
+            $temp = substr($sale->ticket, 0, 5);
+
+            foreach($array as $sale2){
+                $temp2 = substr($sale2->ticket, 0, 5);
+
+                if(isset($sale->$temp) && $temp2 == $temp){
+                    $sale->$temp += $sale2->amount;
+                }
+                elseif($temp2 == $temp){
+                    $sale->$temp = $sale2->amount;
+                }
+            }
+
+            $sale->di = $temp . ' - ₱' . $sale->$temp;
         }
 
         // IF HAS LOAD

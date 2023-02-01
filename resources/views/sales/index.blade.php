@@ -132,19 +132,19 @@
 		 
 		            api.column(0, { page: 'current' })
 		                .data()
-		                .each(function (company, i, row) {
-		                    if (last !== company) {
+		                .each(function (di, i, row) {
+		                    if (last !== di) {
 		                        $(rows)
 		                            .eq(i)
 		                            .before(`
 		                            	<tr class="group">
 		                            		<td colspan="7">
-		                            			${company} (${row.length})
+		                            			${di}
 		                            		</td>
 		                            	</tr>
 		                            `);
 		 
-		                        last = company;
+		                        last = di;
 		                    }
 		                });
 
