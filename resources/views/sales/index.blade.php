@@ -25,7 +25,7 @@
                     				<th>Ticket</th>
                     				<th>No</th>
                     				<th>Amount</th>
-                    				<th>Status</th>
+                    				{{-- <th>Status</th> --}}
                     				<th>Origin</th>
                     				<th>Destination</th>
                     				<th>Date Created</th>
@@ -107,12 +107,12 @@
 					}
 				},
 				columns: [
-					{data: 'company.fname', visible: false},
+					{data: 'di', visible: false},
 					{data: 'id'},
 					{data: 'ticket'},
 					{data: 'ticket_no'},
 					{data: 'amount'},
-					{data: 'status'},
+					// {data: 'status'},
 					{data: 'origin.name'},
 					{data: 'destination.name'},
 					{
@@ -127,6 +127,8 @@
 		            let api = this.api();
 		            let rows = api.rows({ page: 'current' }).nodes();
 		            let last = null;
+
+		            let ids = [];
 		 
 		            api.column(0, { page: 'current' })
 		                .data()
@@ -136,8 +138,8 @@
 		                            .eq(i)
 		                            .before(`
 		                            	<tr class="group">
-		                            		<td colspan="8">
-		                            			${company}
+		                            		<td colspan="7">
+		                            			${company} (${row.length})
 		                            		</td>
 		                            	</tr>
 		                            `);

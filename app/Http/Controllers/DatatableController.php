@@ -342,11 +342,9 @@ class DatatableController extends Controller
 
         foreach($array as $sale){
             $sale->user = json_decode($sale->user);
-        }
+            $sale->actions = $sale->actions;
 
-        // FOR ACTIONS
-        foreach($array as $item){
-            $item->actions = $item->actions;
+            $sale->di = substr($sale->ticket, 0, 5);
         }
 
         // IF HAS LOAD
