@@ -287,14 +287,14 @@ class ApiController extends Controller
         $user = Http::get('https://reg.qr-transit.com.ph/api/v1/users/' . $req->user_id);
         $user = json_decode($user)->data;
 
-        $ticket = substr($req->device_id, -5);
+        $ticket = substr($req->device_id, -5) . now()->format('ymd');
         $ticket_no = Sale::where('ticket', $ticket)->where('created_at', 'like', now()->format('Y-m-d') . "%")->count() + 1;
 
         $data = new Sale();
         $data->origin_id = $req->origin_id;
         $data->destination_id = $req->destination_id;
         $data->user = json_encode($user);
-        $data->ticket = $ticket . now()->format('ymd');
+        $data->ticket = $ticket;
         $data->ticket_no = $ticket_no;
         $data->amount = $req->amount;
 
