@@ -293,6 +293,7 @@ class ApiController extends Controller
         $data = new Sale();
         $data->origin_id = $req->origin_id;
         $data->destination_id = $req->destination_id;
+        $data->vehicle_id = $req->vehicle_id;
         $data->user = json_encode($user);
         $data->ticket = $ticket;
         $data->ticket_no = $ticket_no;
