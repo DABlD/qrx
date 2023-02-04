@@ -48,16 +48,26 @@
 	<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/datatables.bundle.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
-	{{-- <link rel="stylesheet" href="{{ asset('css/datatables.bootstrap4.min.css') }}"> --}}
-	{{-- <link rel="stylesheet" href="{{ asset('css/datatables-jquery.min.css') }}"> --}}
+
+	<style>
+		td{
+			text-align: center;
+		}
+
+		th{
+			text-align: center !important;
+		}
+
+		.ta{
+			text-align: left;
+		}
+	</style>
 @endpush
 
 @push('scripts')
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
 	<script src="{{ asset('js/datatables.bundle.min.js') }}"></script>
 	<script src="{{ asset('js/select2.min.js') }}"></script>
-	{{-- <script src="{{ asset('js/datatables.bootstrap4.min.js') }}"></script> --}}
-	{{-- <script src="{{ asset('js/datatables-jquery.min.js') }}"></script> --}}
 
 	<script>
 		$(document).ready(()=> {
@@ -108,7 +118,7 @@
 		                            .eq(i)
 		                            .before(`
 		                            	<tr class="group">
-		                            		<td colspan="7">
+		                            		<td colspan="7" class="ta">
 		                            			${company}
 		                            		</td>
 		                            	</tr>
@@ -159,7 +169,24 @@
 					@endif
 					
 	                ${input("vehicle_id", "Vehicle ID", null, 3, 9)}
-					${input("type", "Type", null, 3, 9)}
+					
+					<div class="row iRow">
+					    <div class="col-md-3 iLabel">
+					        Type
+					    </div>
+					    <div class="col-md-9 iInput">
+					        <select name="type" id="type" class="form-control">
+					        	<option value="">Select Type</option>
+					        	<option value="Car">Car</option>
+					        	<option value="Bus">Bus</option>
+					        	<option value="Trycicle">Trycicle</option>
+					        	<option value="Taxi">Taxi</option>
+					        	<option value="Ferry">Ferry</option>
+					        	<option value="Train">Train</option>
+					        </select>
+					    </div>
+					</div>
+
 					${input("passenger_limit", "Passenger Limit", null, 3, 9, 'number', 'min=0')}
 					${input("driver", "Driver", null, 3, 9)}
 					${input("conductor", "Conductor", null, 3, 9)}
@@ -254,12 +281,32 @@
 				html: `
 	                ${input("id", "", vehicle.id, 3, 9, 'hidden')}
 	                ${input("vehicle_id", "Vehicle", vehicle.vehicle_id, 3, 9)}
-					${input("type", "Type", vehicle.type, 3, 9)}
+
+					<div class="row iRow">
+					    <div class="col-md-3 iLabel">
+					        Type
+					    </div>
+					    <div class="col-md-9 iInput">
+					        <select name="type" id="type" class="form-control">
+					        	<option value="">Select Type</option>
+					        	<option value="Car">Car</option>
+					        	<option value="Bus">Bus</option>
+					        	<option value="Trycicle">Trycicle</option>
+					        	<option value="Taxi">Taxi</option>
+					        	<option value="Ferry">Ferry</option>
+					        	<option value="Train">Train</option>
+					        </select>
+					    </div>
+					</div>
+
 					${input("passenger_limit", "Passenger Limit", vehicle.passenger_limit, 3, 9, 'number', 'min=0')}
 					${input("driver", "Driver", vehicle.driver, 3, 9)}
 					${input("conductor", "Conductor", vehicle.conductor, 3, 9)}
 	                <br>
 				`,
+				didOpen: () => {
+					$('#type').val(vehicle.type).change();
+				},
 				width: '800px',
 				confirmButtonText: 'Update',
 				showCancelButton: true,
