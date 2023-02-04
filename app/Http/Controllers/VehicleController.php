@@ -58,6 +58,7 @@ class VehicleController extends Controller
         $data = new Vehicle();
         $data->company_id = $req->company_id;
         $data->vehicle_id = $req->vehicle_id;
+        $data->route_id = $req->route_id;
         $data->type = $req->type;
         $data->passenger_limit = $req->passenger_limit;
         $data->driver = $req->driver;

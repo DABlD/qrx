@@ -172,6 +172,17 @@
 					
 					<div class="row iRow">
 					    <div class="col-md-3 iLabel">
+					        Route
+					    </div>
+					    <div class="col-md-9 iInput">
+					        <select name="route_id" id="route_id" class="form-control">
+					        	<option value="">Select Route</option>
+					        </select>
+					    </div>
+					</div>
+					
+					<div class="row iRow">
+					    <div class="col-md-3 iLabel">
 					        Type
 					    </div>
 					    <div class="col-md-9 iInput">
@@ -218,6 +229,52 @@
 								$('#company_id').select2();
 							}
 						});
+
+						$('#company_id').on('change', e => {
+							$('#route_id option:not(:first-child)').remove();
+							$('#route_id').select2().val('');
+							$.ajax({
+								url: '{{ route('route.get') }}',
+								data: {
+									select: "*",
+									where: ["company_id", e.target.value]
+								},
+								success: routes => {
+									routes = JSON.parse(routes);
+
+									let routeString = "";
+									routes.forEach(route => {
+										routeString += `
+											<option value="${route.id}">${route.from} - ${route.to} (${route.direction})</option>
+										`;
+									});
+
+									$('#route_id').append(routeString);
+									$('#route_id').select2();
+								}
+							});
+						});
+					@else
+						$.ajax({
+							url: '{{ route('route.get') }}',
+							data: {
+								select: "*",
+								where: ["company_id", {{ auth()->user()->id }}]
+							},
+							success: routes => {
+								routes = JSON.parse(routes);
+
+								let routeString = "";
+								routes.forEach(route => {
+									routeString += `
+										<option value="${route.id}">${route.from} - ${route.to} (${route.direction})</option>
+									`;
+								});
+
+								$('#route_id').append(routeString);
+								$('#route_id').select2();
+							}
+						});
 					@endif
 				},
 				preConfirm: () => {
@@ -261,6 +318,7 @@
 						data: {
 							company_id: $("[name='company_id']").val() ?? {{ auth()->user()->id }},
 							vehicle_id: $("[name='vehicle_id']").val(),
+							route_id: $("[name='route_id']").val(),
 							type: $("[name='type']").val(),
 							passenger_limit: $("[name='passenger_limit']").val(),
 							driver: $("[name='driver']").val(),
@@ -281,6 +339,17 @@
 				html: `
 	                ${input("id", "", vehicle.id, 3, 9, 'hidden')}
 	                ${input("vehicle_id", "Vehicle", vehicle.vehicle_id, 3, 9)}
+					
+					<div class="row iRow">
+					    <div class="col-md-3 iLabel">
+					        Route
+					    </div>
+					    <div class="col-md-9 iInput">
+					        <select name="route_id" id="route_id" class="form-control">
+					        	<option value="">Select Route</option>
+					        </select>
+					    </div>
+					</div>
 
 					<div class="row iRow">
 					    <div class="col-md-3 iLabel">
@@ -305,7 +374,29 @@
 	                <br>
 				`,
 				didOpen: () => {
-					$('#type').val(vehicle.type).change();
+					$.ajax({
+						url: '{{ route('route.get') }}',
+						data: {
+							select: "*",
+							where: ["company_id", vehicle.company_id]
+						},
+						success: routes => {
+							routes = JSON.parse(routes);
+
+							let routeString = "";
+							routes.forEach(route => {
+								routeString += `
+									<option value="${route.id}">${route.from} - ${route.to} (${route.direction})</option>
+								`;
+							});
+
+							$('#route_id').append(routeString);
+							$('#route_id').select2();
+							
+							$('#type').val(vehicle.type).change();
+							$('#route_id').val(vehicle.route_id).change();
+						}
+					});
 				},
 				width: '800px',
 				confirmButtonText: 'Update',
@@ -349,6 +440,7 @@
 						data: {
 							id: $("[name='id']").val(),
 							vehicle_id: $("[name='vehicle_id']").val(),
+							route_id: $("[name='route_id']").val(),
 							type: $("[name='type']").val(),
 							passenger_limit: $("[name='passenger_limit']").val(),
 							driver: $("[name='driver']").val(),
