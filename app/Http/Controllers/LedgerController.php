@@ -13,7 +13,7 @@ class LedgerController extends Controller
     }
 
     public function get(Request $req){
-        $array = DB::table($this->table)->select($req->select);
+        $array = DB::table($this->table)->select($req->select ?? "*");
         $array = $array->where('deleted_at', null);
 
         // IF HAS SORT PARAMETER $ORDER

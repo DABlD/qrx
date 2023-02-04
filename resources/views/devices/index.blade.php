@@ -508,6 +508,59 @@
 			});
 		}
 
+		function ledger(did){
+			$.ajax({
+				url: '{{ route('ledger.get') }}',
+				data: {
+					where: ['device_id', did]
+				},
+				success: result => {
+					result = JSON.parse(result);
+					
+					let ledgerString = "";
+
+					result.forEach(entry => {
+						ledgerString += `
+							<tr>
+								<td>${entry.amount}</td>
+								<td>${entry.trx_type}</td>
+								<td>${entry.description}</td>
+								<td>${moment(entry.datetime).format('MMM DD, YYYY hh:mm:ss A')}</td>
+							</tr>
+						`;
+					});
+
+					if(ledgerString == ""){
+						ledgerString = `
+							<tr>
+								<td colspan="4" style="text-align: center;">No Entries</td>
+							</tr>
+						`;
+					}
+
+					Swal.fire({
+						title: "Ledger Entries",
+						width: "40%",
+						html: `
+							<table class="table">
+								<thead>
+									<tr>
+										<td>Amount</td>
+										<td>Type</td>
+										<td>Description</td>
+										<td>Datetime</td>
+									</tr>
+								</thead>
+								<tbody>
+									${ledgerString}
+								</tbody>
+							</table>
+						`
+					})
+				}
+			})
+		}
+
 		// ADS
 		function ads(id, ids){
 			Swal.fire({

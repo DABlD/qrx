@@ -18,6 +18,9 @@ trait DeviceAttribute{
 			$action .= 	"<a class='btn btn-info' data-toggle='tooltip' title='Ads' onClick='ads($id, $ads)'>" .
 					        "<i class='fa-light fa-rectangle-ad'></i>" .
 					    "</a>&nbsp;";
+			$action .= 	"<a class='btn btn-primary' data-toggle='tooltip' title='Ledger' onClick='ledger(`$this->device_id`)'>" .
+					        "Ledger <i class='fa-light fa-table'></i>" .
+					    "</a>&nbsp;";
 			$action .= 	"<a class='btn btn-danger' data-toggle='tooltip' title='Delete' onClick='del($id)'>" .
 					        "<i class='fas fa-trash'></i>" .
 					    "</a>&nbsp;";
