@@ -153,6 +153,7 @@
 			Swal.fire({
 				html: `
 	                ${input("device_id", "Device", null, 3, 9)}
+	                ${input("mobile", "Mobile No.", null, 3, 9)}
 					${input("description", "Description", null, 3, 9, 'email')}
 
 					@if(auth()->user()->role == "Admin")
@@ -261,12 +262,21 @@
 			}).then(result => {
 				if(result.value){
 					swal.showLoading();
+
+			        let mobile = $("[name='mobile']").val();
+			        mobile = mobile.replace(" ", "");
+			        mobile = mobile.replace("+", "");
+			        mobile = mobile.replace("-", "");
+			        mobile = mobile.replace("(", "");
+			        mobile = mobile.replace(")", "");
+
 					$.ajax({
 						url: "{{ route('device.store') }}",
 						type: "POST",
 						data: {
 							company_id: $("[name='company_id']").val() ?? {{ auth()->user()->id }},
 							device_id: $("[name='device_id']").val(),
+							mobile: mobile,
 							description: $("[name='description']").val(),
 							route_id: $("[name='route_id']").val(),
 							station_id: $("[name='station_id']").val(),
@@ -345,6 +355,7 @@
 				html: `
 	                ${input("id", "", device.id, 3, 9, 'hidden')}
 	                ${input("device_id", "Device", device.device_id, 3, 9)}
+	                ${input("mobile", "Mobile No.", device.mobile, 3, 9)}
 					${input("description", "Description", device.description, 3, 9)}
 
 					<div class="row iRow">
@@ -475,11 +486,20 @@
 			}).then(result => {
 				if(result.value){
 					swal.showLoading();
+
+			        let mobile = $("[name='mobile']").val();
+			        mobile = mobile.replace(" ", "");
+			        mobile = mobile.replace("+", "");
+			        mobile = mobile.replace("-", "");
+			        mobile = mobile.replace("(", "");
+			        mobile = mobile.replace(")", "");
+
 					update({
 						url: "{{ route('device.update') }}",
 						data: {
 							id: $("[name='id']").val(),
 							device_id: $("[name='device_id']").val(),
+							mobile: mobile,
 							description: $("[name='description']").val(),
 							route_id: $("[name='route_id']").val(),
 							station_id: $("[name='station_id']").val(),

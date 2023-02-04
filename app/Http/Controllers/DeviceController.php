@@ -60,6 +60,7 @@ class DeviceController extends Controller
         $data->station_id = $req->station_id;
         $data->route_id = $req->route_id;
         $data->device_id = $req->device_id;
+        $data->mobile = $req->mobile;
         $data->description = $req->description;
 
         $data->save();
