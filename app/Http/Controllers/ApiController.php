@@ -147,6 +147,10 @@ class ApiController extends Controller
         return $array;
     }
 
+    public function categories(Request $req){
+        echo Vehicle::distinct('type')->pluck('type');
+    }
+
     public function devices(Request $req){
         $array = Device::select($req->select ?? "*");
         $array = $array->where('deleted_at', null);
