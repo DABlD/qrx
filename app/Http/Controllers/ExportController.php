@@ -65,7 +65,7 @@ class ExportController extends Controller
     public function manifest(Request $req){
         $array = Sale::select("*");
 
-        if(auth()->user()->role != "Admin"){
+        if(auth()->user()->role == "Company"){
             $array = $array->where('company_id', auth()->user()->id);
         }
 
