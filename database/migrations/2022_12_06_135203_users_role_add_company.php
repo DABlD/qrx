@@ -17,12 +17,12 @@ class UsersRoleAddCompany extends Migration
         //     $table->enum('role', ['Super Admin', 'Admin', 'Coast Guard', 'Company'])->nullable()->change();
         // });
 
-        \DB::statement("ALTER TABLE `users` CHANGE `role` `role` ENUM(
-            'Super Admin',
-            'Admin',
-            'Coast Guard',
-            'Company'
-        ) NULL;");
+        // \DB::statement("ALTER TABLE `users` CHANGE `role` `role` ENUM(
+        //     'Super Admin',
+        //     'Admin',
+        //     'Coast Guard',
+        //     'Company'
+        // ) NULL;");
     }
 
     /**

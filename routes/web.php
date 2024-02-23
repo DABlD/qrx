@@ -24,27 +24,27 @@ Route::get('/', function(){
 });
 
 // API
-Route::group([
-        'prefix' => "api/"
-    ], function (){
-        Route::get('sendVerification', 'ApiController@sendVerification')->name('sendVerification');
-        Route::get('verify', 'ApiController@verify')->name('verify');
+// Route::group([
+//         'prefix' => "api/"
+//     ], function (){
+//         Route::get('sendVerification', 'ApiController@sendVerification')->name('sendVerification');
+//         Route::get('verify', 'ApiController@verify')->name('verify');
 
-        Route::post('get/users', 'ApiController@users');
-        Route::post('get/routes', 'ApiController@routes');
-        Route::post('get/devices', 'ApiController@devices');
-        Route::post('get/vehicles', 'ApiController@vehicles');
-        Route::post('get/categories', 'ApiController@categories');
-        Route::post('get/stations', 'ApiController@stations');
-        Route::post('get/sales', 'ApiController@sales');
+//         Route::post('get/users', 'ApiController@users');
+//         Route::post('get/routes', 'ApiController@routes');
+//         Route::post('get/devices', 'ApiController@devices');
+//         Route::post('get/vehicles', 'ApiController@vehicles');
+//         Route::post('get/categories', 'ApiController@categories');
+//         Route::post('get/stations', 'ApiController@stations');
+//         Route::post('get/sales', 'ApiController@sales');
 
-        Route::put('create/sale', 'ApiController@createSale');
-        Route::put('create/vehicle', 'ApiController@createVehicle');
-        Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');
+//         Route::put('create/sale', 'ApiController@createSale');
+//         Route::put('create/vehicle', 'ApiController@createVehicle');
+//         Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');
 
-        Route::post('update/sale', 'ApiController@updateSale');
-    }
-);
+//         Route::post('update/sale', 'ApiController@updateSale');
+//     }
+// );
 
 Route::group([
         'middleware' => 'auth',
@@ -107,148 +107,6 @@ Route::group([
             }
         );
 
-        // ROUTE ROUTES
-        $cname = "route";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-
-                Route::get("/", ucfirst($cname) . "Controller@index")
-                    ->defaults("sidebar", 1)
-                    ->defaults("icon", "fad fa-route")
-                    ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin", 'Company'))
-                    // ->defaults("group", "Settings")
-                    ->name($cname)
-                    ->defaults("href", "/$cname");
-
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
-                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
-                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
-            }
-        );
-
-        // STATION ROUTES
-        $cname = "station";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
-                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
-                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
-            }
-        );
-
-        // DEVICE ROUTES
-        $cname = "device";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-                Route::get("/", ucfirst($cname) . "Controller@index")
-                    ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-light fa-mobile")
-                    ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin", 'Company'))
-                    // ->defaults("group", "Settings")
-                    ->name($cname)
-                    ->defaults("href", "/$cname");
-
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
-                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
-                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
-            }
-        );
-
-        // VEHICLE ROUTES
-        $cname = "vehicle";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-                Route::get("/", ucfirst($cname) . "Controller@index")
-                    ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-light fa-truck")
-                    ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin", 'Company'))
-                    // ->defaults("group", "Settings")
-                    ->name($cname)
-                    ->defaults("href", "/$cname");
-
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
-                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
-                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
-            }
-        );
-
-        // SALE ROUTES
-        $cname = "sale";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-                Route::get("/", ucfirst($cname) . "Controller@index")
-                    ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-solid fa-dollar-sign")
-                    ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin", 'Company'))
-                    // ->defaults("group", "Settings")
-                    ->name($cname)
-                    ->defaults("href", "/$cname");
-
-                Route::get("/manifest", ucfirst($cname) . "Controller@manifest")
-                    ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-light fa-folder-open")
-                    ->defaults("name", "Manifest")
-                    ->defaults("roles", array("Admin", "Coast Guard", "Company"))
-                    // ->defaults("group", "Settings")
-                    ->name("manifest")
-                    ->defaults("href", "sale/manifest");
-
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-            }
-        );
-
-        // LEDGER ROUTES
-        $cname = "ledger";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
-                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
-            }
-        );
-
-        // ADS ROUTES
-        $cname = "ad";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-                Route::get("/", ucfirst($cname) . "Controller@index")
-                    ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-light fa-rectangle-ad")
-                    ->defaults("name", ucfirst($cname) . "s")
-                    ->defaults("roles", array("Admin"))
-                    // ->defaults("group", "Settings")
-                    ->name($cname)
-                    ->defaults("href", "/$cname");
-
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
-                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
-                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
-            }
-        );
-
         // AUDIT TRAIL ROUTES
         $cname = "audit_trail";
         Route::group([
@@ -283,25 +141,25 @@ Route::group([
         );
 
         // REPORT ROUTES
-        $cname = "report";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-                Route::get("sales/", ucfirst($cname) . "Controller@sales")->name('sales');
-            }
-        );
+        // $cname = "report";
+        // Route::group([
+        //         'as' => "$cname.",
+        //         'prefix' => "$cname/"
+        //     ], function () use($cname){
+        //         Route::get("sales/", ucfirst($cname) . "Controller@sales")->name('sales');
+        //     }
+        // );
 
         // EXPORT ROUTES
-        $cname = "export";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-                Route::get("sales/", ucfirst($cname) . "Controller@sales")->name('sales');
-                Route::get("manifest/", ucfirst($cname) . "Controller@manifest")->name('manifest');
-            }
-        );
+        // $cname = "export";
+        // Route::group([
+        //         'as' => "$cname.",
+        //         'prefix' => "$cname/"
+        //     ], function () use($cname){
+        //         Route::get("sales/", ucfirst($cname) . "Controller@sales")->name('sales');
+        //         Route::get("manifest/", ucfirst($cname) . "Controller@manifest")->name('manifest');
+        //     }
+        // );
 
         // DATATABLES
         $cname = "datatable";
@@ -311,12 +169,6 @@ Route::group([
             ], function () use($cname){
 
                 Route::get("user", ucfirst($cname) . "Controller@user")->name('user');
-                Route::get("route", ucfirst($cname) . "Controller@route")->name('route');
-                Route::get("station", ucfirst($cname) . "Controller@station")->name('station');
-                Route::get("device", ucfirst($cname) . "Controller@device")->name('device');
-                Route::get("vehicle", ucfirst($cname) . "Controller@vehicle")->name('vehicle');
-                Route::get("sale", ucfirst($cname) . "Controller@sale")->name('sale');
-                Route::get("ad", ucfirst($cname) . "Controller@ad")->name('ad');
                 Route::get("company", ucfirst($cname) . "Controller@company")->name('company');
                 
                 Route::get("audit_trails", ucfirst($cname) . "Controller@audit_trails")->name('audit_trails');
