@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{User, AuditTrail};
+use App\Models\{User, AuditTrail, Branch};
 use DB;
 use Auth;
 
@@ -65,8 +65,24 @@ class UserController extends Controller
         $data->contact = $req->contact;
         $data->password = $req->password;
 
-        $data->save();
-        $this->log(auth()->user()->fullname, 'Create User', "Device ID: " . $data->id);
+        if($req->role != "Branch"){
+            $data->save();
+            $this->log(auth()->user()->fullname, 'Create User', "Device ID: " . $data->id);
+        }
+        else{
+            $data2 = new Branch();
+            $data2->user_id = $req->user_id;
+            $data2->work_status = $req->work_status;
+            $data2->id_type = $req->id_type;
+            $data2->id_num = $req->id_num;
+            $data2->id_file = $req->id_file;
+            $data2->id_verified = $req->id_verified;
+            $data2->percent = $req->percent;
+
+            $data->save();
+            $data2->save();
+            $this->log(auth()->user()->fullname, 'Create User', "Device ID: " . $data->id);
+        }
     }
 
     public function update(Request $req){
