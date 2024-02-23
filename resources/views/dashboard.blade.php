@@ -80,45 +80,45 @@
     <script src="{{ asset('js/chart.min.js') }}"></script>
 
     <script>
-        $(document).ready(() => {
-            var myChart, ctx;
+        // $(document).ready(() => {
+        //     var myChart, ctx;
 
-            Swal.fire('Loading Data');
-            swal.showLoading();
+        //     Swal.fire('Loading Data');
+        //     swal.showLoading();
 
-            $.ajax({
-                url: '{{ route("report.sales") }}',
-                success: result =>{
-                    result = JSON.parse(result);
-                    console.log(result,
+        //     $.ajax({
+        //         url: '{{ route("dashboard") }}',
+        //         success: result =>{
+        //             result = JSON.parse(result);
+        //             console.log(result,
 
-                            [{
-                              data: {
-                                January: 10,
-                                February: 20
-                              }
-                            }]);
+        //                     [{
+        //                       data: {
+        //                         January: 10,
+        //                         February: 20
+        //                       }
+        //                     }]);
 
-                    ctx = document.getElementById('sales').getContext('2d');
-                    myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: result.labels,
-                            datasets: result.dataset
+        //             ctx = document.getElementById('sales').getContext('2d');
+        //             myChart = new Chart(ctx, {
+        //                 type: 'line',
+        //                 data: {
+        //                     labels: result.labels,
+        //                     datasets: result.dataset
 
-                            // datasets: [{
-                            //   data: {
-                            //     January: 10,
-                            //     February: 20
-                            //   }
-                            // }]
-                        }
-                    });
-                    swal.close();
+        //                     // datasets: [{
+        //                     //   data: {
+        //                     //     January: 10,
+        //                     //     February: 20
+        //                     //   }
+        //                     // }]
+        //                 }
+        //             });
+        //             swal.close();
 
-                    console.log('test');
-                }
-            })
-        });
+        //             console.log('test');
+        //         }
+        //     })
+        // });
     </script>
 @endpush

@@ -44,7 +44,7 @@
         <div class="align-self-center flex-fill py-3">
             <div class="container-fluid">
                 <a href="{{ route('login') }}">
-                    <img src="{{ asset($theme['login_bg_img'] ?? "qrx/img/LOGO.png") }}" class="mx-auto mb-4 d-block" width="314" {{-- height="78" --}} alt="logo">
+                    <img src="{{ asset($theme['login_bg_img'] ?? "qrx/img/FRONT2.jpg") }}" class="mx-auto mb-4 d-block" width="314" {{-- height="78" --}} alt="logo">
                 </a>
 
                 <div class="row justify-content-center">
