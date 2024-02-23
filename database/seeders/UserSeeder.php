@@ -45,28 +45,28 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'username' => 'company1',
-            'fname' => 'Company 1',
-            'role' => 'Company',
-            'email' => 'company1@gmail.com',
+            'username' => 'branch1',
+            'fname' => 'branch 1',
+            'role' => 'Branch',
+            'email' => 'branch1@gmail.com',
             'email_verified_at' => now()->toDateTimeString(),
             'password' => '12345678'
         ]);
 
         User::create([
-            'username' => 'company2',
-            'fname' => 'Company 2',
-            'role' => 'Company',
-            'email' => 'company2@gmail.com',
+            'username' => 'branch2',
+            'fname' => 'branch 2',
+            'role' => 'Branch',
+            'email' => 'branch2@gmail.com',
             'email_verified_at' => now()->toDateTimeString(),
             'password' => '12345678'
         ]);
 
         User::create([
-            'username' => 'company3',
-            'fname' => 'Company 3',
-            'role' => 'Company',
-            'email' => 'company3@gmail.com',
+            'username' => 'branch3',
+            'fname' => 'branch 3',
+            'role' => 'Branch',
+            'email' => 'branch3@gmail.com',
             'email_verified_at' => now()->toDateTimeString(),
             'password' => '12345678'
         ]);
