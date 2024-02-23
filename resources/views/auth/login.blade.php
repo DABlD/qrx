@@ -13,14 +13,14 @@
     <title>QR Transit</title>
 
     <!-- Scripts -->
-    <script src="{{ asset("qrtransit/js/app.js") }}" defer></script>
+    <script src="{{ asset("qrx/js/app.js") }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="http://fonts.gstatic.com/">
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset("qrtransit/css/app.css") }}" rel="stylesheet">
+    <link href="{{ asset("qrx/css/app.css") }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
     <style>
@@ -31,7 +31,7 @@
         }
 
         .auth-background {
-            background-image: url("{{ asset($theme['login_banner_img'] ?? "qrtransit/img/auth-bg.jpg") }}");
+            background-image: url("{{ asset($theme['login_banner_img'] ?? "qrx/img/FRONT1.jpg") }}");
             background-size: contain;
             background-attachment: fixed;
         }
@@ -44,7 +44,7 @@
         <div class="align-self-center flex-fill py-3">
             <div class="container-fluid">
                 <a href="{{ route('login') }}">
-                    <img src="{{ asset($theme['login_bg_img'] ?? "qrtransit/img/qr-transit-logo.png") }}" class="mx-auto mb-4 d-block" width="314" {{-- height="78" --}} alt="logo">
+                    <img src="{{ asset($theme['login_bg_img'] ?? "qrx/img/LOGO.png") }}" class="mx-auto mb-4 d-block" width="314" {{-- height="78" --}} alt="logo">
                 </a>
 
                 <div class="row justify-content-center">
