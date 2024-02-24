@@ -428,6 +428,30 @@ class ApiController extends Controller
         }
     }
 
+    public function createTransaction(Request $req){
+        $data = new Transaction();
+        $data->user_id = $req->user_id;
+        $data->loan_id = $req->loan_id;
+        $data->type = $req->type;
+        $data->amount = $req->amount;
+        $data->trx_number = $req->trx_number;
+        $data->payment_channel = $req->payment_channel;
+        $data->payment_date = $req->payment_date;
+
+        if($data->save()){
+            return [
+                "status" => "Success",
+                "data" => $data
+            ];
+        }
+        else{
+            return [
+                "status" => "Error",
+                "error" => "Failed To Save Transaction"
+            ];
+        }
+    }
+
     public function updateSale(Request $req){
         $sale = Sale::where('id', $req->id)->first();
 
