@@ -428,6 +428,12 @@ class ApiController extends Controller
         }
     }
 
+    public function test(Request $req){
+        return [
+            "message" => "test success"
+        ];
+    }
+
     public function createTransaction(Request $req){
         $data = new Transaction();
         // $data->user_id = $req->user_id;

@@ -20,7 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedInteger('loan_id')->nullable();
             $table->string('type');
             $table->float('amount', 8, 2);
-            $table->string('trx_number')->nullable();
+            $table->string('trx_number')->unique();
             $table->string('payment_channel')->nullable();
             $table->date('payment_date');
             
