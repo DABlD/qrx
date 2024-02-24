@@ -19,8 +19,8 @@ class CreateBranchesTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('work_status');
             $table->string('id_type');
-            $table->string('id_num');
-            $table->string('id_file');
+            $table->string('id_num')->unique();
+            $table->string('id_file')->nullable();
             $table->boolean('id_verified')->default(false);
             $table->float('percent', 4, 2);
             $table->timestamps();

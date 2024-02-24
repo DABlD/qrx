@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\{User, Theme};
+use App\Models\{User, Theme, Branch};
 
 class UserSeeder extends Seeder
 {
@@ -69,6 +69,36 @@ class UserSeeder extends Seeder
             'email' => 'branch3@gmail.com',
             'email_verified_at' => now()->toDateTimeString(),
             'password' => '12345678'
+        ]);
+
+        Branch::create([
+            "user_id" => 3,
+            "work_status" => 'Private',
+            "id_type" => 'Passport',
+            "id_num" => 'P21234561A',
+            "id_file" => null,
+            "id_verified" => 0,
+            "percent" => 3.5,
+        ]);
+
+        Branch::create([
+            "user_id" => 4,
+            "work_status" => 'Government',
+            "id_type" => 'Passport',
+            "id_num" => 'P21234571A',
+            "id_file" => null,
+            "id_verified" => 0,
+            "percent" => 2.0,
+        ]);
+
+        Branch::create([
+            "user_id" => 5,
+            "work_status" => 'Self Employed',
+            "id_type" => 'Passport',
+            "id_num" => 'P21234581A',
+            "id_file" => null,
+            "id_verified" => 0,
+            "percent" => 3,
         ]);
 
         $array = [
