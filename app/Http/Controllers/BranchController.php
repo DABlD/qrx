@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Branch};
+use App\Models\{Branch, User};
 use DB;
 
 class BranchController extends Controller
@@ -13,9 +13,8 @@ class BranchController extends Controller
     }
 
     public function get(Request $req){
-        $array = DB::table($this->table)->select($req->select);
-        $array = $array->where('deleted_at', null);
-
+        $array = Branch::select($req->select);
+        
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
             $array = $array->orderBy($req->order[0], $req->order[1]);
@@ -29,12 +28,6 @@ class BranchController extends Controller
         // IF HAS WHERE2
         if($req->where2){
             $array = $array->where($req->where2[0], isset($req->where2[2]) ? $req->where2[1] : "=", $req->where2[2] ?? $req->where2[1]);
-        }
-
-        // IF HAS JOIN
-        if($req->join){
-            $alias = substr($req->join, 1);
-            $array = $array->join("$req->join as $alias", "$alias.fid", '=', '$this->table.id');
         }
 
         $array = $array->get();
@@ -55,7 +48,22 @@ class BranchController extends Controller
     }
 
     public function update(Request $req){
-        echo DB::table($this->table)->where('id', $req->id)->update($req->except(['id', '_token']));
+        $branch = Branch::find($req->id);
+        $branch->work_status = $req->work_status;
+        $branch->percent = $req->percent;
+        $branch->id_type = $req->id_type;
+        $branch->id_num = $req->id_num;
+        $branch->id_verified = $req->id_verified;
+        $branch->save();
+
+        $user = User::find($branch->user_id);
+        $user->fname = $req->fname;
+        $user->email = $req->email;
+        $user->gender = $req->gender;
+        $user->contact = $req->contact;
+        $user->username = $req->username;
+
+        echo $user->save();
     }
 
     public function index(){

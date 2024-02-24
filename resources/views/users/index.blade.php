@@ -94,6 +94,12 @@
 					{
 						targets: [0,1,2,3,4,5],
 						className: "center"
+					},
+					{
+						targets: [5],
+						render: status => {
+							return status ? "Yes" : "No";
+						}
 					}
 				],
 			});
@@ -101,10 +107,11 @@
 
 		function view(id){
 			$.ajax({
-				url: "{{ route('user.get') }}",
+				url: "{{ route('branch.get') }}",
 				data: {
 					select: '*',
 					where: ['id', id],
+					load: ['user']
 				},
 				success: admin => {
 					admin = JSON.parse(admin)[0];
@@ -215,26 +222,34 @@
 			});
 		}
 
-		function showDetails(user){
+		function showDetails(branch){
 			Swal.fire({
 				html: `
-	                ${input("id", "", user.id, 3, 9, 'hidden')}
-	                ${input("fname", "Name", user.fname, 3, 9)}
-					${input("email", "Email", user.email, 3, 9, 'email')}
+	                ${input("id", "", branch.id, 3, 9, 'hidden')}
+	                ${input("fname", "Name", branch.user.fname, 3, 9)}
+					${input("email", "Email", branch.user.email, 3, 9, 'email')}
+					${input("gender", "Gender", branch.user.gender, 3, 9)}
+					${input("contact", "Contact", branch.user.contact, 3, 9)}
+
+	                <br>
+	                ${input("username", "Username", branch.user.username, 3, 9)}
+					${input("work_status", "Work Status", branch.work_status, 3, 9)}
+					${input("percent", "Interest Rate", branch.percent, 3, 9, 'number', 'min=0 max=100')}
+
+					<br>
+					${input("id_type", "ID Type", branch.id_type, 3, 9)}
+					${input("id_num", "ID Number", branch.id_num, 3, 9)}
 					<div class="row iRow">
 					    <div class="col-md-3 iLabel">
-					        Role
+					        Status
 					    </div>
 					    <div class="col-md-9 iInput">
-					        <select name="role" class="form-control">
-					        	<option value="Admin" ${user.role == "Admin" ? "Selected" : ""}>Admin</option>
-					        	<option value="Coast Guard" ${user.role == "Coast Guard" ? "Selected" : ""}>Coast Guard</option>
+					        <select name="id_verified" class="form-control">
+					        	<option value="0" ${branch.id_verified == 0 ? "selected" : ""}>Not Verified</option>
+					        	<option value="1" ${branch.id_verified == 1 ? "selected" : ""}>Verified</option>
 					        </select>
 					    </div>
 					</div>
-
-	                <br>
-	                ${input("username", "Username", user.username, 3, 9)}
 				`,
 				width: '800px',
 				confirmButtonText: 'Update',
@@ -259,7 +274,7 @@
             					},
             					success: result => {
             						result = JSON.parse(result);
-            						if(result.length && result[0].id != user.id){
+            						if(result.length && result[0].id != branch.user.id){
             			    			Swal.showValidationMessage('Email already used');
 	            						setTimeout(() => {resolve()}, 500);
             						}
@@ -272,7 +287,7 @@
 			            					},
 			            					success: result => {
 			            						result = JSON.parse(result);
-			            						if(result.length && result[0].id != user.id){
+			            						if(result.length && result[0].id != branch.user.id){
 			            			    			Swal.showValidationMessage('Username already used');
 				            						setTimeout(() => {resolve()}, 500);
 			            						}
@@ -290,13 +305,19 @@
 				if(result.value){
 					swal.showLoading();
 					update({
-						url: "{{ route('user.update') }}",
+						url: "{{ route('branch.update') }}",
 						data: {
 							id: $("[name='id']").val(),
-							role: $("[name='role']").val(),
 							fname: $("[name='fname']").val(),
 							email: $("[name='email']").val(),
+							gender: $("[name='gender']").val(),
+							contact: $("[name='contact']").val(),
 							username: $("[name='username']").val(),
+							work_status: $("[name='work_status']").val(),
+							percent: $("[name='percent']").val(),
+							id_type: $("[name='id_type']").val(),
+							id_num: $("[name='id_num']").val(),
+							id_verified: $("[name='id_verified']").val(),
 						},
 						message: "Success"
 					},	() => {

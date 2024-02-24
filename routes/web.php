@@ -69,8 +69,8 @@ Route::group([
 
                 Route::get("/", ucfirst($cname) . "Controller@index")
                     ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-light fa-users")
-                    ->defaults("name", ucfirst($cname) . "s")
+                    ->defaults("icon", "fa-light fa-building")
+                    ->defaults("name", "Branch")
                     ->defaults("roles", array("Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)
@@ -85,26 +85,15 @@ Route::group([
             }
         );
 
-        // BRANCH ROUTES
+        // THEME ROUTES
         $cname = "branch";
         Route::group([
                 'as' => "$cname.",
                 'prefix' => "$cname/"
             ], function () use($cname){
-
-                Route::get("/", "CompanyController@index")
-                    ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-sharp fa-solid fa-buildings")
-                    ->defaults("name", "Branch")
-                    ->defaults("roles", array("Admin"))
-                    // ->defaults("group", "Settings")
-                    ->name($cname)
-                    ->defaults("href", "/$cname");
-
                 Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
-                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
                 Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+                Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
             }
         );
 
