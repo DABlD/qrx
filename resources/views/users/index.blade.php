@@ -46,8 +46,11 @@
 @push('styles')
 	<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/datatables.bundle.min.css') }}">
-	{{-- <link rel="stylesheet" href="{{ asset('css/datatables.bootstrap4.min.css') }}"> --}}
-	{{-- <link rel="stylesheet" href="{{ asset('css/datatables-jquery.min.css') }}"> --}}
+	<style>
+		.center{
+			text-align: center;
+		}
+	</style>
 @endpush
 
 @push('scripts')
@@ -81,6 +84,18 @@
 				// drawCallback: function(){
 				// 	init();
 				// },
+				columnDefs: [
+					{
+						targets: [4],
+						render: percent => {
+							return `${percent}%`;
+						}
+					},
+					{
+						targets: [0,1,2,3,4,5],
+						className: "center"
+					}
+				],
 			});
 		});
 
