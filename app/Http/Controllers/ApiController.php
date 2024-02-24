@@ -430,13 +430,13 @@ class ApiController extends Controller
 
     public function createTransaction(Request $req){
         $data = new Transaction();
-        $data->user_id = $req->user_id;
-        $data->loan_id = $req->loan_id;
-        $data->type = $req->type;
+        // $data->user_id = $req->user_id;
+        // $data->loan_id = $req->loan_id;
+        $data->type = "CR";
         $data->amount = $req->amount;
         $data->trx_number = $req->trx_number;
         $data->payment_channel = $req->payment_channel;
-        $data->payment_date = $req->payment_date;
+        $data->payment_date = now()->toDateTimeString();
 
         if($data->save()){
             return [

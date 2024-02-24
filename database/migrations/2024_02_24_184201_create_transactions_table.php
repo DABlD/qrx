@@ -16,8 +16,8 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('loan_id');
+            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('loan_id')->nullable();
             $table->string('type');
             $table->float('amount', 8, 2);
             $table->string('trx_number')->nullable();
