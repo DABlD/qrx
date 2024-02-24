@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 
 use Illuminate\Http\Request;
-use App\Models\{Device, Route, Station, User, Vehicle, Sale, AuditTrail, Ledger};
+use App\Models\{AuditTrail, Transaction};
 use DB;
 
 use PHPMailer\PHPMailer\PHPMailer;
