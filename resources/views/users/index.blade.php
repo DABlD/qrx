@@ -22,9 +22,10 @@
                     			<tr>
                     				<th>ID</th>
                     				<th>Name</th>
-                    				<th>Username</th>
-                    				<th>Email</th>
-                    				<th>Role</th>
+                    				<th>Gender</th>
+                    				<th>Contact</th>
+                    				<th>Interest Rate</th>
+                    				<th>Verified</th>
                     				<th>Actions</th>
                     			</tr>
                     		</thead>
@@ -59,25 +60,27 @@
 		$(document).ready(()=> {
 			var table = $('#table').DataTable({
 				ajax: {
-					url: "{{ route('datatable.user') }}",
+					url: "{{ route('datatable.branch') }}",
                 	dataType: "json",
                 	dataSrc: "",
 					data: {
 						select: "*",
+						load: [['user']]
 					}
 				},
 				columns: [
 					{data: 'id'},
-					{data: 'fname'},
-					{data: 'username'},
-					{data: 'email'},
-					{data: 'role'},
+					{data: 'user.fname'},
+					{data: 'user.gender'},
+					{data: 'user.contact'},
+					{data: 'percent'},
+					{data: 'id_verified'},
 					{data: 'actions'},
 				],
         		pageLength: 25,
 				// drawCallback: function(){
 				// 	init();
-				// }
+				// },
 			});
 		});
 

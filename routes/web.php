@@ -24,27 +24,27 @@ Route::get('/', function(){
 });
 
 // API
-// Route::group([
-//         'prefix' => "api/"
-//     ], function (){
-//         Route::get('sendVerification', 'ApiController@sendVerification')->name('sendVerification');
-//         Route::get('verify', 'ApiController@verify')->name('verify');
+Route::group([
+        'prefix' => "api/"
+    ], function (){
+        // Route::get('sendVerification', 'ApiController@sendVerification')->name('sendVerification');
+        // Route::get('verify', 'ApiController@verify')->name('verify');
 
-//         Route::post('get/users', 'ApiController@users');
-//         Route::post('get/routes', 'ApiController@routes');
-//         Route::post('get/devices', 'ApiController@devices');
-//         Route::post('get/vehicles', 'ApiController@vehicles');
-//         Route::post('get/categories', 'ApiController@categories');
-//         Route::post('get/stations', 'ApiController@stations');
-//         Route::post('get/sales', 'ApiController@sales');
+        // Route::post('get/users', 'ApiController@users');
+        // Route::post('get/routes', 'ApiController@routes');
+        // Route::post('get/devices', 'ApiController@devices');
+        // Route::post('get/vehicles', 'ApiController@vehicles');
+        // Route::post('get/categories', 'ApiController@categories');
+        // Route::post('get/stations', 'ApiController@stations');
+        // Route::post('get/sales', 'ApiController@sales');
 
-//         Route::put('create/sale', 'ApiController@createSale');
-//         Route::put('create/vehicle', 'ApiController@createVehicle');
-//         Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');
+        // Route::put('create/ticket', 'ApiController@createSale');
+        // Route::put('create/vehicle', 'ApiController@createVehicle');
+        // Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');
 
-//         Route::post('update/sale', 'ApiController@updateSale');
-//     }
-// );
+        // Route::post('update/sale', 'ApiController@updateSale');
+    }
+);
 
 Route::group([
         'middleware' => 'auth',
@@ -84,8 +84,8 @@ Route::group([
             }
         );
 
-        // COMPANY ROUTES
-        $cname = "company";
+        // BRANCH ROUTES
+        $cname = "branch";
         Route::group([
                 'as' => "$cname.",
                 'prefix' => "$cname/"
@@ -94,7 +94,7 @@ Route::group([
                 Route::get("/", "CompanyController@index")
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fa-sharp fa-solid fa-buildings")
-                    ->defaults("name", "Companies")
+                    ->defaults("name", "Branch")
                     ->defaults("roles", array("Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)
@@ -169,7 +169,7 @@ Route::group([
             ], function () use($cname){
 
                 Route::get("user", ucfirst($cname) . "Controller@user")->name('user');
-                Route::get("company", ucfirst($cname) . "Controller@company")->name('company');
+                Route::get("branch", ucfirst($cname) . "Controller@branch")->name('branch');
                 
                 Route::get("audit_trails", ucfirst($cname) . "Controller@audit_trails")->name('audit_trails');
             }
