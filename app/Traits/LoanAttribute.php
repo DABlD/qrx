@@ -15,7 +15,7 @@ trait LoanAttribute{
 		// 		    "</a>&nbsp;";
 		
 		if($this->status == "Approved"){
-			$action = 	"<a class='btn btn-info' data-toggle='tooltip' title='Disburse' onClick='disburse($id)'>" .
+			$action .= 	"<a class='btn btn-info' data-toggle='tooltip' title='Disburse' onClick='disburse($id)'>" .
 					        "<i class='fas fa-hand-holding-circle-dollar'></i>" .
 					    "</a>&nbsp;";
 		}

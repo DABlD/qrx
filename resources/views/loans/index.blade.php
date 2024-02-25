@@ -270,6 +270,31 @@
 		}
 
 		function showDetails(loan){
+			let pDetails = "";
+			if(["For Payment", "Overdue", "Payment"].includes(loan.status)){
+				pDetails = `
+					<br>
+					<br>
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Payment Channel
+					    </div>
+					    <div class="col-md-8 iInput">
+					    	${loan.payment_channel}
+					    </div>
+					</div>
+
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Reference
+					    </div>
+					    <div class="col-md-8 iInput">
+					    	${loan.reference}
+					    </div>
+					</div>
+				`;
+			}
+
 			Swal.fire({
 				html: `
 					<div class="row iRow">
@@ -301,7 +326,7 @@
 					        </select>
 					    </div>
 					</div>
-
+					${pDetails}
 					<br>
 					<br>
 					<div class="row iRow">
@@ -414,92 +439,53 @@
 					})
 				}
 			});
+		}
 
+		function disburse(id){
+			Swal.fire({
+				html: `
+					${input("payment_channel", "Payment Channel", null, 4, 8)}
+					${input("reference", "Reference #", null, 4, 8)}
+				`,
+				title: "Enter Details",
+				width: '500px',
+				confirmButtonText: 'Save',
+				showCancelButton: true,
+				cancelButtonColor: errorColor,
+				cancelButtonText: 'Cancel',
+				preConfirm: () => {
+				    swal.showLoading();
+				    return new Promise(resolve => {
+				    	let bool = true;
 
-			// adsadsadsa
-			// Swal.fire({
-			// 	html: `
-	        //         ${input("id", "", company.id, 3, 9, 'hidden')}
+			            if($('.swal2-container input:placeholder-shown').length){
+			                Swal.showValidationMessage('Fill all fields');
+			            }
 
-	        //         ${input("fname", "Name", company.fname, 3, 9)}
-	        //         ${input("contact", "Contact", company.contact, 3, 9)}
-	        //         ${input("email", "Email", company.email, 3, 9)}
-
-	        //         <br>
-	        //         ${input("username", "Username", company.username, 3, 9)}
-	        //         <br>
-	        //         <br>
-	        //         ${input("temp", "Login Link", `{{ route('login') }}?u=${company.id}`, 3, 9, null, 'disabled')}
-			// 	`,
-			// 	width: '800px',
-			// 	confirmButtonText: 'Update',
-			// 	showCancelButton: true,
-			// 	cancelButtonColor: errorColor,
-			// 	cancelButtonText: 'Cancel',
-			// 	preConfirm: () => {
-			// 	    swal.showLoading();
-			// 	    return new Promise(resolve => {
-			// 	    	let bool = true;
-
-			//             if($('.swal2-container input:placeholder-shown').length){
-			//                 Swal.showValidationMessage('Fill all fields');
-			//             }
-			//             else{
-			//             	let bool = false;
-            // 				$.ajax({
-            // 					url: "{{ route('user.get') }}",
-            // 					data: {
-            // 						select: "id",
-            // 						where: ["email", $("[name='email']").val()]
-            // 					},
-            // 					success: result => {
-            // 						result = JSON.parse(result);
-            // 						if(result.length && result[0].id != user.id){
-            // 			    			Swal.showValidationMessage('Email already used');
-	        //     						setTimeout(() => {resolve()}, 500);
-            // 						}
-			//             			else{
-			//             				$.ajax({
-			//             					url: "{{ route('user.get') }}",
-			//             					data: {
-			//             						select: "id",
-			//             						where: ["username", $("[name='username']").val()]
-			//             					},
-			//             					success: result => {
-			//             						result = JSON.parse(result);
-			//             						if(result.length && result[0].id != user.id){
-			//             			    			Swal.showValidationMessage('Username already used');
-			// 	            						setTimeout(() => {resolve()}, 500);
-			//             						}
-			//             					}
-			//             				});
-			//             			}
-            // 					}
-            // 				});
-			//             }
-
-			//             bool ? setTimeout(() => {resolve()}, 500) : "";
-			// 	    });
-			// 	},
-			// }).then(result => {
-			// 	if(result.value){
-			// 		swal.showLoading();
-			// 		update({
-			// 			url: "{{ route('loan.update') }}",
-			// 			data: {
-			// 				id: $("[name='id']").val(),
-			// 				username: $("[name='username']").val(),
-			// 				fname: $("[name='fname']").val(),
-			// 				contact: $("[name='contact']").val(),
-			// 				email: $("[name='email']").val(),
-			// 				_token: $('meta[name="csrf-token"]').attr('content')
-			// 			},
-			// 			message: "Success"
-			// 		}, () => {
-			// 			reload();
-			// 		})
-			// 	}
-			// });
+			            bool ? setTimeout(() => {resolve()}, 500) : "";
+				    });
+				},
+			}).then(result => {
+				if(result.value){
+					swal.showLoading();
+					$.ajax({
+						url: "{{ route('loan.update') }}",
+						type: "POST",
+						data: {
+							id: id,
+							payment_channel: $("[name='payment_channel']").val(),
+							reference: $("[name='reference']").val(),
+							status: "For Payment",
+							credited: 1,
+							_token: $('meta[name="csrf-token"]').attr('content')
+						},
+						success: () => {
+							ss("Success");
+							reload();
+						}
+					})
+				}
+			});
 		}
 	</script>
 @endpush
