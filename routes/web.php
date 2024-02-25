@@ -85,6 +85,28 @@ Route::group([
             }
         );
 
+        // LOAN ROUTES
+        $cname = "loan";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+
+                Route::get("/", ucfirst($cname) . "Controller@index")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fa-light fa-money-bill")
+                    ->defaults("name", "Loan")
+                    ->defaults("roles", array("Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+            }
+        );
+
         // THEME ROUTES
         $cname = "branch";
         Route::group([
@@ -160,6 +182,7 @@ Route::group([
 
                 Route::get("user", ucfirst($cname) . "Controller@user")->name('user');
                 Route::get("branch", ucfirst($cname) . "Controller@branch")->name('branch');
+                Route::get("loans", ucfirst($cname) . "Controller@loans")->name('loans');
                 
                 Route::get("audit_trails", ucfirst($cname) . "Controller@audit_trails")->name('audit_trails');
             }

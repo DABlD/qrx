@@ -22,4 +22,8 @@ class Branch extends Model
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
+
+    public function loans(){
+        return $this->hasMany('App\Models\Loan');
+    }
 }
