@@ -16,12 +16,15 @@ class CreateLoansTable extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
 
-            $table->string('status');
+            $table->enum('status', ['Applied', 'Approved', 'Disapproved', 'For Payment', 'Overdue', 'Paid'])->nullable()->default("Applied");
             $table->unsignedInteger('branch_id');
             $table->float('amount', 8,2);
             $table->float('percent', 4, 2);
-            $table->float('balance', 8,2);
+            $table->float('balance', 8,2)->nullable();
             $table->unsignedSmallInteger('months');
+            $table->unsignedSmallInteger('paid_months')->default(0);
+            $table->boolean('credited')->default(0);
+            $table->string('payment_channel')->nullable();
 
             $table->timestamps();
         });

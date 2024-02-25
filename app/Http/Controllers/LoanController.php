@@ -47,8 +47,20 @@ class LoanController extends Controller
         echo json_encode($array);
     }
 
+    public function store(Request $req){
+        $loan = new Loan();
+        $loan->branch_id = $req->branch_id;
+        $loan->amount = $req->amount;
+        $loan->percent = $req->percent;
+        $loan->months = $req->months;
+        $loan->balance = $req->amount;
+        $loan->paid_months = 0;
+
+        echo $loan->save();
+    }
+
     public function update(Request $req){
-        DB::table('loan')->where('id', $req->id)->update($req->except(['id', '_token']));
+        DB::table('loans')->where('id', $req->id)->update($req->except(['id', '_token']));
         $this->log(auth()->user()->fullname, 'Updated Loan', "ID: $req->id");
     }
 

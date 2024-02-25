@@ -24,8 +24,10 @@
                     				<th>Name</th>
                     				<th>Amount</th>
                     				<th>Rate</th>
-                    				<th>Months</th>
-                    				<th>Remaining</th>
+                    				<th>Paid Months</th>
+                    				<th>Monthly Payment</th>
+                    				<th>Total Payment</th>
+                    				<th>Status</th>
                     				<th>Actions</th>
                     			</tr>
                     		</thead>
@@ -46,11 +48,17 @@
 @push('styles')
 	<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+	<style>
+		.center{
+			text-align: center;
+		}
+	</style>
 @endpush
 
 @push('scripts')
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
 	<script src="{{ asset('js/select2.min.js') }}"></script>
+	<script src="{{ asset('js/numeral.min.js') }}"></script>
 
 	<script>
 		$(document).ready(()=> {
@@ -70,10 +78,48 @@
 					{data: 'amount'},
 					{data: 'percent'},
 					{data: 'months'},
-					{data: 'months'},
+					{data: 'amount'},
+					{data: 'amount'},
+					{data: 'status'},
 					{data: 'actions'},
 				],
         		pageLength: 25,
+				columnDefs: [
+					{
+						targets: [0,1,2,3,4,5,6,7,8],
+						className: "center"
+					},
+					{
+						targets: 2,
+						render: amount => {
+							return "₱" + numeral(amount).format("0,0.00");
+						}
+					},
+					{
+						targets: 3,
+						render: percent => {
+							return percent + "%";
+						}
+					},
+					{
+						targets: 4,
+						render: (a,b,c) => {
+							return c.paid_months + " / " + a;
+						}
+					},
+					{
+						targets: 5,
+						render: (amount,b,c) => {
+							return "₱" + numeral((amount * (c.percent / 100)) + (amount / c.months)).format("0,0.00");
+						}
+					},
+					{
+						targets: 6,
+						render: (amount,b,c) => {
+							return "₱" + numeral(((amount * (c.percent / 100)) + (amount / c.months)) * 12).format("0,0.00");
+						}
+					},
+				]
 				// drawCallback: function(){
 				// 	init();
 				// }
@@ -86,10 +132,11 @@
 				data: {
 					select: '*',
 					where: ['id', id],
+					load: ['branch.user']
 				},
-				success: route => {
-					route = JSON.parse(route)[0];
-					showDetails(route);
+				success: loan => {
+					loan = JSON.parse(loan)[0];
+					showDetails(loan);
 				}
 			})
 		}
@@ -97,66 +144,104 @@
 		function create(){
 			Swal.fire({
 				html: `
-	                ${input("fname", "Name", null, 3, 9)}
-	                ${input("contact", "Contact", null, 3, 9)}
-	                ${input("email", "Email", null, 3, 9)}
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Branch
+					    </div>
+					    <div class="col-md-8 iInput">
+					        <select name="branch_id" class="form-control">
+					        </select>
+					    </div>
+					</div>
 
-	                <br>
-	                ${input("username", "Username", null, 3, 9)}
-	                ${input("password", "Password", null, 3, 9, 'password')}
-	                ${input("password_confirmation", "Confirm Password", null, 3, 9, 'password')}
+					${input("amount", "Amount", null, 4, 8, 'number')}
+					${input("percent", "Interest Rate", null, 4, 8, 'number', 'disabled')}
+					${input("months", "Months", null, 4, 8, 'number', 'min=1 max=60')}
+
+					<br>
+					<br>
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Total Payment
+					    </div>
+					    <div class="col-md-8 iInput" id="tPayment">
+					    </div>
+					</div>
+
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Monthly Payment
+					    </div>
+					    <div class="col-md-8 iInput" id="mPayment">
+					    </div>
+					</div>
 				`,
-				width: '800px',
-				confirmButtonText: 'Add',
+				width: '500px',
+				confirmButtonText: 'Save',
 				showCancelButton: true,
 				cancelButtonColor: errorColor,
 				cancelButtonText: 'Cancel',
+				didOpen: () => {
+					$.ajax({
+						url: "{{ route("branch.get") }}",
+						data: {
+							select: "*",
+							load: ["user"]
+						},
+						success: result => {
+							result = JSON.parse(result);
+							let percents = [];
+							let string = "";
+
+							if(result.length == 0){
+								string = `
+									<option value="">No Branch Available</option>
+								`;
+							}
+							else{
+								string = `
+									<option value="">Select Branch</option>
+								`;
+
+								result.forEach(e => {
+									percents[e.id] = e.percent;
+									string += `
+										<option value="${e.id}">${e.user.fname}</option>
+									`;
+								});
+							}
+
+							$('[name="branch_id"]').append(string);
+							$('[name="branch_id"]').select2();
+
+							$('[name="branch_id"]').change(e => {
+								$('[name="percent"]').val(percents[e.target.value]);
+								$('[name="percent"]').trigger('keyup');
+							});
+
+							$("[name='amount'], [name='months']").on('keyup', e => {
+								let amount = $("[name='amount']").val();
+								let percent = $("[name='percent']").val();
+								let months = $("[name='months']").val();
+
+								if(amount && percent && months){
+									let n2 = (amount * (percent / 100)) + (amount / months);
+									let n1 = n2 * months;
+
+									$('#tPayment').html("₱" + numeral(n1).format('0,0.00'));
+									$('#mPayment').html("₱" + numeral(n2).format('0,0.00'));
+								}
+							});
+						}
+					})
+				},
 				preConfirm: () => {
 				    swal.showLoading();
 				    return new Promise(resolve => {
 				    	let bool = true;
 
-			            if($('.swal2-container input:placeholder-shown').length){
+			            if($('.swal2-container input:placeholder-shown').length || $('[name="branch_id"]').val() == ""){
 			                Swal.showValidationMessage('Fill all fields');
-			            }
-			            else if($("[name='password']").val().length < 8){
-			                Swal.showValidationMessage('Password must at least be 8 characters');
-			            }
-			            else if($("[name='password']").val() != $("[name='password_confirmation']").val()){
-			                Swal.showValidationMessage('Password do not match');
-			            }
-			            else{
-			            	let bool = false;
-            				$.ajax({
-            					url: "{{ route('user.get') }}",
-            					data: {
-            						select: "id",
-            						where: ["email", $("[name='email']").val()]
-            					},
-            					success: result => {
-            						result = JSON.parse(result);
-            						if(result.length){
-            			    			Swal.showValidationMessage('Email already used');
-	            						setTimeout(() => {resolve()}, 500);
-            						}
-            						else{
-			            				$.ajax({
-			            					url: "{{ route('user.get') }}",
-			            					data: {
-			            						select: "id",
-			            						where: ["username", $("[name='username']").val()]
-			            					},
-			            					success: result => {
-			            						result = JSON.parse(result);
-			            						if(result.length){
-			            			    			Swal.showValidationMessage('Username already used');
-				            						setTimeout(() => {resolve()}, 500);
-			            						}
-			            					}
-			            				});
-            						}
-            					}
-            				});
 			            }
 
 			            bool ? setTimeout(() => {resolve()}, 500) : "";
@@ -169,11 +254,10 @@
 						url: "{{ route('loan.store') }}",
 						type: "POST",
 						data: {
-							username: $("[name='username']").val(),
-							fname: $("[name='fname']").val(),
-							contact: $("[name='contact']").val(),
-							email: $("[name='email']").val(),
-							password: $("[name='password']").val(),
+							branch_id: $("[name='branch_id']").val(),
+							amount: $("[name='amount']").val(),
+							percent: $("[name='percent']").val(),
+							months: $("[name='months']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
 						success: () => {
@@ -185,66 +269,126 @@
 			});
 		}
 
-		function showDetails(company){
+		function showDetails(loan){
 			Swal.fire({
 				html: `
-	                ${input("id", "", company.id, 3, 9, 'hidden')}
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Branch
+					    </div>
+					    <div class="col-md-8 iInput">
+					        <select name="branch_id" class="form-control" disabled>
+					        </select>
+					    </div>
+					</div>
 
-	                ${input("fname", "Name", company.fname, 3, 9)}
-	                ${input("contact", "Contact", company.contact, 3, 9)}
-	                ${input("email", "Email", company.email, 3, 9)}
+					${input("amount", "Amount", loan.amount, 4, 8, 'number', 'disabled')}
+					${input("percent", "Interest Rate"	, loan.percent, 4, 8, 'number', 'disabled')}
+					${input("months", "Months", loan.months, 4, 8, 'number', 'min=1 max=60 disabled')}
 
-	                <br>
-	                ${input("username", "Username", company.username, 3, 9)}
-	                <br>
-	                <br>
-	                ${input("temp", "Login Link", `{{ route('login') }}?u=${company.id}`, 3, 9, null, 'disabled')}
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Status
+					    </div>
+					    <div class="col-md-8 iInput">
+					        <select name="status" class="form-control">
+					        	<option value="Applied">Applied</option>
+					        	<option value="Approved">Approved</option>
+					        	<option value="Disapproved">Disapproved</option>
+					        	<option value="For Payment">For Payment</option>
+					        	<option value="Overdue">Overdue</option>
+					        	<option value="Paid">Paid</option>
+					        </select>
+					    </div>
+					</div>
+
+					<br>
+					<br>
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Total Payment
+					    </div>
+					    <div class="col-md-8 iInput" id="tPayment">
+					    </div>
+					</div>
+
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Monthly Payment
+					    </div>
+					    <div class="col-md-8 iInput" id="mPayment">
+					    </div>
+					</div>
 				`,
-				width: '800px',
-				confirmButtonText: 'Update',
+				width: '500px',
+				confirmButtonText: 'Save',
 				showCancelButton: true,
 				cancelButtonColor: errorColor,
 				cancelButtonText: 'Cancel',
+				didOpen: () => {
+					$.ajax({
+						url: "{{ route("branch.get") }}",
+						data: {
+							select: "*",
+							load: ["user"]
+						},
+						success: result => {
+							result = JSON.parse(result);
+							let percents = [];
+							let string = "";
+
+							if(result.length == 0){
+								string = `
+									<option value="">No Branch Available</option>
+								`;
+							}
+							else{
+								string = `
+									<option value="">Select Branch</option>
+								`;
+
+								result.forEach(e => {
+									percents[e.id] = e.percent;
+									string += `
+										<option value="${e.id}">${e.user.fname}</option>
+									`;
+								});
+							}
+
+							$('[name="branch_id"]').append(string);
+							$('[name="branch_id"]').select2();
+
+							$('[name="branch_id"]').change(e => {
+								$('[name="percent"]').val(percents[e.target.value]);
+								$('[name="percent"]').trigger('keyup');
+							});
+
+							$("[name='amount'], [name='months']").on('keyup', e => {
+								let amount = $("[name='amount']").val();
+								let percent = $("[name='percent']").val();
+								let months = $("[name='months']").val();
+
+								if(amount && percent && months){
+									let n2 = (amount * (percent / 100)) + (amount / months);
+									let n1 = n2 * months;
+
+									$('#tPayment').html("₱" + numeral(n1).format('0,0.00'));
+									$('#mPayment').html("₱" + numeral(n2).format('0,0.00'));
+								}
+							});
+
+							$('[name="branch_id"]').val(loan.branch_id).trigger('change');
+							$('[name="months"]').trigger('keyup');
+						}
+					})
+				},
 				preConfirm: () => {
 				    swal.showLoading();
 				    return new Promise(resolve => {
 				    	let bool = true;
 
-			            if($('.swal2-container input:placeholder-shown').length){
+			            if($('.swal2-container input:placeholder-shown').length || $('[name="branch_id"]').val() == ""){
 			                Swal.showValidationMessage('Fill all fields');
-			            }
-			            else{
-			            	let bool = false;
-            				$.ajax({
-            					url: "{{ route('user.get') }}",
-            					data: {
-            						select: "id",
-            						where: ["email", $("[name='email']").val()]
-            					},
-            					success: result => {
-            						result = JSON.parse(result);
-            						if(result.length && result[0].id != user.id){
-            			    			Swal.showValidationMessage('Email already used');
-	            						setTimeout(() => {resolve()}, 500);
-            						}
-			            			else{
-			            				$.ajax({
-			            					url: "{{ route('user.get') }}",
-			            					data: {
-			            						select: "id",
-			            						where: ["username", $("[name='username']").val()]
-			            					},
-			            					success: result => {
-			            						result = JSON.parse(result);
-			            						if(result.length && result[0].id != user.id){
-			            			    			Swal.showValidationMessage('Username already used');
-				            						setTimeout(() => {resolve()}, 500);
-			            						}
-			            					}
-			            				});
-			            			}
-            					}
-            				});
 			            }
 
 			            bool ? setTimeout(() => {resolve()}, 500) : "";
@@ -253,22 +397,107 @@
 			}).then(result => {
 				if(result.value){
 					swal.showLoading();
-					update({
+					$.ajax({
 						url: "{{ route('loan.update') }}",
+						type: "POST",
 						data: {
-							id: $("[name='id']").val(),
-							username: $("[name='username']").val(),
-							fname: $("[name='fname']").val(),
-							contact: $("[name='contact']").val(),
-							email: $("[name='email']").val(),
+							id: loan.id,
+							status: $("[name='status']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
-						message: "Success"
-					}, () => {
-						reload();
+						success: () => {
+							ss("Success");
+							reload();
+						}
 					})
 				}
 			});
+
+
+			// adsadsadsa
+			// Swal.fire({
+			// 	html: `
+	        //         ${input("id", "", company.id, 3, 9, 'hidden')}
+
+	        //         ${input("fname", "Name", company.fname, 3, 9)}
+	        //         ${input("contact", "Contact", company.contact, 3, 9)}
+	        //         ${input("email", "Email", company.email, 3, 9)}
+
+	        //         <br>
+	        //         ${input("username", "Username", company.username, 3, 9)}
+	        //         <br>
+	        //         <br>
+	        //         ${input("temp", "Login Link", `{{ route('login') }}?u=${company.id}`, 3, 9, null, 'disabled')}
+			// 	`,
+			// 	width: '800px',
+			// 	confirmButtonText: 'Update',
+			// 	showCancelButton: true,
+			// 	cancelButtonColor: errorColor,
+			// 	cancelButtonText: 'Cancel',
+			// 	preConfirm: () => {
+			// 	    swal.showLoading();
+			// 	    return new Promise(resolve => {
+			// 	    	let bool = true;
+
+			//             if($('.swal2-container input:placeholder-shown').length){
+			//                 Swal.showValidationMessage('Fill all fields');
+			//             }
+			//             else{
+			//             	let bool = false;
+            // 				$.ajax({
+            // 					url: "{{ route('user.get') }}",
+            // 					data: {
+            // 						select: "id",
+            // 						where: ["email", $("[name='email']").val()]
+            // 					},
+            // 					success: result => {
+            // 						result = JSON.parse(result);
+            // 						if(result.length && result[0].id != user.id){
+            // 			    			Swal.showValidationMessage('Email already used');
+	        //     						setTimeout(() => {resolve()}, 500);
+            // 						}
+			//             			else{
+			//             				$.ajax({
+			//             					url: "{{ route('user.get') }}",
+			//             					data: {
+			//             						select: "id",
+			//             						where: ["username", $("[name='username']").val()]
+			//             					},
+			//             					success: result => {
+			//             						result = JSON.parse(result);
+			//             						if(result.length && result[0].id != user.id){
+			//             			    			Swal.showValidationMessage('Username already used');
+			// 	            						setTimeout(() => {resolve()}, 500);
+			//             						}
+			//             					}
+			//             				});
+			//             			}
+            // 					}
+            // 				});
+			//             }
+
+			//             bool ? setTimeout(() => {resolve()}, 500) : "";
+			// 	    });
+			// 	},
+			// }).then(result => {
+			// 	if(result.value){
+			// 		swal.showLoading();
+			// 		update({
+			// 			url: "{{ route('loan.update') }}",
+			// 			data: {
+			// 				id: $("[name='id']").val(),
+			// 				username: $("[name='username']").val(),
+			// 				fname: $("[name='fname']").val(),
+			// 				contact: $("[name='contact']").val(),
+			// 				email: $("[name='email']").val(),
+			// 				_token: $('meta[name="csrf-token"]').attr('content')
+			// 			},
+			// 			message: "Success"
+			// 		}, () => {
+			// 			reload();
+			// 		})
+			// 	}
+			// });
 		}
 	</script>
 @endpush

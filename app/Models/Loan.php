@@ -11,7 +11,8 @@ class Loan extends Model
     use LoanAttribute;
     
     protected $fillable = [
-        "branch_id","amount","percent","balance","months","status",
+        "branch_id","amount","percent","months",
+        "balance","status","credited","payment_channel","paid_months"
     ];
 
     protected $dates = [
