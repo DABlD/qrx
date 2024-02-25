@@ -25,6 +25,7 @@ class CreateLoansTable extends Migration
             $table->unsignedSmallInteger('paid_months')->default(0);
             $table->boolean('credited')->default(0);
             $table->string('payment_channel')->nullable();
+            $table->string('reference')->nullable();
 
             $table->timestamps();
         });

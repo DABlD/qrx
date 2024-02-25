@@ -12,7 +12,7 @@ class Loan extends Model
     
     protected $fillable = [
         "branch_id","amount","percent","months",
-        "balance","status","credited","payment_channel","paid_months"
+        "balance","status","credited","payment_channel","paid_months", "reference"
     ];
 
     protected $dates = [
