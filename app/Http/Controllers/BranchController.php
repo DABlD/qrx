@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Branch, User};
+use App\Models\{Branch, User, AuditTrail};
 use DB;
 
 class BranchController extends Controller
@@ -66,6 +66,14 @@ class BranchController extends Controller
         echo $user->save();
     }
 
+    public function delete(Request $req){
+        $temp = Branch::find($req->id);
+        User::find($temp->user_id)->delete();
+        $temp->delete();
+
+        $this->log(auth()->user()->fullname, 'Delete Branch', "ID: $req->id");
+    }
+
     public function index(){
         return $this->_view('index', [
             'title' => ucfirst($this->table)
@@ -74,5 +82,13 @@ class BranchController extends Controller
 
     private function _view($view, $data = array()){
         return view("$this->table." . $view, $data);
+    }
+
+    public function log($user, $action, $description){
+        $data = new AuditTrail();
+        $data->uid = $user;
+        $data->action = $action;
+        $data->description = $description;
+        $data->save();
     }
 }

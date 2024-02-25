@@ -13,7 +13,7 @@ class CreateBranchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('branches', function (Blueprint $table){
             $table->id();
 
             $table->unsignedInteger('user_id');
@@ -24,6 +24,7 @@ class CreateBranchesTable extends Migration
             $table->boolean('id_verified')->default(false);
             $table->float('percent', 4, 2);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')
                   ->references('id')
