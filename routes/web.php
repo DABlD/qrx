@@ -69,8 +69,8 @@ Route::group([
 
                 Route::get("/", ucfirst($cname) . "Controller@index")
                     ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-light fa-building")
-                    ->defaults("name", "Branch")
+                    ->defaults("icon", "fa-light fa-users")
+                    ->defaults("name", "Client")
                     ->defaults("roles", array("Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)
