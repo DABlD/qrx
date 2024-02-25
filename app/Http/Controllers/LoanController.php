@@ -55,6 +55,8 @@ class LoanController extends Controller
         $loan->months = $req->months;
         $loan->balance = $req->amount;
         $loan->paid_months = 0;
+        $loan->type = $req->type;
+        $loan->contract_no = strtoupper(bin2hex(random_bytes(6)));
 
         echo $loan->save();
     }

@@ -22,6 +22,7 @@
                     			<tr>
                     				<th>ID</th>
                     				<th>Name</th>
+                    				<th>Contract #</th>
                     				<th>Amount</th>
                     				<th>Rate</th>
                     				<th>Paid Months</th>
@@ -75,6 +76,7 @@
 				columns: [
 					{data: 'id'},
 					{data: 'branch.user.fname'},
+					{data: 'contract_no'},
 					{data: 'amount'},
 					{data: 'percent'},
 					{data: 'months'},
@@ -86,35 +88,35 @@
         		pageLength: 25,
 				columnDefs: [
 					{
-						targets: [0,1,2,3,4,5,6,7,8],
+						targets: [0,1,2,3,4,5,6,7,8,9],
 						className: "center"
 					},
 					{
-						targets: 2,
+						targets: 3,
 						render: amount => {
 							return "₱" + numeral(amount).format("0,0.00");
 						}
 					},
 					{
-						targets: 3,
+						targets: 4,
 						render: percent => {
 							return percent + "%";
 						}
 					},
 					{
-						targets: 4,
+						targets: 5,
 						render: (a,b,c) => {
 							return c.paid_months + " / " + a;
 						}
 					},
 					{
-						targets: 5,
+						targets: 6,
 						render: (amount,b,c) => {
 							return "₱" + numeral((amount * (c.percent / 100)) + (amount / c.months)).format("0,0.00");
 						}
 					},
 					{
-						targets: 6,
+						targets: 7,
 						render: (amount,b,c) => {
 							return "₱" + numeral(((amount * (c.percent / 100)) + (amount / c.months)) * 12).format("0,0.00");
 						}
@@ -150,6 +152,24 @@
 					    </div>
 					    <div class="col-md-8 iInput">
 					        <select name="branch_id" class="form-control">
+					        </select>
+					    </div>
+					</div>
+
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Type
+					    </div>
+					    <div class="col-md-8 iInput">
+					        <select name="type" class="form-control">
+					        	<option value="">Select Type</option>
+					        	<option value="Personal Loan">Personal Loan</option>
+					        	<option value="Housing Loan">Housing Loan</option>
+					        	<option value="Business Loan">Business Loan</option>
+					        	<option value="Car Loan">Car Loan</option>
+					        	<option value="Student Loan">Student Loan</option>
+					        	<option value="Debt Consolidation Loan">Debt Consolidation Loan</option>
+					        	<option value="General Expense">General Expense</option>
 					        </select>
 					    </div>
 					</div>
@@ -212,7 +232,7 @@
 							}
 
 							$('[name="branch_id"]').append(string);
-							$('[name="branch_id"]').select2();
+							$('[name="branch_id"], [name="type"]').select2();
 
 							$('[name="branch_id"]').change(e => {
 								$('[name="percent"]').val(percents[e.target.value]);
@@ -240,7 +260,7 @@
 				    return new Promise(resolve => {
 				    	let bool = true;
 
-			            if($('.swal2-container input:placeholder-shown').length || $('[name="branch_id"]').val() == ""){
+			            if($('.swal2-container input:placeholder-shown').length || $('[name="branch_id"]').val() == "" || $('[name="type"]').val() == ""){
 			                Swal.showValidationMessage('Fill all fields');
 			            }
 
@@ -254,6 +274,7 @@
 						url: "{{ route('loan.store') }}",
 						type: "POST",
 						data: {
+							type: $("[name='type']").val(),
 							branch_id: $("[name='branch_id']").val(),
 							amount: $("[name='amount']").val(),
 							percent: $("[name='percent']").val(),
@@ -303,6 +324,24 @@
 					    </div>
 					    <div class="col-md-8 iInput">
 					        <select name="branch_id" class="form-control" disabled>
+					        </select>
+					    </div>
+					</div>
+
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Type
+					    </div>
+					    <div class="col-md-8 iInput">
+					        <select name="type" class="form-control" disabled>
+					        	<option value="">Select Type</option>
+					        	<option value="Personal Loan">Personal Loan</option>
+					        	<option value="Housing Loan">Housing Loan</option>
+					        	<option value="Business Loan">Business Loan</option>
+					        	<option value="Car Loan">Car Loan</option>
+					        	<option value="Student Loan">Student Loan</option>
+					        	<option value="Debt Consolidation Loan">Debt Consolidation Loan</option>
+					        	<option value="General Expense">General Expense</option>
 					        </select>
 					    </div>
 					</div>
@@ -381,7 +420,7 @@
 							}
 
 							$('[name="branch_id"]').append(string);
-							$('[name="branch_id"]').select2();
+							$('[name="branch_id"], [name="type"]').select2();
 
 							$('[name="branch_id"]').change(e => {
 								$('[name="percent"]').val(percents[e.target.value]);
@@ -406,6 +445,7 @@
 							$('[name="months"]').trigger('keyup');
 
 							$('[name="status"]').val(loan.status).trigger('change');
+							$('[name="type"]').val(loan.type).trigger('change');
 						}
 					})
 				},
@@ -414,7 +454,7 @@
 				    return new Promise(resolve => {
 				    	let bool = true;
 
-			            if($('.swal2-container input:placeholder-shown').length || $('[name="branch_id"]').val() == ""){
+			            if($('.swal2-container input:placeholder-shown').length || $('[name="branch_id"]').val() == "" || $('[name="type"]').val() == ""){
 			                Swal.showValidationMessage('Fill all fields');
 			            }
 
