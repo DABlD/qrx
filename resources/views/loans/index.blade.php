@@ -182,6 +182,13 @@
 
 					<br>
 					<br>
+
+					${input("collateral1", "Collateral 1", null, 4, 8)}
+					${input("collateral2", "Collateral 2", null, 4, 8)}
+					${input("collateral3", "Collateral 3", null, 4, 8)}
+
+					<br>
+					<br>
 					<div class="row iRow">
 					    <div class="col-md-4 iLabel">
 					        Total Payment
@@ -281,6 +288,9 @@
 							amount: $("[name='amount']").val(),
 							percent: $("[name='percent']").val(),
 							months: $("[name='months']").val(),
+							collateral1: $("[name='collateral1']").val(),
+							collateral2: $("[name='collateral2']").val(),
+							collateral3: $("[name='collateral3']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
 						success: () => {
@@ -351,6 +361,16 @@
 					${input("amount", "Amount", loan.amount, 4, 8, 'number', 'disabled')}
 					${input("percent", "Interest Rate"	, loan.percent, 4, 8, 'number', 'disabled')}
 					${input("months", "Months", loan.months, 4, 8, 'number', 'min=1 max=60 disabled')}
+
+					<br>
+					<br>
+
+					${input("collateral1", "Collateral 1", loan.collateral1, 4, 8)}
+					${input("collateral2", "Collateral 2", loan.collateral2, 4, 8)}
+					${input("collateral3", "Collateral 3", loan.collateral3, 4, 8)}
+
+					<br>
+					<br>
 
 					<div class="row iRow">
 					    <div class="col-md-4 iLabel">
@@ -472,6 +492,9 @@
 						data: {
 							id: loan.id,
 							status: $("[name='status']").val(),
+							collateral1: $("[name='collateral1']").val(),
+							collateral2: $("[name='collateral2']").val(),
+							collateral3: $("[name='collateral3']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
 						success: () => {

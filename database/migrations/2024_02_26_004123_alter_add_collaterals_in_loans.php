@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterAddColumnsInLoans extends Migration
+class AlterAddCollateralsInLoans extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class AlterAddColumnsInLoans extends Migration
     public function up()
     {
         Schema::table('loans', function (Blueprint $table) {
-            $table->string('contract_no')->unique()->after('id')->nullable();
-            $table->string('type')->nullable()->after('contract_no');
+            $table->string('collateral1')->after('reference')->nullable();
+            $table->string('collateral2')->after('reference')->nullable();
+            $table->string('collateral3')->after('reference')->nullable();
         });
     }
 
@@ -27,8 +28,9 @@ class AlterAddColumnsInLoans extends Migration
     public function down()
     {
         Schema::table('loans', function (Blueprint $table) {
-            $table->dropColumn('contract_no');
-            $table->dropColumn('type');
+            $table->dropColumn('collateral1');
+            $table->dropColumn('collateral2');
+            $table->dropColumn('collateral3');
         });
     }
 }
