@@ -125,24 +125,34 @@
 				html: `
 	                ${input("fname", "Name", null, 3, 9)}
 					${input("email", "Email", null, 3, 9, 'email')}
+					${input("gender", "Gender", null, 3, 9)}
+					${input("contact", "Contact", null, 3, 9)}
+					${input("address", "Address", null, 3, 9)}
+
+	                <br>
+	                ${input("username", "Username", null, 3, 9)}
+					${input("work_status", "Work Status", null, 3, 9)}
+					${input("percent", "Interest Rate", null, 3, 9, 'number', 'min=0 max=100')}
+
+					<br>
+					${input("id_type", "ID Type", null, 3, 9)}
+					${input("id_num", "ID Number", null, 3, 9)}
 					<div class="row iRow">
 					    <div class="col-md-3 iLabel">
-					        Role
+					        Status
 					    </div>
 					    <div class="col-md-9 iInput">
-					        <select name="role" class="form-control">
-					        	<option value="Admin">Admin</option>
-					        	<option value="Company">Company</option>
-					        	<option value="Coast Guard">Coast Guard</option>
+					        <select name="id_verified" class="form-control">
+					        	<option value="0" selected>Not Verified</option>
+					        	<option value="1">Verified</option>
 					        </select>
 					    </div>
 					</div>
 
 	                <br>
-	                ${input("username", "Username", null, 3, 9)}
-	                ${input("password", "Password", null, 3, 9, 'password')}
-	                ${input("password_confirmation", "Confirm Password", null, 3, 9, 'password')}
+	                ${input("password", "", 12345678, 3, 9, 'hidden')}
 				`,
+				title: "Enter Client Details",
 				width: '800px',
 				confirmButtonText: 'Add',
 				showCancelButton: true,
@@ -158,9 +168,6 @@
 			            }
 			            else if($("[name='password']").val().length < 8){
 			                Swal.showValidationMessage('Password must at least be 8 characters');
-			            }
-			            else if($("[name='password']").val() != $("[name='password_confirmation']").val()){
-			                Swal.showValidationMessage('Password do not match');
 			            }
 			            else{
 			            	let bool = false;
@@ -203,14 +210,21 @@
 				if(result.value){
 					swal.showLoading();
 					$.ajax({
-						url: "{{ route('user.store') }}",
+						url: "{{ route('branch.store') }}",
 						type: "POST",
 						data: {
 							fname: $("[name='fname']").val(),
 							email: $("[name='email']").val(),
-							role: $("[name='role']").val(),
+							gender: $("[name='gender']").val(),
+							contact: $("[name='contact']").val(),
+							address: $("[name='address']").val(),
 							username: $("[name='username']").val(),
 							password: $("[name='password']").val(),
+							work_status: $("[name='work_status']").val(),
+							percent: $("[name='percent']").val(),
+							id_type: $("[name='id_type']").val(),
+							id_num: $("[name='id_num']").val(),
+							id_verified: $("[name='id_verified']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
 						success: () => {

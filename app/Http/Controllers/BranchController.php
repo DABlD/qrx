@@ -47,6 +47,29 @@ class BranchController extends Controller
         echo json_encode($array);
     }
 
+    public function store(Request $req){
+        $user = new User();
+        $user->fname = $req->fname;
+        $user->email = $req->email;
+        $user->gender = $req->gender;
+        $user->contact = $req->contact;
+        $user->username = $req->username;
+        $user->password = $req->password;
+        $user->address = $req->address;
+        $user->role = "Branch";
+        $user->email_verified_at = now();
+        $user->save();
+
+        $branch = new Branch();
+        $branch->user_id = $user->id;
+        $branch->work_status = $req->work_status;
+        $branch->percent = $req->percent;
+        $branch->id_type = $req->id_type;
+        $branch->id_num = $req->id_num;
+        $branch->id_verified = $req->id_verified;
+        echo $branch->save();
+    }
+
     public function update(Request $req){
         $branch = Branch::find($req->id);
         $branch->work_status = $req->work_status;
