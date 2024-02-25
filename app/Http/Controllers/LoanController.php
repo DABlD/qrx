@@ -56,7 +56,15 @@ class LoanController extends Controller
         $loan->balance = $req->amount;
         $loan->paid_months = 0;
         $loan->type = $req->type;
-        $loan->contract_no = strtoupper(bin2hex(random_bytes(6)));
+        $loan->contract_no = "";
+
+        $array = explode(" ", $loan->type);
+        foreach($array as $arr){
+            $loan->contract_no .= $arr[0];
+        }
+
+        $count = Loan::where('created_at', 'like', now()->format('Y-m') . "%")->count() + 1;
+        $loan->contract_no .= now()->format('Y') . now()->format('m') . str_pad($count, 4, '0', STR_PAD_LEFT);
 
         echo $loan->save();
     }
