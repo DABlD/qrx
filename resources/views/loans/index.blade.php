@@ -379,6 +379,8 @@
 
 							$('[name="branch_id"]').val(loan.branch_id).trigger('change');
 							$('[name="months"]').trigger('keyup');
+
+							$('[name="status"]').val(loan.status).trigger('change');
 						}
 					})
 				},
