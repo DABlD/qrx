@@ -469,6 +469,18 @@
 				if(result.value){
 					swal.showLoading();
 					$.ajax({
+						url: "{{ route('transaction.store') }}",
+						type: "POST",
+						data: {
+							loan_id: id,
+							type: "DR",
+							payment_channel: $("[name='payment_channel']").val(),
+							reference: $("[name='reference']").val(),
+							_token: $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+
+					$.ajax({
 						url: "{{ route('loan.update') }}",
 						type: "POST",
 						data: {
