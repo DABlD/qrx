@@ -230,6 +230,7 @@
 					${input("email", "Email", branch.user.email, 3, 9, 'email')}
 					${input("gender", "Gender", branch.user.gender, 3, 9)}
 					${input("contact", "Contact", branch.user.contact, 3, 9)}
+					${input("address", "Address", branch.user.address, 3, 9)}
 
 	                <br>
 	                ${input("username", "Username", branch.user.username, 3, 9)}
@@ -312,6 +313,7 @@
 							email: $("[name='email']").val(),
 							gender: $("[name='gender']").val(),
 							contact: $("[name='contact']").val(),
+							address: $("[name='address']").val(),
 							username: $("[name='username']").val(),
 							work_status: $("[name='work_status']").val(),
 							percent: $("[name='percent']").val(),

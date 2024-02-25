@@ -62,6 +62,7 @@ class BranchController extends Controller
         $user->gender = $req->gender;
         $user->contact = $req->contact;
         $user->username = $req->username;
+        $user->address = $req->address;
 
         echo $user->save();
     }
