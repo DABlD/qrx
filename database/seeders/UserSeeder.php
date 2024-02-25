@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'username' => 'branch1',
-            'fname' => 'Branch 1',
+            'fname' => 'Client 1',
             'role' => 'Branch',
             'email' => 'branch1@gmail.com',
             'email_verified_at' => now()->toDateTimeString(),
@@ -57,7 +57,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'username' => 'branch2',
-            'fname' => 'Branch 2',
+            'fname' => 'Client 2',
             'role' => 'Branch',
             'email' => 'branch2@gmail.com',
             'email_verified_at' => now()->toDateTimeString(),
@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'username' => 'branch3',
-            'fname' => 'Branch 3',
+            'fname' => 'Client 3',
             'role' => 'Branch',
             'email' => 'branch3@gmail.com',
             'email_verified_at' => now()->toDateTimeString(),
