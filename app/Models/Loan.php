@@ -13,7 +13,7 @@ class Loan extends Model
     protected $fillable = [
         "branch_id","amount","percent","months",
         "balance","status","credited","payment_channel","paid_months", "reference",
-        'contract_no', 'type', 'collateral1', 'collateral2', 'collateral3'
+        'contract_no', 'type', 'collateral1', 'collateral2', 'collateral3', 'payments'
     ];
 
     protected $dates = [
@@ -22,5 +22,9 @@ class Loan extends Model
 
     public function branch(){
         return $this->belongsTo('App\Models\Branch');
+    }
+
+    public function transactions(){
+        return $this->hasMany('App\Models\Transaction');
     }
 }

@@ -175,6 +175,17 @@ Route::group([
             }
         );
 
+        // THEME ROUTES
+        $cname = "transaction";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+            }
+        );
+
         // REPORT ROUTES
         // $cname = "report";
         // Route::group([

@@ -25,6 +25,11 @@ class TransactionController extends Controller
             $array = $array->where($req->where[0], $req->where[1]);
         }
 
+        // IF HAS WHERE
+        if($req->where2){
+            $array = $array->where($req->where2[0], $req->where2[1]);
+        }
+
         // IF HAS WHERENOTNULL
         if($req->whereNotNull){
             $array = $array->whereNotNull($req->whereNotNull);

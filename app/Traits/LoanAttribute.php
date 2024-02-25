@@ -20,6 +20,18 @@ trait LoanAttribute{
 					    "</a>&nbsp;";
 		}
 
+		if($this->status == "For Payment"){
+			$action .= 	"<a class='btn btn-warning' data-toggle='tooltip' title='Pay' onClick='pay($id)'>" .
+					        "<i class='fas fa-hands-holding-dollar'></i>" .
+					    "</a>&nbsp;";
+		}
+
+		if(in_array($this->status, ["For Payment", "Overdue", "Paid"])){
+			$action .= 	"<a class='btn btn-info' data-toggle='tooltip' title='Payments' onClick='payments($id)'>" .
+					        "<i class='fas fa-file-invoice-dollar'></i>" .
+					    "</a>&nbsp;";
+		}
+
 		return $action;
 	}
 }

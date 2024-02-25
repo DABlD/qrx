@@ -564,5 +564,62 @@
 				}
 			});
 		}
+
+		function pay(id){
+			Swal.fire({
+				// title: 'Select Reference Number',
+				html: `
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Select Transaction
+					    </div>
+					    <div class="col-md-8 iInput">
+					        <select id="transaction" class="form-control">
+					        </select>
+					    </div>
+					</div>
+				`,
+				didOpen: () => {
+					$.ajax({
+						url: '{{ route('transaction.get') }}',
+						data: {
+							where: ['type', 'CR'],
+							where2: ['loan_id', null],
+							select: '*'
+						},
+						success: result => {
+							result = JSON.parse(result);
+							let string = "";
+							
+							if(result.length){
+
+							}
+							else{
+								string = `
+									<option value="">No New Transactions</option>
+								`;
+							}
+
+							$('#transaction').append(string);
+						}
+					})
+				}
+			})
+		}
+
+		function payments(id){
+			$.ajax({
+				url: '{{ route('loan.get') }}',
+				data: {
+					id: id,
+					select: '*',
+					load: ["branch.user", 'transactions']
+				},
+				success: result => {
+					result = JSON.parse(result);
+					console.log(result);
+				}
+			})
+		}
 	</script>
 @endpush
