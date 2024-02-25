@@ -23,6 +23,7 @@
                     				<th>ID</th>
                     				<th>Name</th>
                     				<th>Contract #</th>
+                    				<th>Type</th>
                     				<th>Amount</th>
                     				<th>Rate</th>
                     				<th>Paid Months</th>
@@ -77,6 +78,7 @@
 					{data: 'id'},
 					{data: 'branch.user.fname'},
 					{data: 'contract_no'},
+					{data: 'type'},
 					{data: 'amount'},
 					{data: 'percent'},
 					{data: 'months'},
@@ -88,35 +90,35 @@
         		pageLength: 25,
 				columnDefs: [
 					{
-						targets: [0,1,2,3,4,5,6,7,8,9],
+						targets: [0,1,2,3,4,5,6,7,8,9,10],
 						className: "center"
 					},
 					{
-						targets: 3,
+						targets: 4,
 						render: amount => {
 							return "₱" + numeral(amount).format("0,0.00");
 						}
 					},
 					{
-						targets: 4,
+						targets: 5,
 						render: percent => {
 							return percent + "%";
 						}
 					},
 					{
-						targets: 5,
+						targets: 6,
 						render: (a,b,c) => {
 							return c.paid_months + " / " + a;
 						}
 					},
 					{
-						targets: 6,
+						targets: 7,
 						render: (amount,b,c) => {
 							return "₱" + numeral((amount * (c.percent / 100)) + (amount / c.months)).format("0,0.00");
 						}
 					},
 					{
-						targets: 7,
+						targets: 8,
 						render: (amount,b,c) => {
 							return "₱" + numeral(((amount * (c.percent / 100)) + (amount / c.months)) * 12).format("0,0.00");
 						}
