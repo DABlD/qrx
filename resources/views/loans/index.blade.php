@@ -747,7 +747,9 @@
 								</tbody>
 							</table>
 
-							<span style="text-align: left; font-weight: bold;">Total Payment: ₱${numeral(total).format("0,0.00")}</span>
+							<div style="text-align: left; font-weight: bold;">
+								<span>Total Payment: ₱${numeral(total).format("0,0.00")}</span>
+							</div>
 						`,
 						didOpen: () => {
 							$('#payment-table').append(string);
