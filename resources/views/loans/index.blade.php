@@ -702,12 +702,12 @@
 					            if($('#transaction').val() == ""){
 					                Swal.showValidationMessage('Select Transaction');
 					            }
-					            else{
-					            	let payment = $('#transaction option:selected').data('amount');
-			            			if(payment < rPayment){
-			            				Swal.showValidationMessage('The payment is less than the required monthly payment');
-			            			}
-					            }
+					            // else{
+					            // 	let payment = $('#transaction option:selected').data('amount');
+			            		// 	if(payment < rPayment){
+			            		// 		Swal.showValidationMessage('The payment is less than the required monthly payment');
+			            		// 	}
+					            // }
 
 					            bool ? setTimeout(() => {resolve()}, 500) : "";
 						    });
@@ -734,13 +734,11 @@
 									payments.push(id);
 								}
 
-
 								update({
 									url: "{{ route('loan.update') }}",
 									data: {
 										id: loan.id,
-										payments: payments,
-										paid_months: loan.paid_months + 1
+										payments: payments
 									},
 									message: "Success"
 								},	() => {

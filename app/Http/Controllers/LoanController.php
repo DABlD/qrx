@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Loan, AuditTrail};
+use App\Models\{Loan, AuditTrail, Transaction};
 use DB;
 use Image;
 
@@ -105,7 +105,19 @@ class LoanController extends Controller
     }
 
     public function update(Request $req){
-        DB::table('loans')->where('id', $req->id)->update($req->except(['id', '_token']));
+        if(isset($req->payments)){
+            $loan = Loan::find($req->id);
+
+            $payments = Transaction::whereIn('id', json_decode($loan->payments))->sum('amount');
+            $required = round(($loan->amount * ($loan->percent / 100)) + ($loan->amount / $loan->months), 2);
+            $loan->paid_months = round($payments / $required, 0);
+            // dd($payments, $required);
+            $loan->save();
+        }
+        else{
+            DB::table('loans')->where('id', $req->id)->update($req->except(['id', '_token']));
+        }
+
         $this->log(auth()->user()->fullname, 'Updated Loan', "ID: $req->id");
     }
 
