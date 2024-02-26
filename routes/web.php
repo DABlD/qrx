@@ -175,7 +175,7 @@ Route::group([
             }
         );
 
-        // THEME ROUTES
+        // TRANSACTION ROUTES
         $cname = "transaction";
         Route::group([
                 'as' => "$cname.",

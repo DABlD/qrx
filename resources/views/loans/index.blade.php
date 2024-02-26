@@ -697,15 +697,63 @@
 
 		function payments(id){
 			$.ajax({
-				url: '{{ route('loan.get') }}',
+				url: '{{ route('transaction.get') }}',
 				data: {
-					id: id,
 					select: '*',
-					load: ["branch.user", 'transactions']
+					where: ['loan_id', id],
+					where2: ['type', 'CR']
 				},
 				success: result => {
 					result = JSON.parse(result);
-					console.log(result);
+					let string = ``;
+					let total = 0;
+
+					if(result.length == 0){
+						string = `
+							<tr>
+								<td colspan="4">No Payments Made</td>
+							</tr>
+						`;
+					}
+					else{
+						result.forEach(payment => {
+							total += payment.amount;
+
+							string += `
+								<tr>
+									<td>${payment.id}</td>
+									<td>₱${numeral(payment.amount).format("0,0.00")}</td>
+									<td>${payment.payment_channel}</td>
+									<td>${payment.trx_number}</td>
+								</tr>
+							`;
+						});
+
+						Swal.fire({
+							title: 'List of Payments',
+							html: `
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Amount</th>
+											<th>Payment Channel</th>
+											<th>Reference Number</th>
+										</tr>
+									</thead>
+									<tbody id="payment-table">
+
+									</tbody>
+								</table>
+
+								<span style="text-align: left; font-weight: bold;">Total Payment: ₱${numeral(total).format("0,0.00")}</span>
+							`,
+							didOpen: () => {
+								$('#payment-table').append(string);
+							},
+							width: '800px'
+						})
+					}
 				}
 			})
 		}
