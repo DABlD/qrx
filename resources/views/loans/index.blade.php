@@ -728,32 +728,32 @@
 								</tr>
 							`;
 						});
-
-						Swal.fire({
-							title: 'List of Payments',
-							html: `
-								<table class="table table-hover">
-									<thead>
-										<tr>
-											<th>ID</th>
-											<th>Amount</th>
-											<th>Payment Channel</th>
-											<th>Reference Number</th>
-										</tr>
-									</thead>
-									<tbody id="payment-table">
-
-									</tbody>
-								</table>
-
-								<span style="text-align: left; font-weight: bold;">Total Payment: ₱${numeral(total).format("0,0.00")}</span>
-							`,
-							didOpen: () => {
-								$('#payment-table').append(string);
-							},
-							width: '800px'
-						})
 					}
+
+					Swal.fire({
+						title: 'List of Payments',
+						html: `
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Amount</th>
+										<th>Payment Channel</th>
+										<th>Reference Number</th>
+									</tr>
+								</thead>
+								<tbody id="payment-table">
+
+								</tbody>
+							</table>
+
+							<span style="text-align: left; font-weight: bold;">Total Payment: ₱${numeral(total).format("0,0.00")}</span>
+						`,
+						didOpen: () => {
+							$('#payment-table').append(string);
+						},
+						width: '800px'
+					})
 				}
 			})
 		}
