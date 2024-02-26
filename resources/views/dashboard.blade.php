@@ -7,8 +7,8 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{ $users }}</h3>
-                        <p>Users</p>
+                        <h3>{{ $clients }}</h3>
+                        <p>Clients</p>
                     </div>
 
                     <div class="icon">
@@ -20,8 +20,8 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>{{ $routes }}</h3>
-                        <p>Routes</p>
+                        <h3>{{ $loans }}</h3>
+                        <p>Loans</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-route"></i>
@@ -32,8 +32,8 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{ $devices }}</h3>
-                        <p>Devices</p>
+                        <h3>{{ $payments }}</h3>
+                        <p>Payments</p>
                     </div>
 
                     <div class="icon">
@@ -45,8 +45,8 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>{{ $vehicles  }}</h3>
-                        <p>Vehicles</p>
+                        <h3>{{ $revenue }}</h3>
+                        <p>Revenue</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-truck"></i>

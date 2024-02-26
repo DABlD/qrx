@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{User, Route, Device, Vehicle};
+use App\Models\{User, Loan, Transaction, Branch};
 
 class DashboardController extends Controller
 {
@@ -11,15 +11,16 @@ class DashboardController extends Controller
         $id = auth()->user()->id;
 
         // USERS
-        $users = User::whereIn('role', ['Admin', "Branch"]);
-        $users = $users->count();
+        $clients = Branch::count();
+        $loans = Loan::count();
+        $transactions = Transaction::count();
 
         return $this->_view('dashboard', [
             'title'         => 'Dashboard',
-            'users'         => $users,
-            'routes'         => 0,
-            'vehicles'         => 0,
-            'devices'         => 0
+            'clients'         => $clients,
+            'loans'         => $loans,
+            'payments'         => $transactions,
+            'revenue'         => 0
 
         ]);
     }
