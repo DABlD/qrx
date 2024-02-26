@@ -725,6 +725,7 @@
 									<td>₱${numeral(payment.amount).format("0,0.00")}</td>
 									<td>${payment.payment_channel}</td>
 									<td>${payment.trx_number}</td>
+									<td>${moment(payment.payment_date).format(dateFormat2)}</td>
 								</tr>
 							`;
 						});
@@ -740,6 +741,7 @@
 										<th>Amount</th>
 										<th>Payment Channel</th>
 										<th>Reference Number</th>
+										<th>Payment Date</th>
 									</tr>
 								</thead>
 								<tbody id="payment-table">
