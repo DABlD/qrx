@@ -29,6 +29,7 @@
                     				<th>Paid Months</th>
                     				<th>Monthly Payment</th>
                     				<th>Total Payment</th>
+                    				<th>Revenue</th>
                     				<th>Status</th>
                     				<th>Actions</th>
                     			</tr>
@@ -84,13 +85,14 @@
 					{data: 'months'},
 					{data: 'amount'},
 					{data: 'amount'},
+					{data: 'amount'},
 					{data: 'status'},
 					{data: 'actions'},
 				],
         		pageLength: 25,
 				columnDefs: [
 					{
-						targets: [0,1,2,3,4,5,6,7,8,9,10],
+						targets: [0,1,2,3,4,5,6,7,8,9,10,11],
 						className: "center"
 					},
 					{
@@ -121,6 +123,12 @@
 						targets: 8,
 						render: (amount,b,c) => {
 							return "₱" + numeral(((amount * (c.percent / 100)) + (amount / c.months)) * c.months).format("0,0.00");
+						}
+					},
+					{
+						targets: 9,
+						render: (amount,b,c) => {
+							return "₱" + numeral((((amount * (c.percent / 100)) + (amount / c.months)) * c.months) - amount).format("0,0.00");
 						}
 					},
 				]
