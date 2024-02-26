@@ -358,6 +358,7 @@
 					    </div>
 					</div>
 
+					${input("contract_no", "Contract Ref", loan.contract_no, 4, 8, 'text', 'disabled')}
 					${input("amount", "Amount", loan.amount, 4, 8, 'number', 'disabled')}
 					${input("percent", "Interest Rate"	, loan.percent, 4, 8, 'number', 'disabled')}
 					${input("months", "Months", loan.months, 4, 8, 'number', 'min=1 max=60 disabled')}
