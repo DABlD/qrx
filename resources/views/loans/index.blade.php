@@ -120,7 +120,7 @@
 					{
 						targets: 8,
 						render: (amount,b,c) => {
-							return "₱" + numeral(((amount * (c.percent / 100)) + (amount / c.months)) * 12).format("0,0.00");
+							return "₱" + numeral(((amount * (c.percent / 100)) + (amount / c.months)) * c.months).format("0,0.00");
 						}
 					},
 				]
