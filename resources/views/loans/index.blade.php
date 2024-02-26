@@ -575,43 +575,122 @@
 		}
 
 		function pay(id){
-			Swal.fire({
-				// title: 'Select Reference Number',
-				html: `
-					<div class="row iRow">
-					    <div class="col-md-4 iLabel">
-					        Select Transaction
-					    </div>
-					    <div class="col-md-8 iInput">
-					        <select id="transaction" class="form-control">
-					        </select>
-					    </div>
-					</div>
-				`,
-				didOpen: () => {
-					$.ajax({
-						url: '{{ route('transaction.get') }}',
-						data: {
-							where: ['type', 'CR'],
-							where2: ['loan_id', null],
-							select: '*'
+			$.ajax({
+				url: '{{ route('loan.get') }}',
+				data: {
+					select: "*",
+					where: ['id', id],
+					load: ['branch']
+				},
+				success: loan => {
+					loan = JSON.parse(loan)[0];
+					let rPayment = ((loan.amount * (loan.percent / 100)) + (loan.amount / loan.months)).toFixed(2);
+
+					Swal.fire({
+						html: `
+							<div class="row iRow">
+							    <div class="col-md-4 iLabel">
+							        Select Transaction
+							    </div>
+							    <div class="col-md-8 iInput">
+							        <select id="transaction" class="form-control">
+							        </select>
+							    </div>
+							</div>
+						`,
+						confirmButtonText: "Save",
+						showCancelButton: true,
+						cancelButtonColor: errorColor,
+						cancelButtonText: 'Cancel',
+						didOpen: () => {
+							$.ajax({
+								url: '{{ route('transaction.get') }}',
+								data: {
+									where: ['type', 'CR'],
+									where2: ['loan_id', null],
+									select: '*'
+								},
+								success: result => {
+									result = JSON.parse(result);
+									let string = "";
+									
+									if(result.length){
+										string += `
+											<option value="">Select Transaction</option>
+										`;
+
+										result.forEach(trx => {
+											string += `
+												<option data-amount="${trx.amount}" value="${trx.id}">${trx.payment_channel} - ${trx.amount} (#${trx.trx_number})</option>
+											`;
+										});
+									}
+									else{
+										string = `
+											<option value="">No New Transactions</option>
+										`;
+									}
+
+									$('#transaction').append(string);
+									$('#transaction').select2();
+								}
+							})
 						},
-						success: result => {
-							result = JSON.parse(result);
-							let string = "";
-							
-							if(result.length){
+						preConfirm: e => {
+						    swal.showLoading();
+						    return new Promise(resolve => {
+						    	let bool = true;
 
-							}
-							else{
-								string = `
-									<option value="">No New Transactions</option>
-								`;
-							}
+					            if($('#transaction').val() == ""){
+					                Swal.showValidationMessage('Select Transaction');
+					            }
+					            else{
+					            	let payment = $('#transaction option:selected').data('amount');
+			            			if(payment < rPayment){
+			            				Swal.showValidationMessage('The payment is less than the required monthly payment');
+			            			}
+					            }
 
-							$('#transaction').append(string);
+					            bool ? setTimeout(() => {resolve()}, 500) : "";
+						    });
+						},
+					}).then(result => {
+						if(result.value){
+							let id = $('#transaction option:selected').val();
+
+							update({
+								url: "{{ route('transaction.update') }}",
+								data: {
+									id: id,
+									user_id: loan.branch.id,
+									loan_id: loan.id
+								}
+							},	() => {
+								let payments = loan.payments;
+
+								if(payments == null){
+									payments = JSON.stringify([id]);
+								}
+								else{
+									payments = JSON.parse(payments);
+									payments.push(id);
+								}
+
+
+								update({
+									url: "{{ route('loan.update') }}",
+									data: {
+										id: loan.id,
+										payments: payments,
+										paid_months: loan.paid_months + 1
+									},
+									message: "Success"
+								},	() => {
+									reload();
+								});
+							});
 						}
-					})
+					});
 				}
 			})
 		}
