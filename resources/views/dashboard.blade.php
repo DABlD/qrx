@@ -45,7 +45,7 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>{{ $revenue }}</h3>
+                        <h3>₱{{ number_format($revenue, 2) }}</h3>
                         <p>Revenue</p>
                     </div>
                     <div class="icon">
@@ -61,7 +61,7 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-ticket mr-1"></i>
-                            Ticket Generated on the Past 30 Days
+                            Payments for the last 30 days
                         </h3>
                     </div>
 
@@ -80,45 +80,45 @@
     <script src="{{ asset('js/chart.min.js') }}"></script>
 
     <script>
-        // $(document).ready(() => {
-        //     var myChart, ctx;
+        $(document).ready(() => {
+            var myChart, ctx;
 
-        //     Swal.fire('Loading Data');
-        //     swal.showLoading();
+            Swal.fire('Loading Data');
+            swal.showLoading();
 
-        //     $.ajax({
-        //         url: '{{ route("dashboard") }}',
-        //         success: result =>{
-        //             result = JSON.parse(result);
-        //             console.log(result,
+            $.ajax({
+                url: '{{ route("report.payments") }}',
+                success: result =>{
+                    result = JSON.parse(result);
+                    console.log(result,
 
-        //                     [{
-        //                       data: {
-        //                         January: 10,
-        //                         February: 20
-        //                       }
-        //                     }]);
+                            [{
+                              data: {
+                                January: 10,
+                                February: 20
+                              }
+                            }]);
 
-        //             ctx = document.getElementById('sales').getContext('2d');
-        //             myChart = new Chart(ctx, {
-        //                 type: 'line',
-        //                 data: {
-        //                     labels: result.labels,
-        //                     datasets: result.dataset
+                    ctx = document.getElementById('sales').getContext('2d');
+                    myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: result.labels,
+                            datasets: result.dataset
 
-        //                     // datasets: [{
-        //                     //   data: {
-        //                     //     January: 10,
-        //                     //     February: 20
-        //                     //   }
-        //                     // }]
-        //                 }
-        //             });
-        //             swal.close();
+                            // datasets: [{
+                            //   data: {
+                            //     January: 10,
+                            //     February: 20
+                            //   }
+                            // }]
+                        }
+                    });
+                    swal.close();
 
-        //             console.log('test');
-        //         }
-        //     })
-        // });
+                    console.log('test');
+                }
+            })
+        });
     </script>
 @endpush

@@ -188,14 +188,14 @@ Route::group([
         );
 
         // REPORT ROUTES
-        // $cname = "report";
-        // Route::group([
-        //         'as' => "$cname.",
-        //         'prefix' => "$cname/"
-        //     ], function () use($cname){
-        //         Route::get("sales/", ucfirst($cname) . "Controller@sales")->name('sales');
-        //     }
-        // );
+        $cname = "report";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("payments/", ucfirst($cname) . "Controller@payments")->name('payments');
+            }
+        );
 
         // EXPORT ROUTES
         // $cname = "export";

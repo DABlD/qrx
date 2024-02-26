@@ -3,20 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Sale;
+use App\Models\Transaction;
 
 class ReportController extends Controller
 {
-    public function sales(Request $req){
+    public function payments(Request $req){
         $from = now()->subMonth()->startOfDay()->toDateTimeString();
         $to = now()->endOfDay()->toDateTimeString();
 
-        $temp = Sale::whereBetween('created_at', [$from, $to]);
-
-
-        if(auth()->user()->role != "Admin"){
-            $temp = $temp->where('company_id', auth()->user()->id);
-        }
+        $temp = Transaction::whereBetween('payment_date', [$from, $to])->where('type', 'CR');
         $temp = $temp->get();
 
         $array = [];
@@ -28,15 +23,15 @@ class ReportController extends Controller
             $from = $tempDate->addDay()->toDateString();
         }
 
-        foreach($temp as $sale){
-            $array[$sale->created_at->toDateString()]++;
+        foreach($temp as $payment){
+            $array[$payment->created_at->toDateString()] += $payment->amount;
         }
 
         $color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
         $array = [
             "dataset" => [
                 [
-                    "label" => "Total Tickets Per Day",
+                    "label" => "Payments per day for the last 30 days",
                     "data" => $array,
                     'borderColor' => $color,
                     'backgroundColor' => $color,
