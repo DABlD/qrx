@@ -192,8 +192,11 @@
 					<br>
 
 					${input("collateral1", "Collateral 1", null, 4, 8)}
+					${input("file1", "Upload File", null, 4, 8, 'file', 'accept="image/*"')}
 					${input("collateral2", "Collateral 2", null, 4, 8)}
+					${input("file2", "Upload File", null, 4, 8, 'file', 'accept="image/*"')}
 					${input("collateral3", "Collateral 3", null, 4, 8)}
+					${input("file3", "Upload File", null, 4, 8, 'file', 'accept="image/*"')}
 
 					<br>
 					<br>
@@ -287,26 +290,33 @@
 			}).then(result => {
 				if(result.value){
 					swal.showLoading();
-					$.ajax({
-						url: "{{ route('loan.store') }}",
-						type: "POST",
-						data: {
-							type: $("[name='type']").val(),
-							branch_id: $("[name='branch_id']").val(),
-							amount: $("[name='amount']").val(),
-							percent: $("[name='percent']").val(),
-							months: $("[name='months']").val(),
-							collateral1: $("[name='collateral1']").val(),
-							collateral2: $("[name='collateral2']").val(),
-							collateral3: $("[name='collateral3']").val(),
-							_token: $('meta[name="csrf-token"]').attr('content')
-						},
-						success: () => {
-							ss("Success");
-							reload();
-						}
-					})
+
+					let formData = new FormData();
+					formData.append('type', $("[name='type']").val());
+					formData.append('branch_id', $("[name='branch_id']").val());
+					formData.append('amount', $("[name='amount']").val());
+					formData.append('percent', $("[name='percent']").val());
+					formData.append('months', $("[name='months']").val());
+					formData.append('collateral1', $("[name='collateral1']").val());
+					formData.append('file1', $('[name="file1"]').prop('files')[0]);
+					formData.append('collateral2', $("[name='collateral2']").val());
+					formData.append('file2', $('[name="file2"]').prop('files')[0]);
+					formData.append('collateral3', $("[name='collateral3']").val());
+					formData.append('file3', $('[name="file3"]').prop('files')[0]);
+					formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+					saveLoan(formData);
 				}
+			});
+		}
+
+		async function saveLoan(formData){
+			await fetch('{{ route('loan.store') }}', {
+			    method: "POST", 
+			    body: formData,
+			}).then(result => {
+				ss("Success");
+				reload();
 			});
 		}
 
@@ -375,8 +385,49 @@
 					<br>
 
 					${input("collateral1", "Collateral 1", loan.collateral1, 4, 8)}
+				    <div class="row iRow">
+		                <div class="col-md-4 iLabel">
+		                    Upload File
+		                </div>
+		                <div class="col-md-6 iInput">
+		                    <input type="file" name="file1" placeholder="Enter Upload File" class="form-control" value="" accept="image/*">
+		                </div>
+		                <div class="col-md-2 iInput">
+		                	<a class="btn btn-success" data-toggle="tooltip" title="View" href='${loan.file1 ?? "javascript:void(0);"}' target="_blank">
+		                		<i class="fas fa-search"></i>
+		                	</a>
+		                </div>
+		            </div>
+
 					${input("collateral2", "Collateral 2", loan.collateral2, 4, 8)}
+				    <div class="row iRow">
+		                <div class="col-md-4 iLabel">
+		                    Upload File
+		                </div>
+		                <div class="col-md-6 iInput">
+		                    <input type="file" name="file2" placeholder="Enter Upload File" class="form-control" value="" accept="image/*">
+		                </div>
+		                <div class="col-md-2 iInput">
+		                	<a class="btn btn-success" data-toggle="tooltip" title="View" href='${loan.file2 ?? "javascript:void(0);"}' target="_blank">
+		                		<i class="fas fa-search"></i>
+		                	</a>
+		                </div>
+		            </div>
+
 					${input("collateral3", "Collateral 3", loan.collateral3, 4, 8)}
+				    <div class="row iRow">
+		                <div class="col-md-4 iLabel">
+		                    Upload File
+		                </div>
+		                <div class="col-md-6 iInput">
+		                    <input type="file" name="file3" placeholder="Enter Upload File" class="form-control" value="" accept="image/*">
+		                </div>
+		                <div class="col-md-2 iInput">
+		                	<a class="btn btn-success" data-toggle="tooltip" title="View" href='${loan.file3 ?? "javascript:void(0);"}' target="_blank">
+		                		<i class="fas fa-search"></i>
+		                	</a>
+		                </div>
+		            </div>
 
 					<br>
 					<br>
@@ -495,23 +546,30 @@
 			}).then(result => {
 				if(result.value){
 					swal.showLoading();
-					$.ajax({
-						url: "{{ route('loan.update') }}",
-						type: "POST",
-						data: {
-							id: loan.id,
-							status: $("[name='status']").val(),
-							collateral1: $("[name='collateral1']").val(),
-							collateral2: $("[name='collateral2']").val(),
-							collateral3: $("[name='collateral3']").val(),
-							_token: $('meta[name="csrf-token"]').attr('content')
-						},
-						success: () => {
-							ss("Success");
-							reload();
-						}
-					})
+
+					let formData = new FormData();
+					formData.append('id', loan.id);
+					formData.append('status', $("[name='status']").val());
+					formData.append('collateral1', $("[name='collateral1']").val());
+					formData.append('file1', $('[name="file1"]').prop('files')[0]);
+					formData.append('collateral2', $("[name='collateral2']").val());
+					formData.append('file2', $('[name="file2"]').prop('files')[0]);
+					formData.append('collateral3', $("[name='collateral3']").val());
+					formData.append('file3', $('[name="file3"]').prop('files')[0]);
+					formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+					updateLoan(formData);
 				}
+			});
+		}
+
+		async function updateLoan(formData){
+			await fetch('{{ route('loan.update2') }}', {
+			    method: "POST", 
+			    body: formData,
+			}).then(result => {
+				ss("Success");
+				reload();
 			});
 		}
 
