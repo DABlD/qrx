@@ -116,19 +116,28 @@
 					{
 						targets: 7,
 						render: (amount,b,c) => {
-							return "₱" + numeral((amount * (c.percent / 100)) + (amount / c.months)).format("0,0.00");
+							let percent = c.percent / 100 / 12;
+							amount = c.amount * -1;
+
+							return "₱" + numeral((percent) * amount * Math.pow((1 + (percent)), c.months) / (1 - Math.pow((1 + (percent)), c.months))).format("0,0.00");
 						}
 					},
 					{
 						targets: 8,
 						render: (amount,b,c) => {
-							return "₱" + numeral(((amount * (c.percent / 100)) + (amount / c.months)) * c.months).format("0,0.00");
+							let percent = c.percent / 100 / 12;
+							amount = c.amount * -1;
+
+							return "₱" + numeral(((percent) * amount * Math.pow((1 + (percent)), c.months) / (1 - Math.pow((1 + (percent)), c.months))) * c.months).format("0,0.00");
 						}
 					},
 					{
 						targets: 9,
 						render: (amount,b,c) => {
-							return "₱" + numeral((((amount * (c.percent / 100)) + (amount / c.months)) * c.months) - amount).format("0,0.00");
+							let percent = c.percent / 100 / 12;
+							amount = c.amount * -1;
+
+							return "₱" + numeral((((percent) * amount * Math.pow((1 + (percent)), c.months) / (1 - Math.pow((1 + (percent)), c.months))) * c.months) - amount).format("0,0.00");
 						}
 					},
 				]
@@ -265,7 +274,10 @@
 								let months = $("[name='months']").val();
 
 								if(amount && percent && months){
-									let n2 = (amount * (percent / 100)) + (amount / months);
+									percent = percent / 100 / 12;
+									amount = amount * -1;
+
+									let n2 = (percent) * amount * Math.pow((1 + (percent)), months) / (1 - Math.pow((1 + (percent)), months));
 									let n1 = n2 * months;
 
 									$('#tPayment').html("₱" + numeral(n1).format('0,0.00'));
