@@ -108,10 +108,17 @@ class LoanController extends Controller
         if(isset($req->payments)){
             $loan = Loan::find($req->id);
 
+
             $payments = Transaction::whereIn('id', json_decode($loan->payments))->sum('amount');
-            $required = round(($loan->amount * ($loan->percent / 100)) + ($loan->amount / $loan->months), 2);
+
+            $percent = $loan->percent / 100 / 12;
+            $months = $loan->months;
+            $amount = $loan->amount * -1;
+            
+            $required = round($percent * $amount * pow((1 + $percent), $months) / (1 - pow((1 + $percent), $months)), 2);
+            
             $loan->paid_months = round($payments / $required, 0);
-            // dd($payments, $required);
+
             $loan->save();
         }
         else{
