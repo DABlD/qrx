@@ -169,6 +169,13 @@ class LoanController extends Controller
         echo $loan->save();
     }
 
+    public function delete(Request $req){
+        $temp = Loan::find($req->id);
+        $temp->delete();
+
+        $this->log(auth()->user()->fullname, 'Delete Loan', "ID: $req->id");
+    }
+
     public function index(){
         return $this->_view('index', [
             'title' => ucfirst($this->table)

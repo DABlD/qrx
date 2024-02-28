@@ -916,5 +916,20 @@
 				}
 			})
 		}
+
+		function del(id){
+			sc("Confirmation", "Are you sure you want to delete?", result => {
+				if(result.value){
+					swal.showLoading();
+					update({
+						url: "{{ route('loan.delete') }}",
+						data: {id: id},
+						message: "Success"
+					}, () => {
+						reload();
+					})
+				}
+			});
+		}
 	</script>
 @endpush
