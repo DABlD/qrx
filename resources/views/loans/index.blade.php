@@ -194,17 +194,17 @@
 					</div>
 
 					${input("amount", "Amount", null, 4, 8, 'number')}
-					${input("percent", "Interest Rate", null, 4, 8, 'number', 'disabled')}
+					${input("percent", "Interest Rate", null, 4, 8, 'number')}
 					${input("months", "Months", null, 4, 8, 'number', 'min=1 max=60')}
 
 					<br>
 					<br>
 
-					${input("collateral1", "Collateral 1", null, 4, 8)}
+					${input("collateral1", "Collateral 1", " ", 4, 8)}
 					${input("file1", "Upload File", null, 4, 8, 'file', 'accept="image/*"')}
-					${input("collateral2", "Collateral 2", null, 4, 8)}
+					${input("collateral2", "Collateral 2", " ", 4, 8)}
 					${input("file2", "Upload File", null, 4, 8, 'file', 'accept="image/*"')}
-					${input("collateral3", "Collateral 3", null, 4, 8)}
+					${input("collateral3", "Collateral 3", " ", 4, 8)}
 					${input("file3", "Upload File", null, 4, 8, 'file', 'accept="image/*"')}
 
 					<br>
@@ -263,12 +263,12 @@
 							$('[name="branch_id"]').append(string);
 							$('[name="branch_id"], [name="type"]').select2();
 
-							$('[name="branch_id"]').change(e => {
-								$('[name="percent"]').val(percents[e.target.value]);
-								$('[name="percent"]').trigger('keyup');
-							});
+							// $('[name="branch_id"]').change(e => {
+							// 	$('[name="percent"]').val(percents[e.target.value]);
+							// 	$('[name="percent"]').trigger('keyup');
+							// });
 
-							$("[name='amount'], [name='months']").on('keyup', e => {
+							$("[name='amount'], [name='months'], [name='percent']").on('keyup', e => {
 								let amount = $("[name='amount']").val();
 								let percent = $("[name='percent']").val();
 								let months = $("[name='months']").val();
@@ -396,7 +396,7 @@
 					<br>
 					<br>
 
-					${input("collateral1", "Collateral 1", loan.collateral1, 4, 8)}
+					${input("collateral1", "Collateral 1", loan.collateral1 ?? " ", 4, 8)}
 				    <div class="row iRow">
 		                <div class="col-md-4 iLabel">
 		                    Upload File
@@ -411,7 +411,7 @@
 		                </div>
 		            </div>
 
-					${input("collateral2", "Collateral 2", loan.collateral2, 4, 8)}
+					${input("collateral2", "Collateral 2", loan.collateral2 ?? " ", 4, 8)}
 				    <div class="row iRow">
 		                <div class="col-md-4 iLabel">
 		                    Upload File
@@ -426,7 +426,7 @@
 		                </div>
 		            </div>
 
-					${input("collateral3", "Collateral 3", loan.collateral3, 4, 8)}
+					${input("collateral3", "Collateral 3", loan.collateral3 ?? " ", 4, 8)}
 				    <div class="row iRow">
 		                <div class="col-md-4 iLabel">
 		                    Upload File
