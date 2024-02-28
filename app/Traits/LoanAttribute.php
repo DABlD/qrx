@@ -36,7 +36,7 @@ trait LoanAttribute{
 		}
 
 		if(in_array($this->status, ['Applied', 'Disapproved', 'Overdue'])){
-			$action .= 	"<a class='btn btn-danger' data-toggle='tooltip' title='Payments' onClick='del($id)'>" .
+			$action .= 	"<a class='btn btn-danger' data-toggle='tooltip' title='Delete' onClick='del($id)'>" .
 					        "<i class='fas fa-trash'></i>" .
 					    "</a>&nbsp;";
 		}
