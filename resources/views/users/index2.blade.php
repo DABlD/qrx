@@ -21,6 +21,7 @@
                     		<thead>
                     			<tr>
                     				<th>ID</th>
+                    				<th>Role</th>
                     				<th>Username</th>
                     				<th>Name</th>
                     				<th>Gender</th>
@@ -73,6 +74,7 @@
 				},
 				columns: [
 					{data: 'id'},
+					{data: 'role'},
 					{data: 'username'},
 					{data: 'fname'},
 					{data: 'gender'},
@@ -88,6 +90,16 @@
 					{
 						targets: [0,1,2,3,4,5],
 						className: "center"
+					},
+					{
+						targets: [1],
+						render: role => {
+							if(role == "Admin"){
+								role = "Staff";
+							}
+							
+							return role;
+						}
 					},
 					{
 						targets: [5],
