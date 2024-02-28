@@ -63,7 +63,7 @@ class BranchController extends Controller
         $branch = new Branch();
         $branch->user_id = $user->id;
         $branch->work_status = $req->work_status;
-        $branch->percent = $req->percent;
+        $branch->percent = 10;
         $branch->id_type = $req->id_type;
         $branch->id_num = $req->id_num;
         $branch->id_verified = $req->id_verified;
@@ -73,7 +73,7 @@ class BranchController extends Controller
     public function update(Request $req){
         $branch = Branch::find($req->id);
         $branch->work_status = $req->work_status;
-        $branch->percent = $req->percent;
+        $branch->percent = 10;
         $branch->id_type = $req->id_type;
         $branch->id_num = $req->id_num;
         $branch->id_verified = $req->id_verified;
