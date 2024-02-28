@@ -99,7 +99,7 @@ Route::group([
                     ->defaults("href", "/$cname");
 
                 Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store2/", ucfirst($cname) . "Controller@store")->name('store2');
+                Route::post("store2/", ucfirst($cname) . "Controller@store2")->name('store2');
                 Route::post("restore/", ucfirst($cname) . "Controller@restore")->name('restore');
                 Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
                 Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
