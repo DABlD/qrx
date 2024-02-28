@@ -24,7 +24,7 @@
                     				<th>Name</th>
                     				<th>Gender</th>
                     				<th>Contact</th>
-                    				<th>Interest Rate</th>
+                    				{{-- <th>Interest Rate</th> --}}
                     				<th>Verified</th>
                     				<th>Actions</th>
                     			</tr>
@@ -76,7 +76,7 @@
 					{data: 'user.fname'},
 					{data: 'user.gender'},
 					{data: 'user.contact'},
-					{data: 'percent'},
+					// {data: 'percent'},
 					{data: 'id_verified'},
 					{data: 'actions'},
 				],
@@ -85,18 +85,18 @@
 				// 	init();
 				// },
 				columnDefs: [
+					// {
+					// 	targets: [4],
+					// 	render: percent => {
+					// 		return `${percent}%`;
+					// 	}
+					// },
 					{
-						targets: [4],
-						render: percent => {
-							return `${percent}%`;
-						}
-					},
-					{
-						targets: [0,1,2,3,4,5],
+						targets: [0,1,2,3,4],
 						className: "center"
 					},
 					{
-						targets: [5],
+						targets: [4],
 						render: status => {
 							return status ? "Yes" : "No";
 						}
@@ -132,7 +132,6 @@
 	                <br>
 	                ${input("username", "Username", null, 3, 9)}
 					${input("work_status", "Work Status", null, 3, 9)}
-					${input("percent", "Interest Rate", null, 3, 9, 'number', 'min=0 max=100')}
 
 					<br>
 					${input("id_type", "ID Type", null, 3, 9)}
@@ -221,7 +220,6 @@
 							username: $("[name='username']").val(),
 							password: $("[name='password']").val(),
 							work_status: $("[name='work_status']").val(),
-							percent: $("[name='percent']").val(),
 							id_type: $("[name='id_type']").val(),
 							id_num: $("[name='id_num']").val(),
 							id_verified: $("[name='id_verified']").val(),
@@ -249,7 +247,6 @@
 	                <br>
 	                ${input("username", "Username", branch.user.username, 3, 9)}
 					${input("work_status", "Work Status", branch.work_status, 3, 9)}
-					${input("percent", "Interest Rate", branch.percent, 3, 9, 'number', 'min=0 max=100')}
 
 					<br>
 					${input("id_type", "ID Type", branch.id_type, 3, 9)}
@@ -330,7 +327,6 @@
 							address: $("[name='address']").val(),
 							username: $("[name='username']").val(),
 							work_status: $("[name='work_status']").val(),
-							percent: $("[name='percent']").val(),
 							id_type: $("[name='id_type']").val(),
 							id_num: $("[name='id_num']").val(),
 							id_verified: $("[name='id_verified']").val(),

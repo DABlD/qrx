@@ -77,7 +77,7 @@ class UserController extends Controller
             $data2->id_num = $req->id_num;
             $data2->id_file = $req->id_file;
             $data2->id_verified = $req->id_verified;
-            $data2->percent = $req->percent;
+            $data2->percent = 10;
 
             $data->save();
             $data2->save();
