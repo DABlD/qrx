@@ -60,28 +60,6 @@ Route::group([
             ->name('dashboard')
             ->defaults('href', '/');
 
-        // USER ROUTES
-        $cname = "user";
-        Route::group([
-                'as' => "$cname.",
-                'prefix' => "$cname/"
-            ], function () use($cname){
-
-                Route::get("/", ucfirst($cname) . "Controller@index")
-                    ->defaults("sidebar", 1)
-                    ->defaults("icon", "fa-light fa-users")
-                    ->defaults("name", "Client")
-                    ->defaults("roles", array("Admin"))
-                    // ->defaults("group", "Settings")
-                    ->name($cname)
-                    ->defaults("href", "/$cname");
-
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
-                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
-                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
-            }
-        );
-
         // USER 2 FOR STAFFS ROUTES
         $cname = "user";
         Route::group([
@@ -89,14 +67,14 @@ Route::group([
                 'prefix' => "$cname/"
             ], function () use($cname){
 
-                Route::get("/", ucfirst($cname) . "Controller@index2")
+                Route::get("/staffs", ucfirst($cname) . "Controller@index2")
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fa-light fa-users")
                     ->defaults("name", "Staff")
                     ->defaults("roles", array("Super Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)
-                    ->defaults("href", "/$cname");
+                    ->defaults("href", "/$cname/staffs");
 
                 Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
                 Route::post("store2/", ucfirst($cname) . "Controller@store2")->name('store2');
@@ -104,6 +82,28 @@ Route::group([
                 Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
                 Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
                 Route::post("updatePassword/", ucfirst($cname) . "Controller@updatePassword")->name('updatePassword');
+            }
+        );
+
+        // USER ROUTES
+        $cname = "user";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+
+                Route::get("/clients", ucfirst($cname) . "Controller@index")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fa-light fa-users")
+                    ->defaults("name", "Client")
+                    ->defaults("roles", array("Super Admin", "Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname/clients");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
             }
         );
 
@@ -118,7 +118,7 @@ Route::group([
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fa-light fa-money-bill")
                     ->defaults("name", "Loan")
-                    ->defaults("roles", array("Admin"))
+                    ->defaults("roles", array("Super Admin", "Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)
                     ->defaults("href", "/$cname");
@@ -141,7 +141,7 @@ Route::group([
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fas fa-hand-holding-circle-dollar")
                     ->defaults("name", "Transaction")
-                    ->defaults("roles", array("Admin"))
+                    ->defaults("roles", array("Super Admin", "Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)
                     ->defaults("href", "/$cname");
