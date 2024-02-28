@@ -18,9 +18,9 @@ class CreateLoansTable extends Migration
 
             $table->enum('status', ['Applied', 'Approved', 'Disapproved', 'For Payment', 'Overdue', 'Paid'])->nullable()->default("Applied");
             $table->unsignedInteger('branch_id');
-            $table->float('amount', 8,2);
+            $table->float('amount', 13,2);
             $table->float('percent', 4, 2);
-            $table->float('balance', 8,2)->nullable();
+            $table->float('balance', 13,2)->nullable();
             $table->unsignedSmallInteger('months');
             $table->unsignedSmallInteger('paid_months')->default(0);
             $table->boolean('credited')->default(0);
