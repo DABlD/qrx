@@ -9,6 +9,9 @@ trait LoanAttribute{
 
 		$action = 	"<a class='btn btn-success' data-toggle='tooltip' title='View' onClick='view($id)'>" .
 				        "<i class='fas fa-search'></i>" .
+				    "</a>&nbsp;" . 
+				    "<a class='btn btn-primary' data-toggle='tooltip' title='Matrix' onClick='matrix($id)'>" .
+				        "<i class='fas fa-table-list'></i>" .
 				    "</a>&nbsp;";
 		// $action .= 	"<a class='btn btn-danger' data-toggle='tooltip' title='Delete' onClick='del($id)'>" .
 		// 		        "<i class='fas fa-trash'></i>" .

@@ -137,7 +137,7 @@
 							let percent = c.percent / 100 / 12;
 							amount = c.amount * -1;
 
-							return "₱" + numeral((((percent) * amount * Math.pow((1 + (percent)), c.months) / (1 - Math.pow((1 + (percent)), c.months))) * c.months) - amount).format("0,0.00");
+							return "₱" + numeral((((percent) * amount * Math.pow((1 + (percent)), c.months) / (1 - Math.pow((1 + (percent)), c.months))) * c.months) + amount).format("0,0.00");
 						}
 					},
 				]
@@ -825,6 +825,93 @@
 							$('#payment-table').append(string);
 						},
 						width: '800px'
+					})
+				}
+			})
+		}
+
+		function matrix(id){
+			$.ajax({
+				url: '{{ route('loan.get') }}',
+				data: {
+					where: ['id', id],
+					select: '*',
+				},
+				success: result => {
+					let loan = JSON.parse(result)[0];
+					
+					let percent = loan.percent / 100 / 12;
+					let amount = loan.amount * -1;
+					let months = loan.months;
+
+					let mPayment = (percent) * amount * Math.pow((1 + (percent)), months) / (1 - Math.pow((1 + (percent)), months));
+					
+					let string = ``;
+					let balance = loan.amount;
+
+					for(i = 0; i <= months; i++){
+						if(i == 0){
+							string += `
+								<tr>
+									<td>${i}</td>
+									<td></td>
+									<td></td>
+									<td>0.00</td>
+									<td>${numeral(balance).format('0,0.00')}</td>
+									<td>${numeral(balance).format('0,0.00')}</td>
+								</tr>
+							`;
+						}
+						else{
+							let temp = balance - (mPayment - (balance * percent));
+							console.log(temp, mPayment);
+							string += `
+								<tr>
+									<td>${i}</td>
+									<td>${moment(loan.created_at).add(i, 'month').format('MM/DD/YY')}</td>
+									<td>${numeral(mPayment - (balance * percent)).format('0,0.00')}</td>
+									<td>${numeral(balance * percent).format('0,0.00')}</td>
+									<td>${numeral(mPayment).format('0,0.00')}</td>
+									<td>${numeral((temp + (balance * percent)) <= mPayment ? 0 : temp).format('0,0.00')}</td>
+								</tr>
+							`;
+							balance = balance - (mPayment - (balance * percent));
+						}
+					}
+
+					Swal.fire({
+						title: 'Loan Matrix',
+						width: '1000px',
+						html: `
+							<div style="text-align: left; font-weight: bold;">
+								Loan Amount: ₱${numeral(amount * -1).format('0,0.00')}
+								<br>
+								Monthly Installment: ₱${numeral(mPayment).format('0,0.00')}
+								<br>
+								Contractual Rate (Monthly): ${numeral(percent * 100).format('0,0.00')}
+								<br>
+								No. of Monthly Installment: ${months}
+							</div>
+
+							<div>
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>Period</th>
+											<th>Date</th>
+											<th>Principal</th>
+											<th>Interest</th>
+											<th>Cash Flows</th>
+											<th>Balance</th>
+										</tr>
+									</thead>
+									<br>
+									<tbody>
+										${string}
+									</tbody>
+								</table>
+							</div>
+						`
 					})
 				}
 			})
