@@ -450,10 +450,10 @@
 					    </div>
 					    <div class="col-md-8 iInput">
 					        <select name="status" class="form-control">
-					        	<option value="Applied">Applied</option>
+					        	@if(auth()->user()->role == "Super Admin")
 					        	<option value="Approved">Approved</option>
 					        	<option value="Disapproved">Disapproved</option>
-					        	<option value="For Payment">For Payment</option>
+					        	@endif
 					        	<option value="Overdue">Overdue</option>
 					        	<option value="Paid">Paid</option>
 					        </select>
