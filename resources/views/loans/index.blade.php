@@ -588,8 +588,22 @@
 		function disburse(id){
 			Swal.fire({
 				html: `
-					${input("payment_channel", "Payment Channel", null, 4, 8)}
+					<div class="row iRow">
+					    <div class="col-md-4 iLabel">
+					        Payment Type
+					    </div>
+					    <div class="col-md-8 iInput">
+					        <select name="payment_channel" class="form-control">
+					        	<option value="">Select Type</option>
+					        	<option value="Cash">Cash</option>
+					        	<option value="Check">Check</option>
+					        	<option value="E-Wallet">E-Wallet</option>
+					        	<option value="Credit Card">Credit Card</option>
+					        </select>
+					    </div>
+					</div>
 					${input("reference", "Reference #", null, 4, 8)}
+					${input("date_disbursed", "Date", null, 4, 8)}
 				`,
 				title: "Enter Details",
 				width: '500px',
@@ -597,12 +611,19 @@
 				showCancelButton: true,
 				cancelButtonColor: errorColor,
 				cancelButtonText: 'Cancel',
+				didOpen: () => {
+					$('[name="date_disbursed"]').flatpickr({
+					    altInput: true,
+					    altFormat: 'F j, Y',
+					    dateFormat: 'Y-m-d',
+					})
+				},
 				preConfirm: () => {
 				    swal.showLoading();
 				    return new Promise(resolve => {
 				    	let bool = true;
 
-			            if($('.swal2-container input:placeholder-shown').length){
+			            if($('.swal2-container input:placeholder-shown').length || $('[name="payment_channel"]').val() == ""){
 			                Swal.showValidationMessage('Fill all fields');
 			            }
 
@@ -620,6 +641,7 @@
 							type: "DR",
 							payment_channel: $("[name='payment_channel']").val(),
 							reference: $("[name='reference']").val(),
+							payment_date: $("[name='date_disbursed']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						}
 					});
@@ -631,6 +653,7 @@
 							id: id,
 							payment_channel: $("[name='payment_channel']").val(),
 							reference: $("[name='reference']").val(),
+							date_disbursed: $("[name='date_disbursed']").val(),
 							status: "For Payment",
 							credited: 1,
 							_token: $('meta[name="csrf-token"]').attr('content')

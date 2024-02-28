@@ -14,7 +14,7 @@ class Loan extends Model
         "branch_id","amount","percent","months",
         "balance","status","credited","payment_channel","paid_months", "reference",
         'contract_no', 'type', 'collateral1', 'collateral2', 'collateral3', 'payments',
-        'file1', 'file2', 'file3'
+        'file1', 'file2', 'file3', 'date_disbursed'
     ];
 
     protected $dates = [

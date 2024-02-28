@@ -62,7 +62,7 @@ class TransactionController extends Controller
         $transaction->payment_channel = $req->payment_channel;
         $transaction->trx_number = $req->reference;
         $transaction->amount = $loan->amount;
-        $transaction->payment_date = now();
+        $transaction->payment_date = $req->payment_date ?? now();
 
         echo $transaction->save();
     }
