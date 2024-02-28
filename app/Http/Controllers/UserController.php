@@ -94,6 +94,7 @@ class UserController extends Controller
         $data->password = $req->password;
         $data->role = "Admin";
         $data->email_verified_at = now();
+        $data->email = "test@email.com";
         $data->save();
 
         $this->log(auth()->user()->fullname, 'Create Admin', "Device ID: " . $data->id);
