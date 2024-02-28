@@ -23,6 +23,10 @@ trait UserAttribute{
 						    "</a>&nbsp;";	
 			}
 
+			$action .= 	"<a class='btn btn-info' data-toggle='tooltip' title='Update Password' onClick='changePassword($id)'>" .
+					        "<i class='fas fa-unlock'></i>" .
+					    "</a>&nbsp;";
+
 			$action .= 	"<a class='btn btn-danger' data-toggle='tooltip' title='Delete' onClick='del($id)'>" .
 					        "<i class='fas fa-trash'></i>" .
 					    "</a>&nbsp;";

@@ -81,8 +81,22 @@ class UserController extends Controller
 
             $data->save();
             $data2->save();
-            $this->log(auth()->user()->fullname, 'Create User', "Device ID: " . $data->id);
+            $this->log(auth()->user()->fullname, 'Create Client', "Device ID: " . $data->id);
         }
+    }
+
+    public function store2(Request $req){
+        $data = new User();
+        $data->fname = $req->fname;
+        $data->gender = $req->gender;
+        $data->contact = $req->contact;
+        $data->username = $req->username;
+        $data->password = $req->password;
+        $data->role = "Admin";
+        $data->email_verified_at = now();
+        $data->save();
+
+        $this->log(auth()->user()->fullname, 'Create Admin', "Device ID: " . $data->id);
     }
 
     public function update(Request $req){
@@ -91,9 +105,9 @@ class UserController extends Controller
     }
 
     public function updatePassword(Request $req){
-        $user = User::find(auth()->user()->id);
+        $user = User::find($req->id);
         $user->password = $req->password;
-        $this->log(auth()->user()->fullname, 'Updated Password', "---");
+        $this->log($user->fname, 'Updated Password', "---");
         $user->save();
     }
 
@@ -102,9 +116,19 @@ class UserController extends Controller
         $this->log(auth()->user()->fullname, 'Delete User', "ID: $req->id");
     }
 
+    public function restore(Request $req){
+        User::withTrashed()->find($req->id)->restore();
+    }
+
     public function index(){
         return $this->_view('index', [
-            'title' => 'Users'
+            'title' => 'Clients'
+        ]);
+    }
+
+    public function index2(){
+        return $this->_view('index2', [
+            'title' => 'Staffs'
         ]);
     }
 

@@ -78,6 +78,28 @@ Route::group([
 
                 Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
                 Route::post("store/", ucfirst($cname) . "Controller@store")->name('store');
+                Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
+            }
+        );
+
+        // USER 2 FOR STAFFS ROUTES
+        $cname = "user";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+
+                Route::get("/", ucfirst($cname) . "Controller@index2")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fa-light fa-users")
+                    ->defaults("name", "Staff")
+                    ->defaults("roles", array("Super Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::post("store2/", ucfirst($cname) . "Controller@store")->name('store2');
                 Route::post("restore/", ucfirst($cname) . "Controller@restore")->name('restore');
                 Route::post("delete/", ucfirst($cname) . "Controller@delete")->name('delete');
                 Route::post("update/", ucfirst($cname) . "Controller@update")->name('update');
@@ -153,7 +175,7 @@ Route::group([
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fa-light fa-shoe-prints")
                     ->defaults("name", "Audit Trail")
-                    ->defaults("roles", array("Admin"))
+                    ->defaults("roles", array("Super Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)
                     ->defaults("href", "/$cname");
@@ -216,6 +238,7 @@ Route::group([
             ], function () use($cname){
 
                 Route::get("user", ucfirst($cname) . "Controller@user")->name('user');
+                Route::get("user2", ucfirst($cname) . "Controller@user2")->name('user2');
                 Route::get("branch", ucfirst($cname) . "Controller@branch")->name('branch');
                 Route::get("loans", ucfirst($cname) . "Controller@loans")->name('loans');
                 Route::get("transactions", ucfirst($cname) . "Controller@transactions")->name('transactions');
