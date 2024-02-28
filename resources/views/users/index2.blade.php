@@ -97,12 +97,12 @@
 							if(role == "Admin"){
 								role = "Staff";
 							}
-							
+
 							return role;
 						}
 					},
 					{
-						targets: [5],
+						targets: [6],
 						render: date => {
 							return moment(date).format('MMM DD, YYYY HH:mm:ss');
 						}
