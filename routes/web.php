@@ -56,7 +56,7 @@ Route::group([
             ->defaults('sidebar', 1)
             ->defaults('icon', 'fas fa-list')
             ->defaults('name', 'Dashboard')
-            ->defaults('roles', array('Admin', 'Branch'))
+            ->defaults('roles', array('Super Admin', 'Admin', 'Branch'))
             ->name('dashboard')
             ->defaults('href', '/');
 
