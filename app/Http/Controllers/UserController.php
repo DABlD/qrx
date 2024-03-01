@@ -7,6 +7,8 @@ use App\Models\{User, AuditTrail, Branch};
 use DB;
 use Auth;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 class UserController extends Controller
 {
     public function get(Request $req){
@@ -119,6 +121,20 @@ class UserController extends Controller
 
     public function restore(Request $req){
         User::withTrashed()->find($req->id)->restore();
+    }
+
+    public function import(Request $req){
+        $class = "App\Imports\UserImport";
+        Excel::import(new $class, $req->file('file'));
+
+        if(true){
+            $req->session()->flash('success', 'Successfully Imported');
+            return back();
+        }
+        else{
+            $req->session()->flash('error', 'Please Try Again.');
+            return back();
+        }
     }
 
     public function index(){

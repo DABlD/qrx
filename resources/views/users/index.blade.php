@@ -368,5 +368,21 @@
 				}
 			});
 		}
+
+		function imp(){
+			Swal.fire({
+			    title: 'Select File',
+			    html: `
+			        <form id="form" method="POST" action="{{ route('user.import') }}" enctype="multipart/form-data">
+			            @csrf
+			            <input type="file" name="file" class="swal2-file">
+			        </form>
+			    `
+			}).then(file => {
+			    if(file.value){
+			        $('#form').submit();
+			    }
+			});
+		}
 	</script>
 @endpush

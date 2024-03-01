@@ -91,9 +91,9 @@
 
         <script>
             @if(session('success'))
-                ss({{ session('success') }});
+                ss("{{ session('success') }}");
             @elseif(session('error'))
-                se({{ session('error') }});
+                se("{{ session('error') }}");
             @endif
         </script>
 
