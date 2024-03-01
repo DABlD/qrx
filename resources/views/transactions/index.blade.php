@@ -21,7 +21,7 @@
                     		<thead>
                     			<tr>
                     				<th>ID</th>
-                    				{{-- <th>Name</th> --}}
+                    				<th>Contract #</th>
                     				<th>Type</th>
                     				<th>Amount</th>
                     				<th>Ref #</th>
@@ -68,12 +68,12 @@
                 	dataSrc: "",
 					data: {
 						select: "*",
-						// load: ['user']
+						load: ['loan']
 					}
 				},
 				columns: [
 					{data: 'id'},
-					// {data: 'user_id'},
+					{data: 'type'},
 					{data: 'type'},
 					{data: 'amount'},
 					{data: 'trx_number'},
@@ -84,17 +84,27 @@
         		pageLength: 25,
 				columnDefs: [
 					{
-						targets: [0,1,2,3,4,5,6,6],
+						targets: [0,1,2,3,4,5,6,7],
 						className: "center"
 					},
 					{
-						targets: 2,
+						targets: 1,
+						render: (a,b,data) => {
+							if(data.loan){
+								return data.loan.contract_no;
+							}
+
+							return "";
+						}
+					},
+					{
+						targets: 3,
 						render: amount => {
 							return "₱" + numeral(amount).format("0,0.00");
 						}
 					},
 					{
-						targets: 5,
+						targets: 6,
 						render: date => {
 							return moment(date).format(dateTimeFormat2);
 						}
