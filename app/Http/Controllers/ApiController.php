@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 
 use Illuminate\Http\Request;
-use App\Models\{AuditTrail, Transaction};
+use App\Models\{AuditTrail, Transaction, KYC};
 use DB;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -454,6 +454,28 @@ class ApiController extends Controller
             return [
                 "status" => "Error",
                 "error" => "Failed To Save Transaction"
+            ];
+        }
+    }
+
+    public function createKYC(Request $req){
+        $data = new KYC();
+
+        $data->mobile_number = $req->mobile_number;
+        $data->fibi_user_id = $req->fibi_user_id;
+        $data->document_type = $req->document_type;
+        $data->file = $req->file;
+
+        if($data->save()){
+            return [
+                "status" => "Success",
+                "data" => $data
+            ];
+        }
+        else{
+            return [
+                "status" => "Error",
+                "error" => "Failed To Save KYC"
             ];
         }
     }
