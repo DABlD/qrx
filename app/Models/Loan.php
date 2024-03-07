@@ -14,11 +14,14 @@ class Loan extends Model
         "branch_id","amount","percent","months",
         "balance","status","credited","payment_channel","paid_months", "reference",
         'contract_no', 'type', 'collateral1', 'collateral2', 'collateral3', 'payments',
-        'file1', 'file2', 'file3', 'date_disbursed'
+        'file1', 'file2', 'file3', 'date_disbursed',
+
+        "source_of_income","use_of_loan","work_name","work_address","position","salary",
+        "date_of_employment","industry","capitalization","tin","eligible","remarks"
     ];
 
     protected $dates = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at', 'date_of_employment'
     ];
 
     public function branch(){
