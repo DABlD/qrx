@@ -10,7 +10,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="gPJ2CFeKyObXQsBV62dPiXZDJMHM0LDiGkTHr04n">
 
-    <title>QR Transit</title>
+    <title>QRX | Login Page</title>
 
     <!-- Scripts -->
     <script src="{{ asset("qrx/js/app.js") }}" defer></script>
