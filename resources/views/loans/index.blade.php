@@ -231,6 +231,7 @@
 				cancelButtonColor: errorColor,
 				cancelButtonText: 'Cancel',
 				didOpen: () => {
+
 					$.ajax({
 						url: "{{ route("branch.get") }}",
 						data: {
@@ -362,7 +363,7 @@
 				html: `
 					<div class="row iRow">
 					    <div class="col-md-4 iLabel">
-					        Branch
+					        Client
 					    </div>
 					    <div class="col-md-8 iInput">
 					        <select name="branch_id" class="form-control" disabled>
@@ -497,12 +498,12 @@
 
 							if(result.length == 0){
 								string = `
-									<option value="">No Branch Available</option>
+									<option value="">No Client Available</option>
 								`;
 							}
 							else{
 								string = `
-									<option value="">Select Branch</option>
+									<option value="">Select Client</option>
 								`;
 
 								result.forEach(e => {
