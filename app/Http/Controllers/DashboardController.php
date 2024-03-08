@@ -12,7 +12,7 @@ class DashboardController extends Controller
 
         // USERS
         $clients = Branch::count();
-        $loans = Loan::all();
+        $loans = Loan::where('status', '!=', "Applied")->get();
         $transactions = Transaction::count();
         $revenue = 0;
 
