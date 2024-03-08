@@ -262,7 +262,10 @@
 							}
 
 							$('[name="branch_id"]').append(string);
-							$('[name="branch_id"], [name="type"]').select2();
+							$('[name="branch_id"]').select2();
+							$('[name="type"]').select2({
+								tags: true
+							});
 
 							// $('[name="branch_id"]').change(e => {
 							// 	$('[name="percent"]').val(percents[e.target.value]);
@@ -334,6 +337,7 @@
 		}
 
 		function showDetails(loan){
+			console.log(loan);
 			let pDetails = "";
 			if(["For Payment", "Overdue", "Payment"].includes(loan.status)){
 				pDetails = `
@@ -357,6 +361,13 @@
 					    </div>
 					</div>
 				`;
+			}
+
+			let disabled = "disabled";
+			let disabled2 = "";
+			if(loan.status == "Applied"){
+				disabled = "";
+				disabled2 = "disabled";
 			}
 
 			Swal.fire({
@@ -391,8 +402,20 @@
 
 					${input("contract_no", "Contract Ref", loan.contract_no, 4, 8, 'text', 'disabled')}
 					${input("amount", "Amount", loan.amount, 4, 8, 'number', 'disabled')}
-					${input("percent", "Interest Rate"	, loan.percent, 4, 8, 'number', 'disabled')}
-					${input("months", "Months", loan.months, 4, 8, 'number', 'min=1 max=60 disabled')}
+					${input("percent", "Interest Rate", loan.percent, 4, 8, 'number', disabled)}
+					${input("months", "Months", loan.months, 4, 8, 'number', 'min=1 max=60 ' + disabled)}
+
+					${input("source_of_income", "Source of Income", loan.source_of_income, 4, 8, 'text', disabled)}
+					${input("repayment_plan", "Repayment Plan", loan.repayment_plan, 4, 8, 'text', disabled)}
+					${input("type_of_organization", "Org Type", loan.type_of_organization, 4, 8, 'text', disabled)}
+					${input("work_name", "Work/Business Name", loan.work_name, 4, 8, 'text', disabled)}
+					${input("work_address", "Address", loan.work_address, 4, 8, 'text', disabled)}
+					${input("position", "Position", loan.position, 4, 8, 'text', disabled)}
+					${input("salary", "Salary", loan.salary, 4, 8, 'number', disabled)}
+					${input("date_of_employment", "Date of Employment", loan.date_of_employment, 4, 8, 'text', disabled)}
+					${input("industry", "Industry", loan.industry, 4, 8, 'text', disabled)}
+					${input("capitalization", "Capitalization", loan.capitalization, 4, 8, 'text', disabled)}
+					${input("tin", "TIN", loan.tin, 4, 8, 'text', disabled)}
 
 					<br>
 					<br>
@@ -450,7 +473,7 @@
 					        Status
 					    </div>
 					    <div class="col-md-8 iInput">
-					        <select name="status" class="form-control">
+					        <select name="status" class="form-control" ${disabled2}>
 					        	@if(auth()->user()->role == "Super Admin")
 					        	<option value="Approved">Approved</option>
 					        	<option value="Disapproved">Disapproved</option>
@@ -515,12 +538,21 @@
 							}
 
 							$('[name="branch_id"]').append(string);
-							$('[name="branch_id"], [name="type"]').select2();
-
-							$('[name="branch_id"]').change(e => {
-								$('[name="percent"]').val(percents[e.target.value]);
-								$('[name="percent"]').trigger('keyup');
+							$('[name="date_of_employment"]').flatpickr({
+								altInput: true,
+								altFormat: 'F j, Y',
+								dateFormat: 'Y-m-d',
 							});
+							$('[name="branch_id"]').select2();
+							$('[name="type"]').select2({
+								tags: true
+							});
+							$('[name="type"]').append(`<option value="${loan.type}">${loan.type}</option>`);
+
+							// $('[name="branch_id"]').change(e => {
+							// 	$('[name="percent"]').val(percents[e.target.value]);
+							// 	$('[name="percent"]').trigger('keyup');
+							// });
 
 							$("[name='amount'], [name='months']").on('keyup', e => {
 								let amount = $("[name='amount']").val();
@@ -539,6 +571,11 @@
 							$('[name="branch_id"]').val(loan.branch_id).trigger('change');
 							$('[name="months"]').trigger('keyup');
 
+
+					        @if(auth()->user()->role == "Admin")
+					        	$('[name="status"]').append(`<option value="${loan.status}">${loan.status}</option>`);
+					        @endif
+
 							$('[name="status"]').val(loan.status).trigger('change');
 							$('[name="type"]').val(loan.type).trigger('change');
 						}
@@ -549,8 +586,12 @@
 				    return new Promise(resolve => {
 				    	let bool = true;
 
-			            if($('.swal2-container input:placeholder-shown').length || $('[name="branch_id"]').val() == "" || $('[name="type"]').val() == ""){
+			            if($('[name="branch_id"]').val() == "" || $('[name="type"]').val() == ""){
 			                Swal.showValidationMessage('Fill all fields');
+			            }
+
+			            if($("[name='source_of_income']").val() == 0){
+			                Swal.showValidationMessage('Months must not be 0');
 			            }
 
 			            bool ? setTimeout(() => {resolve()}, 500) : "";
@@ -563,6 +604,19 @@
 					let formData = new FormData();
 					formData.append('id', loan.id);
 					formData.append('status', $("[name='status']").val());
+					formData.append('percent', $("[name='percent']").val());
+					formData.append('months', $("[name='months']").val());
+					formData.append('source_of_income', $("[name='source_of_income']").val());
+					formData.append('repayment_plan', $("[name='repayment_plan']").val());
+					formData.append('type_of_organization', $("[name='type_of_organization']").val());
+					formData.append('work_name', $("[name='work_name']").val());
+					formData.append('work_address', $("[name='work_address']").val());
+					formData.append('position', $("[name='position']").val());
+					formData.append('salary', $("[name='salary']").val());
+					formData.append('date_of_employment', $("[name='date_of_employment']").val());
+					formData.append('industry', $("[name='industry']").val());
+					formData.append('capitalization', $("[name='capitalization']").val());
+					formData.append('tin', $("[name='tin']").val());
 					formData.append('collateral1', $("[name='collateral1']").val());
 					formData.append('file1', $('[name="file1"]').prop('files')[0]);
 					formData.append('collateral2', $("[name='collateral2']").val());

@@ -131,6 +131,19 @@ class LoanController extends Controller
     public function update2(Request $req){
         $loan = Loan::find($req->id);
         $loan->status = $req->status;
+        $loan->percent = $req->percent;
+        $loan->months = $req->months;
+        $loan->source_of_income = $req->source_of_income;
+        $loan->repayment_plan = $req->repayment_plan;
+        $loan->type_of_organization = $req->type_of_organization;
+        $loan->work_name = $req->work_name;
+        $loan->work_address = $req->work_address;
+        $loan->position = $req->position;
+        $loan->salary = $req->salary;
+        $loan->date_of_employment = $req->date_of_employment;
+        $loan->industry = $req->industry;
+        $loan->capitalization = $req->capitalization;
+        $loan->tin = $req->tin;
         $loan->collateral1 = $req->collateral1;
         $loan->collateral2 = $req->collateral2;
         $loan->collateral3 = $req->collateral3;
