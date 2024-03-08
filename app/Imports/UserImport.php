@@ -35,7 +35,7 @@ class UserImport implements ToCollection, WithCalculatedFormulas
                 $branch->user_id = $user->id;
                 $branch->work_status = $client[7];
                 $branch->work_status = "test";
-                $branch->id_type = "";
+                $branch->id_type = null;
                 $branch->id_num = bin2hex(random_bytes(8));
                 $branch->percent = 0;
                 $branch->save();

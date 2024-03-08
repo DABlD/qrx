@@ -503,8 +503,8 @@ class ApiController extends Controller
         $branch = new Branch();
         $branch->user_id = $data->id;
         $branch->work_status = "";
-        $branch->id_type = "";
-        $branch->id_num = "";
+        $branch->id_type = null;
+        $branch->id_num = null;
         $branch->percent = 10;
 
         if($branch->save()){
