@@ -467,6 +467,9 @@ class ApiController extends Controller
         $data->file = $req->file;
 
         if($data->save()){
+            $user = User::where('contact', $req->mobile_number)->first();
+            Branch::where('user_id', $user->id)->update(["id_verified" => 1]);
+
             return [
                 "status" => "Success",
                 "data" => $data

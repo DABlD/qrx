@@ -182,6 +182,16 @@ Route::group([
             }
         );
 
+        // KYC ROUTES
+        $cname = "kyc";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+            }
+        );
+
         // AUDIT TRAIL ROUTES
         $cname = "audit_trail";
         Route::group([

@@ -119,7 +119,18 @@
 				},
 				success: admin => {
 					admin = JSON.parse(admin)[0];
-					showDetails(admin);
+
+					$.ajax({
+						url: "{{ route('kyc.get') }}",
+						data: {
+							select: '*',
+							where: ['mobile_number', admin.user.contact],
+						},
+						success: kyc => {
+							kyc = JSON.parse(kyc)[0];
+							showDetails(admin, kyc);
+						}
+					})
 				}
 			})
 		}
@@ -138,21 +149,6 @@
 	                <br>
 	                ${input("username", "Username", null, 3, 9)}
 					${input("work_status", "Work Status", null, 3, 9)}
-
-					<br>
-					${input("id_type", "ID Type", null, 3, 9)}
-					${input("id_num", "ID Number", null, 3, 9)}
-					<div class="row iRow">
-					    <div class="col-md-3 iLabel">
-					        Status
-					    </div>
-					    <div class="col-md-9 iInput">
-					        <select name="id_verified" class="form-control">
-					        	<option value="0" selected>Not Verified</option>
-					        	<option value="1">Verified</option>
-					        </select>
-					    </div>
-					</div>
 
 	                <br>
 	                ${input("password", "", 12345678, 3, 9, 'hidden')}
@@ -228,9 +224,6 @@
 							username: $("[name='username']").val(),
 							password: $("[name='password']").val(),
 							work_status: $("[name='work_status']").val(),
-							id_type: $("[name='id_type']").val(),
-							id_num: $("[name='id_num']").val(),
-							id_verified: $("[name='id_verified']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
 						success: () => {
@@ -242,7 +235,7 @@
 			});
 		}
 
-		function showDetails(branch){
+		function showDetails(branch, kyc){
 			Swal.fire({
 				html: `
 	                ${input("id", "", branch.id, 3, 9, 'hidden')}
@@ -259,8 +252,6 @@
 					${input("work_status", "Work Status", branch.work_status, 3, 9)}
 
 					<br>
-					${input("id_type", "ID Type", branch.id_type, 3, 9)}
-					${input("id_num", "ID Number", branch.id_num, 3, 9)}
 					<div class="row iRow">
 					    <div class="col-md-3 iLabel">
 					        Status
@@ -339,8 +330,8 @@
 							address: $("[name='address']").val(),
 							username: $("[name='username']").val(),
 							work_status: $("[name='work_status']").val(),
-							id_type: $("[name='id_type']").val(),
-							id_num: $("[name='id_num']").val(),
+							// id_type: $("[name='id_type']").val(),
+							// id_num: $("[name='id_num']").val(),
 							id_verified: $("[name='id_verified']").val(),
 						},
 						message: "Success"
