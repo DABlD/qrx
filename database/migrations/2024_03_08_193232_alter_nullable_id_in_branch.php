@@ -14,8 +14,8 @@ class AlterNullableIdInBranch extends Migration
     public function up()
     {
         Schema::table('branches', function (Blueprint $table) {
-            $table->string('id_type')->nullable();
-            $table->string('id_num')->unique()->nullable();
+            $table->string('id_type')->nullable()->change();
+            $table->string('id_num')->unique()->nullable()->change();
         });
     }
 
