@@ -16,8 +16,10 @@ class Loan extends Model
         'contract_no', 'type', 'collateral1', 'collateral2', 'collateral3', 'payments',
         'file1', 'file2', 'file3', 'date_disbursed',
 
-        "source_of_income","use_of_loan","work_name","work_address","position","salary",
-        "date_of_employment","industry","capitalization","tin","eligible","remarks"
+        "source_of_income","use_of_loan", "repayment_plan", "work_name",
+        "work_address", "type_of_organization","position","salary",
+        "date_of_employment","industry","capitalization","tin",
+        "eligible","remarks"
     ];
 
     protected $dates = [
