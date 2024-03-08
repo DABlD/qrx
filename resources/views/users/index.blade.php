@@ -21,7 +21,9 @@
                     		<thead>
                     			<tr>
                     				<th>ID</th>
-                    				<th>Name</th>
+                    				<th>First Name</th>
+                    				<th>Middle Name</th>
+                    				<th>Last Name</th>
                     				<th>Gender</th>
                     				<th>Contact</th>
                     				{{-- <th>Interest Rate</th> --}}
@@ -74,6 +76,8 @@
 				columns: [
 					{data: 'id'},
 					{data: 'user.fname'},
+					{data: 'user.mname'},
+					{data: 'user.lname'},
 					{data: 'user.gender'},
 					{data: 'user.contact'},
 					// {data: 'percent'},
@@ -92,11 +96,11 @@
 					// 	}
 					// },
 					{
-						targets: [0,1,2,3,4],
+						targets: [0,1,2,3,4,5,6],
 						className: "center"
 					},
 					{
-						targets: [4],
+						targets: [6],
 						render: status => {
 							return status ? "Yes" : "No";
 						}
@@ -123,7 +127,9 @@
 		function create(){
 			Swal.fire({
 				html: `
-	                ${input("fname", "Name", null, 3, 9)}
+	                ${input("fname", "First Name", null, 3, 9)}
+	                ${input("mname", "Middle Name", null, 3, 9)}
+	                ${input("lname", "Last Name", null, 3, 9)}
 					${input("email", "Email", null, 3, 9, 'email')}
 					${input("gender", "Gender", null, 3, 9)}
 					${input("contact", "Contact", null, 3, 9)}
@@ -213,6 +219,8 @@
 						type: "POST",
 						data: {
 							fname: $("[name='fname']").val(),
+							mname: $("[name='mname']").val(),
+							lname: $("[name='lname']").val(),
 							email: $("[name='email']").val(),
 							gender: $("[name='gender']").val(),
 							contact: $("[name='contact']").val(),
@@ -238,7 +246,9 @@
 			Swal.fire({
 				html: `
 	                ${input("id", "", branch.id, 3, 9, 'hidden')}
-	                ${input("fname", "Name", branch.user.fname, 3, 9)}
+	                ${input("fname", "First Name", branch.user.fname, 3, 9)}
+	                ${input("mname", "Middle Name", branch.user.mname, 3, 9)}
+	                ${input("lname", "Last Name", branch.user.lname, 3, 9)}
 					${input("email", "Email", branch.user.email, 3, 9, 'email')}
 					${input("gender", "Gender", branch.user.gender, 3, 9)}
 					${input("contact", "Contact", branch.user.contact, 3, 9)}
@@ -321,6 +331,8 @@
 						data: {
 							id: $("[name='id']").val(),
 							fname: $("[name='fname']").val(),
+							mname: $("[name='mname']").val(),
+							lname: $("[name='lname']").val(),
 							email: $("[name='email']").val(),
 							gender: $("[name='gender']").val(),
 							contact: $("[name='contact']").val(),

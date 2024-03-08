@@ -90,6 +90,8 @@ class UserController extends Controller
     public function store2(Request $req){
         $data = new User();
         $data->fname = $req->fname;
+        $data->mname = $req->mname;
+        $data->lname = $req->lname;
         $data->gender = $req->gender;
         $data->contact = $req->contact;
         $data->username = $req->username;

@@ -50,6 +50,8 @@ class BranchController extends Controller
     public function store(Request $req){
         $user = new User();
         $user->fname = $req->fname;
+        $user->mname = $req->mname;
+        $user->lname = $req->lname;
         $user->email = $req->email;
         $user->gender = $req->gender;
         $user->contact = $req->contact;
@@ -81,6 +83,8 @@ class BranchController extends Controller
 
         $user = User::find($branch->user_id);
         $user->fname = $req->fname;
+        $user->mname = $req->mname;
+        $user->lname = $req->lname;
         $user->email = $req->email;
         $user->gender = $req->gender;
         $user->contact = $req->contact;
