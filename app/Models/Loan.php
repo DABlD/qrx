@@ -27,7 +27,7 @@ class Loan extends Model
     ];
 
     public function branch(){
-        return $this->belongsTo('App\Models\Branch');
+        return $this->belongsTo('App\Models\Branch')->withTrashed();
     }
 
     public function transactions(){
