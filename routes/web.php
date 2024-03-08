@@ -23,6 +23,19 @@ Route::get('/', function(){
    return redirect()->route('login');
 });
 
+Route::get('application', function(){
+   return view('application');
+});
+
+$cname = "application";
+Route::group([
+        'as' => "$cname.",
+        'prefix' => "$cname/"
+    ], function () use($cname){
+        Route::post("create/", ucfirst($cname) . "Controller@create")->name('create');
+    }
+);
+
 // API
 Route::group([
         'prefix' => "api/"
@@ -40,6 +53,7 @@ Route::group([
 
         Route::put('create/transaction', 'ApiController@createTransaction');
         Route::put('create/kyc', 'ApiController@createKYC');
+        Route::put('create/user', 'ApiController@createUser');
         Route::get('test', 'ApiController@test');
         // Route::put('create/vehicle', 'ApiController@createVehicle');
         // Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');

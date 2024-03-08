@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 
 use Illuminate\Http\Request;
-use App\Models\{AuditTrail, Transaction, KYC};
+use App\Models\{AuditTrail, Transaction, KYC, User, Branch};
 use DB;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -476,6 +476,47 @@ class ApiController extends Controller
             return [
                 "status" => "Error",
                 "error" => "Failed To Save KYC"
+            ];
+        }
+    }
+
+    public function createUser(Request $req){
+        $data = new User();
+
+        $data->user_id = $req->user_id;
+        $data->fname = $req->first_name;
+        $data->mname = $req->middle_name;
+        $data->lname = $req->last_name;
+        $data->email = $req->email;
+        $data->contact = $req->mobile_number;
+        $data->birthday = $req->birthday;
+        $data->civil_status = $req->civil_status;
+        $data->address = $req->full_address;
+
+        $data->username = $req->last_name . '_' . str_pad($req->user_id, 6, '0', STR_PAD_LEFT);
+        $data->password = 12345678;
+        $data->email_verified_at = now();
+        $data->role = "Branch";
+
+        $data->save();
+
+        $branch = new Branch();
+        $branch->user_id = $data->id;
+        $branch->work_status = "";
+        $branch->id_type = "";
+        $branch->id_num = "";
+        $branch->percent = 10;
+
+        if($branch->save()){
+            return [
+                "status" => "Success",
+                "data" => $data
+            ];
+        }
+        else{
+            return [
+                "status" => "Error",
+                "error" => "Failed To Save User"
             ];
         }
     }
