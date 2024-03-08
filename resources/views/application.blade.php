@@ -54,9 +54,9 @@
 					</h2>
 					<br>
 					<div class="row">
-					    <input type="text" name="fname" placeholder="First Name" class="input100" style="width: 32.8%;">
-					    <input type="text" name="mname" placeholder="Middle Name" class="input100" style="width: 32.8%;">
-					    <input type="text" name="lname" placeholder="Last Name" class="input100" style="width: 32.8%;">
+					    <input type="text" name="fname" placeholder="First Name" class="input100" style="width: 32%;">
+					    <input type="text" name="mname" placeholder="Middle Name" class="input100" style="width: 32%;">
+					    <input type="text" name="lname" placeholder="Last Name" class="input100" style="width: 32%;">
 					    <br><br>
 					    <input type="text" name="address" placeholder="Enter Address" class="input100" style="width: 100%;">
 					</div>
