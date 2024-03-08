@@ -106,12 +106,14 @@
 					<br>
 					Select which applies to you
 					<br>
+					<br>
 					<input type="radio" name="work" value="Employee"> Employee
 					&nbsp;&nbsp;&nbsp;
 					<input type="radio" name="work" value="Business"> Business Owner
 					<br>
+					<br>
 
-					<select class="input100" name="type_of_organization" style="width: 49%;">
+					<select class="input100" name="type_of_organization" style="width: 100%;">
 						<option value="">Enter type of organization</option>
 						<option value="Government">Government</option>	
 						<option value="Private Company">Private Company</option>	
