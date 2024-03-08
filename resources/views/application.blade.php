@@ -63,14 +63,14 @@
 
 					<div class="row">
 					    <br>
-					    <input type="text" name="contact" placeholder="Enter Contact" class="input100" style="width: 49.5%;">
-					    <input type="email" name="email" placeholder="Enter Email" class="input100" style="width: 49.5%;">
+					    <input type="text" name="contact" placeholder="Enter Contact" class="input100" style="width: 49%;">
+					    <input type="email" name="email" placeholder="Enter Email" class="input100" style="width: 49%;">
 					</div>
 
 					<div class="row">
 					    <br>
-					    <input type="text" name="birthday" placeholder="Select Birth Date" class="input100" style="width: 49.5% !important;">
-					    <select class="input100" name="gender" style="width: 49.5%;">
+					    <input type="text" name="birthday" placeholder="Select Birth Date" class="input100" style="width: 49% !important;">
+					    <select class="input100" name="gender" style="width: 49%;">
 					    	<option value="">Select Gender</option>
 					    	<option value="Male">Male</option>	
 					    	<option value="Female">Female</option>	
@@ -84,14 +84,14 @@
 
 					<div class="row">
 					    <br>
-					    <input type="number" name="amount" placeholder="Loan Amount" class="input100" style="width: 49.5%;" min="0">
-					    <input type="text" name="use_of_loan" placeholder="Loan Purpose" class="input100" style="width: 49.5%;">
+					    <input type="number" name="amount" placeholder="Loan Amount" class="input100" style="width: 49%;" min="0">
+					    <input type="text" name="use_of_loan" placeholder="Loan Purpose" class="input100" style="width: 49%;">
 					</div>
 
 					<div class="row">
 					    <br>
-					    <input type="text" name="source_of_income" placeholder="Source of Income" class="input100" style="width: 49.5%;">
-					    <select class="input100" name="repayment_plan" style="width: 49.5%;">
+					    <input type="text" name="source_of_income" placeholder="Source of Income" class="input100" style="width: 49%;">
+					    <select class="input100" name="repayment_plan" style="width: 49%;">
 					    	<option value="">Select Repayment Plan</option>
 					    	<option value="Lumpsum">Lumpsum</option>	
 					    	<option value="Installment">Installment</option>	
@@ -111,7 +111,7 @@
 					<input type="radio" name="work" value="Business"> Business Owner
 					<br>
 
-					<select class="input100" name="type_of_organization" style="width: 49.5%;">
+					<select class="input100" name="type_of_organization" style="width: 49%;">
 						<option value="">Enter type of organization</option>
 						<option value="Government">Government</option>	
 						<option value="Private Company">Private Company</option>	
@@ -129,26 +129,26 @@
 					<div id="work_details1" class="wdb">
 						<div class="row">
 							<br>
-							<input type="text" name="position" placeholder="Position" class="input100" style="width: 49.5%;">
-							<input type="number" name="salary" placeholder="Salary" class="input100" style="width: 49.5%;">
+							<input type="text" name="position" placeholder="Position" class="input100" style="width: 49%;">
+							<input type="number" name="salary" placeholder="Salary" class="input100" style="width: 49%;">
 						</div>
 
 						<div class="row">
 							<br>
-							<input type="text" name="date_of_employment" placeholder="Date of Employment" class="input100" style="width: 49.5%;">
+							<input type="text" name="date_of_employment" placeholder="Date of Employment" class="input100" style="width: 49%;">
 						</div>
 					</div>
 
 					<div id="work_details2" class="wdb">
 						<div class="row">
 							<br>
-							<input type="text" name="industry" placeholder="Industry" class="input100" style="width: 49.5%;">
-							<input type="number" name="capitalization" placeholder="Capitalization" class="input100" style="width: 49.5%;">
+							<input type="text" name="industry" placeholder="Industry" class="input100" style="width: 49%;">
+							<input type="number" name="capitalization" placeholder="Capitalization" class="input100" style="width: 49%;">
 						</div>
 
 						<div class="row">
 							<br>
-							<input type="text" name="tin" placeholder="TIN" class="input100" style="width: 49.5%;">
+							<input type="text" name="tin" placeholder="TIN" class="input100" style="width: 49%;">
 						</div>
 					</div>
 					
