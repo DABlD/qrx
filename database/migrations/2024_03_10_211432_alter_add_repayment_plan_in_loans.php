@@ -28,6 +28,7 @@ class AlterAddRepaymentPlanInLoans extends Migration
     {
         Schema::table('loans', function (Blueprint $table) {
             $table->dropColumn('repayment_plan');
+            $table->dropColumn('type_of_organization);
         });
     }
 }
