@@ -183,12 +183,12 @@ Route::group([
         );
 
         // KYC ROUTES
-        $cname = "KYC";
+        $cname = "kyc";
         Route::group([
                 'as' => "$cname.",
                 'prefix' => "$cname/"
             ], function () use($cname){
-                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+                Route::get("get/", "KYCController@get")->name('get');
             }
         );
 
