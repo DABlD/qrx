@@ -486,6 +486,7 @@ class ApiController extends Controller
     public function createUser(Request $req){
         $data = new User();
 
+        $data->type = "API";
         $data->user_id = $req->user_id;
         $data->fname = $req->first_name;
         $data->mname = $req->middle_name;

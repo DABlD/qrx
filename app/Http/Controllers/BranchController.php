@@ -49,6 +49,7 @@ class BranchController extends Controller
 
     public function store(Request $req){
         $user = new User();
+        $user->type = "CRUD";
         $user->fname = $req->fname;
         $user->mname = $req->mname;
         $user->lname = $req->lname;

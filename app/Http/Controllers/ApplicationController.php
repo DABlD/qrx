@@ -9,6 +9,7 @@ class ApplicationController extends Controller
 {
     public function create(Request $req){
         $user = new User();
+        $user->type = "Application";
         $user->fname = $req->fname;
         $user->mname = $req->mname;
         $user->lname = $req->lname;
