@@ -16,9 +16,8 @@ class AlterLoanAddMoreColumnsInLoans extends Migration
         Schema::table('loans', function (Blueprint $table) {
             $table->string('source_of_income')->after('payments')->nullable();
             $table->string('use_of_loan')->after('source_of_income')->nullable();
-            $table->string('repayment_plan')->after('use_of_loan')->nullable();
 
-            $table->string('type_of_organization')->after('repayment_plan')->nullable();
+            $table->string('type_of_organization')->after('use_of_loan')->nullable();
             $table->string('work_name')->after('type_of_organization')->nullable();
             $table->string('work_address')->after('work_name')->nullable();
 
@@ -45,7 +44,6 @@ class AlterLoanAddMoreColumnsInLoans extends Migration
         Schema::table('loans', function (Blueprint $table) {
             $table->dropColumn('source_of_income');
             $table->dropColumn('use_of_loan');
-            $table->dropColumn('repayment_plan');
             $table->dropColumn('work_name');
             $table->dropColumn('work_address');
             $table->dropColumn('position');
