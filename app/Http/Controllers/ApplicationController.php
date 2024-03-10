@@ -19,7 +19,7 @@ class ApplicationController extends Controller
         $user->address = $req->address;
         $user->contact = $req->contact;
 
-        $user->username = $req->lname . '_' . str_pad($req->user_id, 6, '0', STR_PAD_LEFT);
+        $user->username = $req->lname . '_' . bin2hex(random_bytes(4));
         $user->password = 12345678;
         $user->email_verified_at = now();
         $user->role = "Branch";
