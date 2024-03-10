@@ -26,7 +26,7 @@
                     				<th>Last Name</th>
                     				<th>Gender</th>
                     				<th>Contact</th>
-                    				{{-- <th>Interest Rate</th> --}}
+                    				<th>Type</th>
                     				<th>Verified</th>
                     				<th>Actions</th>
                     			</tr>
@@ -80,7 +80,7 @@
 					{data: 'user.lname'},
 					{data: 'user.gender'},
 					{data: 'user.contact'},
-					// {data: 'percent'},
+					{data: 'user.type'},
 					{data: 'id_verified'},
 					{data: 'actions'},
 				],
@@ -101,6 +101,12 @@
 					},
 					{
 						targets: [6],
+						render: type => {
+							return type == "CRUD" ? "Client Page" : type;
+						}
+					},
+					{
+						targets: [7],
 						render: status => {
 							return status ? "Yes" : "No";
 						}
