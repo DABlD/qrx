@@ -183,7 +183,7 @@ Route::group([
         );
 
         // KYC ROUTES
-        $cname = "kyc";
+        $cname = "KYC";
         Route::group([
                 'as' => "$cname.",
                 'prefix' => "$cname/"
