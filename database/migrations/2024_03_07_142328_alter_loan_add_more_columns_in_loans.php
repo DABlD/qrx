@@ -17,8 +17,7 @@ class AlterLoanAddMoreColumnsInLoans extends Migration
             $table->string('source_of_income')->after('payments')->nullable();
             $table->string('use_of_loan')->after('source_of_income')->nullable();
 
-            $table->string('type_of_organization')->after('use_of_loan')->nullable();
-            $table->string('work_name')->after('type_of_organization')->nullable();
+            $table->string('work_name')->after('use_of_loan')->nullable();
             $table->string('work_address')->after('work_name')->nullable();
 
             $table->string('position')->after('work_address')->nullable();
@@ -49,7 +48,6 @@ class AlterLoanAddMoreColumnsInLoans extends Migration
             $table->dropColumn('position');
             $table->dropColumn('salary');
             $table->dropColumn('date_of_employment');
-            $table->dropColumn('type_of_organization');
             $table->dropColumn('industry');
             $table->dropColumn('capitalization');
             $table->dropColumn('tin');

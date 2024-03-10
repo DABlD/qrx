@@ -15,6 +15,7 @@ class AlterAddRepaymentPlanInLoans extends Migration
     {
         Schema::table('loans', function (Blueprint $table) {
             $table->string('repayment_plan')->nullable()->after('use_of_loan');
+            $table->string('type_of_organization')->after('repayment_plan')->nullable();
         });
     }
 
