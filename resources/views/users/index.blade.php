@@ -361,7 +361,32 @@
 				success: result => {
 					result = JSON.parse(result);
 
-					console.log(result);
+					if(result.length){
+						let fileString = "";
+						result.forEach((a,b) => {
+							console.log(a, b);
+							fileString = `
+								<a href="/storage/${a.file}">${a.document_type}</a>
+							`;
+						});
+
+						Swal.fire({
+							title: 'List of Files',
+							html: `
+								${fileString}
+							`
+						}).then(() => {
+							view(id);
+						});
+					}
+					else{
+						Swal.fire({
+							title: 'No files uploaded',
+							icon: 'info',
+						}).then(() => {
+							view(id);
+						});
+					}
 				}
 			});
 		}
