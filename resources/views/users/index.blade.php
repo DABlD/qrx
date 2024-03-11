@@ -269,6 +269,9 @@
 					        </select>
 					    </div>
 					</div>
+
+					<br>
+					<a class="btn btn-success" onclick='viewFiles(${branch.id}, "${branch.user.contact}")'>View Files</a>
 				`,
 				width: '800px',
 				confirmButtonText: 'Update',
@@ -344,6 +347,21 @@
 					},	() => {
 						reload();
 					});
+				}
+			});
+		}
+
+		function viewFiles(id, contact){
+			$.ajax({
+				url: '{{ route('kyc.get') }}',
+				data: {
+					where: ['mobile_number', contact],
+					select: '*'
+				},
+				success: result => {
+					result = JSON.parse(result);
+
+					console.log(result);
 				}
 			});
 		}
