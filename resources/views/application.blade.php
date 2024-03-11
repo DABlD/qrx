@@ -215,6 +215,26 @@
 					$('#work_details2').show();
 				}
 			});
+
+			$('[name="email"]').change(e => {
+				$.ajax({
+					url: '{{ route('user.get') }}',
+					data: {
+						where: ['email', e.target.value],
+						select: '*'
+					},
+					success: result => {
+						result = JSON.parse(result);
+
+						if(result.length){
+							Swal.fire({
+								title: 'Email already exists',
+								icon: 'warning'
+							});
+						}
+					}
+				})
+			});
 		});
 
 		@if($errors->all())
