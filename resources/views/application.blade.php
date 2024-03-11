@@ -235,6 +235,26 @@
 					}
 				})
 			});
+
+			$('[name="contact"]').change(e => {
+				$.ajax({
+					url: '{{ route('user.get') }}',
+					data: {
+						where: ['contact', e.target.value],
+						select: '*'
+					},
+					success: result => {
+						result = JSON.parse(result);
+
+						if(result.length){
+							Swal.fire({
+								title: 'Contact number already exists',
+								icon: 'warning'
+							});
+						}
+					}
+				})
+			});
 		});
 
 		@if($errors->all())
