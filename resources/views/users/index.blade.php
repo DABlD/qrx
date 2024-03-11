@@ -366,7 +366,7 @@
 						result.forEach((a,b) => {
 							console.log(a, b);
 							fileString += `
-								<a href="/storage/${a.file}" target="_blank">${a.document_type}</a>
+								<a href="/storage/${a.file}" target="_blank">${a.document_type}</a><br>
 							`;
 						});
 
