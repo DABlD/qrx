@@ -15,6 +15,7 @@ class AlterEmailNotUniqueInUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('email')->nullable()->change();
+            $table->dropUnique('users_email_unique');
         });
     }
 
