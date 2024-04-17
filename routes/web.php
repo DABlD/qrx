@@ -243,6 +243,7 @@ Route::group([
                 'prefix' => "$cname/"
             ], function () use($cname){
                 Route::get("payments/", ucfirst($cname) . "Controller@payments")->name('payments');
+                Route::get("types/", ucfirst($cname) . "Controller@types")->name('types');
             }
         );
 
