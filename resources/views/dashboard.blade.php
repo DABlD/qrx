@@ -142,8 +142,9 @@
                             scales: {
                                 y: {
                                     ticks: {
-                                        stepSize: 1
-                                    }
+                                        stepSize: 1,
+                                    },
+                                    min: 0
                                 }
                             }
                         }
@@ -177,6 +178,13 @@
                             //     February: 20
                             //   }
                             // }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    min: 0
+                                }
+                            }
                         }
                     });
                     swal.close();

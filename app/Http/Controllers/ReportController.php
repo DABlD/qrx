@@ -52,26 +52,47 @@ class ReportController extends Controller
 
         $dataset = [];
 
-        foreach($temp as $key => $type){
+        if(sizeof($temp)){
+            foreach($temp as $key => $type){
+                $array = [];
+
+                $from2 = $from;
+                $to2 = $to;
+
+                while($from2 <= $to2){
+                    $tempDate = now()->parse($from2);
+                    $array[$tempDate->toDateString()] = 0;
+                    
+                    $from2 = $tempDate->addDay()->toDateString();
+                }
+
+                foreach($type as $loan){
+                    $array[$loan->created_at->toDateString()]++;
+                }
+
+                $color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+                array_push($dataset, [
+                    "label" => $key,
+                    "data" => $array,
+                    'borderColor' => $color,
+                    'backgroundColor' => $color,
+                    'hoverRadius' => 10
+                ]);
+            }
+        }
+        else{
             $array = [];
 
-            $from2 = $from;
-            $to2 = $to;
-
-            while($from2 <= $to2){
-                $tempDate = now()->parse($from2);
+            while($from <= $to){
+                $tempDate = now()->parse($from);
                 $array[$tempDate->toDateString()] = 0;
                 
-                $from2 = $tempDate->addDay()->toDateString();
-            }
-
-            foreach($type as $loan){
-                $array[$loan->created_at->toDateString()]++;
+                $from = $tempDate->addDay()->toDateString();
             }
 
             $color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
             array_push($dataset, [
-                "label" => $key,
+                "label" => "Loans last 30 days",
                 "data" => $array,
                 'borderColor' => $color,
                 'backgroundColor' => $color,
