@@ -140,6 +140,10 @@
 							return "₱" + numeral((((percent) * amount * Math.pow((1 + (percent)), c.months) / (1 - Math.pow((1 + (percent)), c.months))) * c.months) + amount).format("0,0.00");
 						}
 					},
+					{
+						targets: 11,
+						width: "120px"
+					}
 				]
 				// drawCallback: function(){
 				// 	init();

@@ -32,7 +32,7 @@ trait LoanAttribute{
 		if(in_array($this->status, ["For Payment", "Overdue", "Paid"])){
 			$action .= 	"<a class='btn btn-info' data-toggle='tooltip' title='Payments' onClick='payments($id)'>" .
 					        "<i class='fas fa-file-invoice-dollar'></i>" .
-					    "</a>&nbsp;";
+					    "</a>&nbsp;&nbsp;";
 		}
 
 		if(in_array($this->status, ['Applied', 'Disapproved', 'Overdue']) || auth()->user()->role == "Admin" || auth()->user()->role == "Super Admin"){
