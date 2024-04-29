@@ -35,7 +35,7 @@ trait LoanAttribute{
 					    "</a>&nbsp;";
 		}
 
-		if(in_array($this->status, ['Applied', 'Disapproved', 'Overdue'])){
+		if(in_array($this->status, ['Applied', 'Disapproved', 'Overdue']) || auth()->user()->role == "Admin" || auth()->user()->role == "Super Admin"){
 			$action .= 	"<a class='btn btn-danger' data-toggle='tooltip' title='Delete' onClick='del($id)'>" .
 					        "<i class='fas fa-trash'></i>" .
 					    "</a>&nbsp;";
