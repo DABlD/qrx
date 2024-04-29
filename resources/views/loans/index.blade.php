@@ -142,7 +142,7 @@
 					},
 					{
 						targets: 11,
-						width: "120px"
+						width: "130px"
 					}
 				]
 				// drawCallback: function(){
