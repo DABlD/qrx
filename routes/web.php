@@ -169,6 +169,26 @@ Route::group([
             }
         );
 
+        // REPORT ROUTES
+        $cname = "report";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+
+                Route::get("/", ucfirst($cname) . "Controller@index")
+                    ->defaults("sidebar", 1)
+                    ->defaults("icon", "fas fa-chart-line")
+                    ->defaults("name", "Reports")
+                    ->defaults("roles", array("Super Admin", "Admin"))
+                    // ->defaults("group", "Settings")
+                    ->name($cname)
+                    ->defaults("href", "/$cname");
+
+                Route::get("get/", ucfirst($cname) . "Controller@get")->name('get');
+            }
+        );
+
         // THEME ROUTES
         $cname = "branch";
         Route::group([

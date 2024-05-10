@@ -114,4 +114,14 @@ class ReportController extends Controller
 
         return $dates;
     }
+
+    public function index(){
+        return $this->_view('index', [
+            'title' => 'Reports'
+        ]);
+    }
+
+    private function _view($view, $data = array()){
+        return view('reports.' . $view, $data);
+    }
 }
