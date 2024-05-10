@@ -134,6 +134,7 @@
 
 					<br>
 	                ${input("username", "Username", null, 3, 9)}
+	                ${input("email", "Email", null, 3, 9)}
 	                ${input("password", "Password", null, 3, 9, 'password')}
 	                ${input("password_confirmation", "Confirm Password", null, 3, 9, 'password')}
 				`,
@@ -159,6 +160,7 @@
 			            }
 			            else{
 			            	let bool = false;
+			            	// VALIDATE USERNAME DUPLICATE
             				$.ajax({
             					url: "{{ route('user.get') }}",
             					data: {
@@ -170,6 +172,23 @@
             						if(result.length){
             			    			Swal.showValidationMessage('Username already used');
 	            						setTimeout(() => {resolve()}, 500);
+            						}
+			            			// VALIDATE EMAIL DUPLICATE
+            						else{
+			            				$.ajax({
+			            					url: "{{ route('user.get') }}",
+			            					data: {
+			            						select: "id",
+			            						where: ["email", $("[name='email']").val()]
+			            					},
+			            					success: result => {
+			            						result = JSON.parse(result);
+			            						if(result.length){
+			            			    			Swal.showValidationMessage('Email already used');
+				            						setTimeout(() => {resolve()}, 500);
+			            						}
+			            					}
+			            				});
             						}
             					}
             				});
@@ -189,6 +208,7 @@
 							gender: $("[name='gender']").val(),
 							contact: $("[name='contact']").val(),
 							username: $("[name='username']").val(),
+							email: $("[name='email']").val(),
 							password: $("[name='password']").val(),
 							_token: $('meta[name="csrf-token"]').attr('content')
 						},
@@ -212,6 +232,7 @@
 
 					<br>
 	                ${input("username", "Username", user.username, 3, 9)}
+	                ${input("email", "Email", user.email, 3, 9)}
 				`,
 				width: '800px',
 				confirmButtonText: 'Update',
@@ -228,6 +249,7 @@
 			            }
 			            else{
 			            	let bool = false;
+			            	// VALIDATE USERNAME DUPLICATE
             				$.ajax({
             					url: "{{ route('user.get') }}",
             					data: {
@@ -236,9 +258,26 @@
             					},
             					success: result => {
             						result = JSON.parse(result);
-            						if(result.length && result[0].id != branch.user.id){
+            						if(result.length && result[0].id != user.id){
             			    			Swal.showValidationMessage('Username already used');
 	            						setTimeout(() => {resolve()}, 500);
+            						}
+			            			// VALIDATE EMAIL DUPLICATE
+            						else{
+			            				$.ajax({
+			            					url: "{{ route('user.get') }}",
+			            					data: {
+			            						select: "id",
+			            						where: ["email", $("[name='email']").val()]
+			            					},
+			            					success: result => {
+			            						result = JSON.parse(result);
+			            						if(result.length && result[0].id != user.id){
+			            			    			Swal.showValidationMessage('Email already used');
+				            						setTimeout(() => {resolve()}, 500);
+			            						}
+			            					}
+			            				});
             						}
             					}
             				});
@@ -257,7 +296,8 @@
 							fname: $("[name='fname']").val(),
 							gender: $("[name='gender']").val(),
 							contact: $("[name='contact']").val(),
-							username: $("[name='username']").val()
+							username: $("[name='username']").val(),
+							email: $("[name='email']").val()
 						},
 						message: "Success"
 					},	() => {
