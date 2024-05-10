@@ -268,15 +268,15 @@ Route::group([
         );
 
         // EXPORT ROUTES
-        // $cname = "export";
-        // Route::group([
-        //         'as' => "$cname.",
-        //         'prefix' => "$cname/"
-        //     ], function () use($cname){
-        //         Route::get("sales/", ucfirst($cname) . "Controller@sales")->name('sales');
-        //         Route::get("manifest/", ucfirst($cname) . "Controller@manifest")->name('manifest');
-        //     }
-        // );
+        $cname = "export";
+        Route::group([
+                'as' => "$cname.",
+                'prefix' => "$cname/"
+            ], function () use($cname){
+                Route::get("loans/", ucfirst($cname) . "Controller@loans")->name('loans');
+                Route::get("transactions/", ucfirst($cname) . "Controller@transactions")->name('transactions');
+            }
+        );
 
         // DATATABLES
         $cname = "datatable";

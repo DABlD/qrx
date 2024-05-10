@@ -40,6 +40,12 @@
                     	    <option value="Paid">Paid</option>
                     	</select>
 
+                        <h3 class="float-right">
+                            <a class="btn btn-success btn-sm" onclick="exporto()">
+        						<i class="fas fa-file-export"> Export</i>
+                            </a>
+                        </h3>
+
                     	<br>
                     	<br>
 
@@ -1133,6 +1139,15 @@
 					})
 				}
 			});
+		}
+
+		function exporto(){
+			let data = {
+				select: "*",
+				load: ['branch.user'],
+				filters: getFilters()
+			};
+			window.open("/export/loans?" + $.param(data), "_blank");
 		}
 	</script>
 @endpush
