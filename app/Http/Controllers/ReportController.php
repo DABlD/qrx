@@ -12,6 +12,9 @@ class ReportController extends Controller
         $to = now()->endOfDay()->toDateTimeString();
 
         $temp = Transaction::whereBetween('payment_date', [$from, $to])->where('type', 'CR');
+        // ADD FILTERS
+        $temp = $temp->where('payment_channel', 'LIKE', $req->pType);
+
         $temp = $temp->get();
 
         $array = [];
@@ -48,7 +51,12 @@ class ReportController extends Controller
         $from = now()->subMonth()->startOfDay()->toDateTimeString();
         $to = now()->endOfDay()->toDateTimeString();
 
-        $temp = Loan::whereBetween('created_at', [$from, $to])->select('id', 'type', 'created_at')->get()->groupBy('type');
+        $temp = Loan::whereBetween('created_at', [$from, $to])->select('id', 'type', 'created_at');
+        // ADD FILTERS
+        $temp = $temp->where('type', 'LIKE', $req->pType2);
+        $temp = $temp->where('status', 'LIKE', $req->pStatus);
+
+        $temp = $temp->get()->groupBy('type');
 
         $dataset = [];
 
