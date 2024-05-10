@@ -33,6 +33,12 @@
                                         <option></option>
                                         <option value="%%">All</option>
                                     </select>
+
+                                    <h3 class="float-right">
+                                        <a class="btn btn-success btn-sm" onclick="print('sales')">
+                                            PRINT
+                                        </a>
+                                    </h3>
                                 {{-- CHART --}}
                                 <canvas id="sales" width="100%"></canvas>
                           </div>
@@ -53,6 +59,12 @@
                                         <option value="Overdue">Overdue</option>
                                         <option value="Paid">Paid</option>
                                     </select>
+
+                                    <h3 class="float-right">
+                                        <a class="btn btn-success btn-sm" onclick="print('types')">
+                                            PRINT
+                                        </a>
+                                    </h3>
                                 {{-- CHART --}}
                                 <canvas id="types" width="100%"></canvas>
                           </div>
@@ -279,5 +291,16 @@
                 loadC2();
             });
         });
+
+        function print(canvas){
+            var canvas = document.getElementById(canvas);
+            var win = window.open();
+            win.document.write("<br><img src='" + canvas.toDataURL() + "'/>");
+            setTimeout(() => {
+                win.print();
+                win.location.reload();
+                win.close();
+            },200);
+        }
     </script>
 @endpush
