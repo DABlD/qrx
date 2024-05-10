@@ -20,9 +20,10 @@
 			<td>{{ $data->branch->user->fname }}</td>
 			<td>{{ $data->contract_no }}</td>
 			<td>{{ $data->type }}</td>
-			<td>{{ $data->amount }}</td>
-			<td>{{ $data->percent }}</td>
-			<td>{{ $data->months }}</td>
+
+			<td>{{ "₱" . number_format($data->amount, 2, '.') }}</td>
+			<td>{{ $data->percent . "%" }}</td>
+			<td>{{ $data->paid_months . ' / ' . $data->months }}</td>
 			<td>{{ $data->amount }}</td>
 			<td>{{ $data->amount }}</td>
 			<td>{{ $data->amount }}</td>
