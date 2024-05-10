@@ -17,6 +17,28 @@
                     </div>
 
                     <div class="card-body table-responsive">
+                    	{{-- FILTERS --}}
+                    	<select id="fType">
+                    	    <option></option>
+                    	    <option value="%%">All</option>
+                    	    <option value="DR">DR</option>
+                    	    <option value="CR">CR</option>
+                    	</select>
+
+                    	<select id="fChannel">
+                    	    <option></option>
+                    	    <option value="%%">All</option>
+                    	</select>
+
+                        <h3 class="float-right">
+                            <a class="btn btn-success btn-sm" onclick="exporto()">
+        						<i class="fas fa-file-export"> Export</i>
+                            </a>
+                        </h3>
+
+                        <br>
+                        <br>
+
                     	<table id="table" class="table table-hover" style="width: 100%;">
                     		<thead>
                     			<tr>
@@ -60,15 +82,19 @@
 	<script src="{{ asset('js/numeral.min.js') }}"></script>
 
 	<script>
+		var fType = "%%";
+		var fChannel = "%%";
+
 		$(document).ready(()=> {
 			var table = $('#table').DataTable({
 				ajax: {
 					url: "{{ route('datatable.transactions') }}",
                 	dataType: "json",
                 	dataSrc: "",
-					data: {
-						select: "*",
-						load: ['loan']
+					data: f => {
+						f.select = "*";
+						f.load = ['loan'];
+						f.filters = getFilters();
 					}
 				},
 				columns: [
@@ -78,7 +104,7 @@
 					{data: 'amount'},
 					{data: 'trx_number'},
 					{data: 'payment_channel'},
-					{data: 'date'},
+					{data: 'payment_date'},
 					{data: 'actions'},
 				],
         		pageLength: 25,
@@ -114,6 +140,73 @@
 				// 	init();
 				// }
 			});
+
+			// FILTERS
+			// FTYPE
+			$('#fChannel').select2({
+			    width: '300px',
+			    placeholder: "Select Client"
+			});
+
+			$.ajax({
+			    url: '{{ route('transaction.get') }}',
+			    data: {
+			        select: ['id', 'payment_channel'],
+			    },
+			    success: result => {
+			        result = JSON.parse(result);
+                    let options = [];
+
+                    result.forEach(option => {
+                        options.push(option.payment_channel);
+                    });
+
+                    // REMOVE DUPLICATE
+                    options = [...new Set(options)];
+
+			        let tempString = "";
+			        options.forEach(trx => {
+			            tempString += `
+			                <option value="${trx}">${trx}</option>
+			            `;
+			        });
+
+			        $('#fChannel').append(tempString);
+
+			        $('#fChannel').change(() => {
+			            fChannel = $('#fChannel').val();
+			            reload();
+			        });
+			    }
+			})
+
+			// FTYPE
+			$('#fType').select2({
+			    width: '150px',
+			    placeholder: "Select Type"
+			});
+
+	        $('#fType').change(() => {
+	            fType = $('#fType').val();
+	            reload();
+	        });
 		});
+
+		function getFilters(){
+			return {
+				fType: fType,
+				fChannel: fChannel
+			};
+		}
+
+		function exporto(){
+			let data = {
+				select: "*",
+				load: ['loan'],
+				filters: getFilters()
+			};
+
+			window.open("/export/transactions?" + $.param(data), "_blank");
+		}
 	</script>
 @endpush

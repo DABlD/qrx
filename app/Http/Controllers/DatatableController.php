@@ -203,6 +203,11 @@ class DatatableController extends Controller
     public function transactions(Request $req){
         $array = Transaction::select($req->select);
 
+        // FILTERS
+        $f = $req->filters;
+        $array = $array->where('payment_channel', 'like', $f['fChannel']);
+        $array = $array->where('type', 'like', $f['fType']);
+
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
             $array = $array->orderBy($req->order[0], $req->order[1]);

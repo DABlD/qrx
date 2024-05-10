@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\{Loans};
-use App\Models\{Loan, AuditTrail};
+use App\Exports\{Loans, Transaction as Transactions};
+use App\Models\{Loan, Transaction, AuditTrail};
 
 class ExportController extends Controller
 {
@@ -64,19 +64,13 @@ class ExportController extends Controller
         return Excel::download(new Loans($array), 'Loans - ' . now()->format('M d, Y') . '.xlsx');
     }
 
-    public function manifest(Request $req){
-        $array = Sale::select("*");
+    public function transactions(Request $req){
+        $array = Transaction::select($req->select);
 
-        if(auth()->user()->role == "Company"){
-            $array = $array->where('company_id', auth()->user()->id);
-        }
-
-        $from = now()->parse($req->from)->startOfDay()->toDateTimeString();
-        $to = now()->parse($req->to)->endOfDay()->toDateTimeString();
-
-        $array = $array->whereBetween('created_at', [$from, $to]);
-        $array = $array->where('status', 'like', $req->status);
-        $array = $array->where('ticket', 'like', substr($req->device, -6));
+        // FILTERS
+        $f = $req->filters;
+        $array = $array->where('payment_channel', 'like', $f['fChannel']);
+        $array = $array->where('type', 'like', $f['fType']);
 
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
@@ -93,10 +87,17 @@ class ExportController extends Controller
             $array = $array->where($req->where2[0], isset($req->where2[2]) ? $req->where2[1] : "=", $req->where2[2] ?? $req->where2[1]);
         }
 
+        // IF HAS JOIN
+        if($req->join){
+            $alias = substr($req->join, 1);
+            $array = $array->join("$req->join as $alias", "$alias.fid", '=', 'users.id');
+        }
+
         $array = $array->get();
 
-        foreach($array as $sale){
-            $sale->user = json_decode($sale->user);
+        // FOR ACTIONS
+        foreach($array as $item){
+            $item->actions = $item->actions;
         }
 
         // IF HAS LOAD
@@ -111,9 +112,9 @@ class ExportController extends Controller
             $array = $array->groupBy($req->group);
         }
 
-        $this->log(auth()->user()->fullname, "Export", "Manifest");
+        $this->log(auth()->user()->fullname, "Export", "Transaction");
 
-        return Excel::download(new Manifest($array), 'Manifest - ' . now()->toDateTimeString() . '.xlsx');
+        return Excel::download(new Transactions($array), 'Transactions - ' . now()->format('M d, Y') . '.xlsx');
     }
 
     public function log($user, $action, $description){
