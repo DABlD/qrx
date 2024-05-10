@@ -17,6 +17,32 @@
                     </div>
 
                     <div class="card-body table-responsive">
+                    	{{-- FILTERS --}}
+
+                    	<select id="fName">
+                    	    <option></option>
+                    	    <option value="%%">All</option>
+                    	</select>
+
+                    	<select id="fType">
+                    	    <option></option>
+                    	    <option value="%%">All</option>
+                    	</select>
+
+                    	<select id="fStatus">
+                    	    <option></option>
+                    	    <option value="%%">All</option>
+                    	    <option value="Applied">Applied</option>
+                    	    <option value="Approved">Approved</option>
+                    	    <option value="Disapproved">Disapproved</option>
+                    	    <option value="For Payment">For Payment</option>
+                    	    <option value="Overdue">Overdue</option>
+                    	    <option value="Paid">Paid</option>
+                    	</select>
+
+                    	<br>
+                    	<br>
+
                     	<table id="table" class="table table-hover" style="width: 100%;">
                     		<thead>
                     			<tr>
@@ -64,15 +90,20 @@
 	<script src="{{ asset('js/numeral.min.js') }}"></script>
 
 	<script>
+		var fName = "%%";
+		var fType = "%%";
+		var fStatus = "%%";
+
 		$(document).ready(()=> {
 			var table = $('#table').DataTable({
 				ajax: {
 					url: "{{ route('datatable.loans') }}",
                 	dataType: "json",
                 	dataSrc: "",
-					data: {
-						select: "*",
-						load: ['branch.user']
+					data: f => {
+						f.select = "*";
+						f.load = ['branch.user'];
+						f.filters = getFilters();
 					}
 				},
 				columns: [
@@ -149,7 +180,97 @@
 				// 	init();
 				// }
 			});
+
+			// FILTERS
+			// FNAME
+			$('#fName').select2({
+			    width: '300px',
+			    placeholder: "Select Client"
+			});
+
+			$.ajax({
+			    url: '{{ route('branch.get') }}',
+			    data: {
+			        select: ['id', 'user_id'],
+			        load: ['user']
+			    },
+			    success: result => {
+			        result = JSON.parse(result);
+
+			        let tempString = "";
+			        result.forEach(branch => {
+			        	let user = branch.user;
+			            tempString += `
+			                <option value="${branch.id}">${(user.fname || user.lname) ? (user.fname ? user.fname + " " + (user.lname ?? "") : "") : user.username} (#${branch.id})</option>
+			            `;
+			        });
+
+			        $('#fName').append(tempString);
+
+			        $('#fName').change(() => {
+			            fName = $('#fName').val();
+			            reload();
+			        });
+			    }
+			})
+
+			// FTYPE
+			$('#fType').select2({
+			    width: '150px',
+			    placeholder: "Select Type"
+			});
+
+			$.ajax({
+			    url: '{{ route('loan.get') }}',
+			    data: {
+			        select: 'type'
+			    },
+			    success: result => {
+			        result = JSON.parse(result);
+			        let options = [];
+
+			        result.forEach(option => {
+			            options.push(option.type);
+			        });
+
+			        // REMOVE DUPLICATE
+			        options = [...new Set(options)];
+
+			        let tempString = "";
+			        options.forEach(option => {
+			            tempString += `
+			                <option value="${option}">${option}</option>
+			            `;
+			        });
+
+			        $('#fType').append(tempString);
+
+			        $('#fType').change(() => {
+			            fType = $('#fType').val();
+			            reload();
+			        });
+			    }
+			})
+
+			// FSTATUS
+			$('#fStatus').select2({
+			    width: '150px',
+			    placeholder: "Select Status"
+			});
+
+	        $('#fStatus').change(() => {
+	            fStatus = $('#fStatus').val();
+	            reload();
+	        });
 		});
+
+		function getFilters(){
+			return {
+				fName: fName,
+				fType: fType,
+				fStatus: fStatus
+			};
+		}
 
 		function view(id){
 			$.ajax({

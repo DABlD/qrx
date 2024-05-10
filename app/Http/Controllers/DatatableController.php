@@ -151,6 +151,12 @@ class DatatableController extends Controller
     public function loans(Request $req){
         $array = Loan::select($req->select);
 
+        // FILTERS
+        $f = $req->filters;
+        $array = $array->where('branch_id', 'like', $f['fName']);
+        $array = $array->where('type', 'like', $f['fType']);
+        $array = $array->where('status', 'like', $f['fStatus']);
+
         // IF HAS SORT PARAMETER $ORDER
         if($req->order){
             $array = $array->orderBy($req->order[0], $req->order[1]);
