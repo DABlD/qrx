@@ -366,7 +366,15 @@
 						result.forEach((a,b) => {
 							console.log(a, b);
 							fileString += `
-								<a href="/storage/${a.file}" target="_blank">${a.document_type}</a><br>
+								<div class="row">
+									<div class="col-md-6" style="text-align: right;">
+										${a.label ?? "No Label"}
+									</div>
+
+									<div class="col-md-6" style="text-align: left;">
+										<a href="/storage/${a.file}" target="_blank">${a.document_type}</a><br>
+									</div>
+								</div>
 							`;
 						});
 
