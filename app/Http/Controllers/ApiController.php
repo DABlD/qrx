@@ -464,6 +464,7 @@ class ApiController extends Controller
         $data->mobile_number = $req->mobile_number;
         $data->fibi_user_id = $req->fibi_user_id;
         $data->document_type = $req->document_type;
+        $data->label = $req->label;
         $data->file = $req->file;
 
         if($data->save()){
