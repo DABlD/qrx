@@ -179,7 +179,7 @@ Route::group([
                 Route::get("/", ucfirst($cname) . "Controller@index")
                     ->defaults("sidebar", 1)
                     ->defaults("icon", "fas fa-chart-line")
-                    ->defaults("name", "Reports")
+                    ->defaults("name", "Insights")
                     ->defaults("roles", array("Super Admin", "Admin"))
                     // ->defaults("group", "Settings")
                     ->name($cname)

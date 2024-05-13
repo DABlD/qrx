@@ -125,7 +125,7 @@ class ReportController extends Controller
 
     public function index(){
         return $this->_view('index', [
-            'title' => 'Reports'
+            'title' => 'Insights'
         ]);
     }
 
