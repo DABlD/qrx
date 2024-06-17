@@ -11,6 +11,9 @@ use DB;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
 class ApiController extends Controller
 {
     public function users(Request $req){
@@ -651,6 +654,32 @@ class ApiController extends Controller
         User::where('email', $email)->update(['email_verified_at' => now()]);
 
         return redirect()->route('login')->with('success', 'Your email has been verified. Please try to login again.');
+    }
+
+    public function getToken(Request $request){
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+            'device_name' => 'required',
+        ]);
+
+        $user = User::where('username', $request->username)->first();
+
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'username' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+     
+        return $user->createToken($request->device_name)->plainTextToken;
+    }
+
+    public function revokeToken(Request $request){
+        $request->user()->currentAccessToken()->delete();
+    }
+
+    public function getUserData(Request $request){
+        return $request->user();
     }
 
     public function log($user, $action, $description){

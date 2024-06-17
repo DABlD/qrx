@@ -59,6 +59,11 @@ Route::group([
         // Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');
 
         // Route::post('update/sale', 'ApiController@updateSale');
+
+        Route::post('/tokens/create', 'ApiController@getToken');
+        Route::middleware('auth:sanctum')->post('/tokens/revoke', 'ApiController@revokeToken');
+        Route::middleware('auth:sanctum')->post('/tokens/test', 'ApiController@tokentest');
+        Route::middleware('auth:sanctum')->post('/tokens/getUserData', 'ApiController@getUserData');
     }
 );
 

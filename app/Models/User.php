@@ -6,12 +6,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\UserAttribute;
+use Laravel\Sanctum\HasApiTokens;
 
 use Hash;
 
 class User extends Authenticatable
 {
-    use SoftDeletes, UserAttribute;
+    use SoftDeletes, UserAttribute, HasApiTokens;
     /**
      * The attributes that are mass assignable.
      *
