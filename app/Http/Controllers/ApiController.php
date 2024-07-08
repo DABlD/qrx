@@ -657,7 +657,7 @@ class ApiController extends Controller
     }
 
     public function vCodeGenerator(){
-        return strtoupper("#" + substr(bin2hex(random_bytes(4)), 3) + "#" + substr(bin2hex(random_bytes(4)), 3) + "#");
+        return strtoupper("#" . substr(bin2hex(random_bytes(4)), 3) . "#" . substr(bin2hex(random_bytes(4)), 3) . "#");
     }
 
     public function getToken(Request $request){
