@@ -55,6 +55,8 @@ Route::group([
         Route::put('create/kyc', 'ApiController@createKYC');
         Route::put('create/user', 'ApiController@createUser');
         Route::get('test', 'ApiController@test');
+
+        Route::get('vCodeGenerator', 'ApiController@vCodeGenerator');
         // Route::put('create/vehicle', 'ApiController@createVehicle');
         // Route::put('create/ledger-entry', 'ApiController@createLedgerEntry');
 

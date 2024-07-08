@@ -656,6 +656,10 @@ class ApiController extends Controller
         return redirect()->route('login')->with('success', 'Your email has been verified. Please try to login again.');
     }
 
+    public function vCodeGenerator(){
+        return strtoupper("#" + substr(bin2hex(random_bytes(4)), 3) + "#" + substr(bin2hex(random_bytes(4)), 3) + "#");
+    }
+
     public function getToken(Request $request){
         $request->validate([
             'username' => 'required',
